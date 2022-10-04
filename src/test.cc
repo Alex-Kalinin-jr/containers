@@ -17,5 +17,7 @@ int main() {
     c.swap(d);
     std::cout<<" "<<c.size()<<std::endl;
     std::cout<<" "<<c.top()<<std::endl;
+    c = Stack<int>({3, 2, 1});
+    std::cout<<" "<<c.top()<<std::endl;
     return 0;
 }

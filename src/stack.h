@@ -49,7 +49,24 @@ template<typename T> class Stack {
                 ++sizeOf;
             }
         }
+
+        Stack(const Stack &s) {
+            head = s.head;
+            sizeOf = s.sizeOf;
+        }
+
+        Stack(Stack &&s) {
+            head = s.head;
+            sizeOf = s.sizeOf;
+        }
+
         ~Stack<T>() {};
+
+        Stack & operator=(Stack &&s) {
+            head = s.head;
+            sizeOf = s.sizeOf;
+            return *this;
+        }
 
         bool empty() { return (&head == nullptr); }
         size_type size() { return sizeOf; }
