@@ -80,6 +80,8 @@ template<typename T> class Stack {
             other.head = buff_head;
         }
 
+        const_reference top() {return *(head.elem);}
+
     private:
         Node<value_type> head;
         size_type sizeOf = 0;

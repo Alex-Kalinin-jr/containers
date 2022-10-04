@@ -16,5 +16,6 @@ int main() {
     std::cout<<" "<<c.size()<<std::endl;
     c.swap(d);
     std::cout<<" "<<c.size()<<std::endl;
+    std::cout<<" "<<c.top()<<std::endl;
     return 0;
 }
