@@ -16,7 +16,7 @@ template <typename T> class Node {
         Node() : Node(nullptr) {};
         ~Node() {};
 
-        Node & operator=(Node & other) {
+        Node & operator=(const Node & other) {
             elem = other.elem;
             back = other.back;
             fwd = other.fwd;
@@ -24,13 +24,13 @@ template <typename T> class Node {
             return *this;
         }
 
-        Node & operator=(Node && other) {
-            elem = other.elem;
-            back = other.back;
-            fwd = other.fwd;
-        std::cout<<"the move is invoked"<<std::endl;
-            return *this;
-        }
+        // Node & operator=(Node && other) {
+        //     elem = other.elem;
+        //     back = other.back;
+        //     fwd = other.fwd;
+        // std::cout<<"the move is invoked"<<std::endl;
+        //     return *this;
+        // }
 };
 
 template<typename T> class Stack {
@@ -59,9 +59,25 @@ template<typename T> class Stack {
             head = chunk;
             ++sizeOf;
         }
+
         void pop() {
-            head = *(head.back);
-            --sizeOf;
+            if (head.elem != nullptr) {
+                if (head.back != nullptr) {
+                    head = *(head.back);
+                } else {
+                    head = Node<value_type>();
+                }
+                --sizeOf;
+            }
+        }
+
+        void swap(Stack & other) {
+            size_type buff_size = sizeOf;
+            Node<value_type> buff_head = head;
+            sizeOf = other.sizeOf;
+            head = other.head;
+            other.sizeOf = buff_size;
+            other.head = buff_head;
         }
 
     private:
