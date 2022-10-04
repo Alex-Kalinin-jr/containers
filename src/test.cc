@@ -9,6 +9,10 @@ int main() {
     c.push(4);
     c.push(4);
     std::cout<<" "<<c.size()<<std::endl;
+    c.pop();
+    std::cout<<" "<<c.size()<<std::endl;
+    c.pop();
+    std::cout<<" "<<c.size()<<std::endl;
 
     return 0;
 }

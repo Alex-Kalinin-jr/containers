@@ -23,10 +23,17 @@ template <typename T> class Node {
         std::cout<<"the copy is invoked"<<std::endl;
             return *this;
         }
+
+        Node & operator=(Node && other) {
+            elem = other.elem;
+            back = other.back;
+            fwd = other.fwd;
+        std::cout<<"the move is invoked"<<std::endl;
+            return *this;
+        }
 };
 
-template<typename T>
-class Stack {
+template<typename T> class Stack {
     using value_type = T;
     using reference = T &;
     using const_reference = const T &;
@@ -51,6 +58,10 @@ class Stack {
             chunk.back = (&head == nullptr) ? nullptr : &head;
             head = chunk;
             ++sizeOf;
+        }
+        void pop() {
+            head = *(head.back);
+            --sizeOf;
         }
 
     private:
