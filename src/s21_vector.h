@@ -44,7 +44,7 @@ public:
   
   vector(const vector &v) : size_(v.size_), capacity_(v.capacity_) {
     data_ = new T[size_];
-    for (size_type i = 0; i < size; ++i)
+    for (size_type i = 0; i < size_; ++i)
     data_[i] = v.data_[i];
   }
 
