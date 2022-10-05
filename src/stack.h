@@ -1,5 +1,14 @@
 #include <iostream>
 
+// template <typename T> class allocator {
+//     using value_type = T;
+//     using reference = T &;
+//     using const_reference = const T &;
+//     using size_type = size_t;
+
+//     public
+// };
+
 template <typename T> class Node {
     using value_type = T;
     using reference = T &;
@@ -12,15 +21,18 @@ template <typename T> class Node {
         Node * fwd;
 
         Node(const value_type  * elem) : elem(elem), back(nullptr), fwd(nullptr) {};
-        Node(const_reference data) : Node (nullptr) { elem = &data; };
-        Node() : Node(nullptr) {};
+        Node(const_reference data) { elem = &data; };
+        Node() {
+            elem = nullptr;
+            back = nullptr;
+            fwd = nullptr;
+        };
         ~Node() {};
 
         Node & operator=(const Node & other) {
             elem = other.elem;
             back = other.back;
             fwd = other.fwd;
-        std::cout<<"the copy is invoked"<<std::endl;
             return *this;
         }
 
@@ -28,36 +40,31 @@ template <typename T> class Node {
             elem = other.elem;
             back = other.back;
             fwd = other.fwd;
-        std::cout<<"the move is invoked"<<std::endl;
             return *this;
         }
 };
 
-template<typename T> class Stark {
+template<typename T> class Stack {
     using value_type = T;
     using reference = T &;
     using const_reference = const T &;
     using size_type = size_t;
 
     public:
-        Stark() {
-            std::cout<<"is invoked 1"<<std::endl;
-            sizeOf = 0;
-            head = Node<value_type>();
-        };
+        Stack() : sizeOf(0) {};
 
-        Stark(const Stark &s) {
+        Stack(const Stack &s) {
             std::cout<<"is invoked 2"<<std::endl;
             head = s.head;
             sizeOf = s.sizeOf;
         }
 
-        Stark(Stark &&s) {
+        Stack(Stack &&s) {
             head = s.head;
             sizeOf = s.sizeOf;
         }
 
-        Stark(std::initializer_list<value_type> buff) {
+        Stack(std::initializer_list<value_type> buff) {
             for (const value_type * start = buff.begin(); start != buff.end(); ++start) {
                 Node<value_type> node(start);
                 node.back = (start == buff.begin()) ? nullptr : &head;
@@ -66,9 +73,9 @@ template<typename T> class Stark {
             }
         }
 
-        ~Stark<T>() {};
+        ~Stack<T>() {};
 
-        Stark & operator=(Stark &&s) {
+        Stack & operator=(Stack &&s) {
             head = s.head;
             sizeOf = s.sizeOf;
             return *this;
@@ -98,7 +105,7 @@ template<typename T> class Stark {
             }
         }
 
-        void swap(Stark & other) {
+        void swap(Stack & other) {
             size_type buff_size = sizeOf;
             Node<value_type> buff_head = head;
             sizeOf = other.sizeOf;
@@ -108,8 +115,8 @@ template<typename T> class Stark {
         }
 
 
-    private:
         Node<value_type> head;
+    private:
         size_type sizeOf;
 };
 
