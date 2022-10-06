@@ -1,14 +1,5 @@
 #include <iostream>
 
-// template <typename T> class allocator {
-//     using value_type = T;
-//     using reference = T &;
-//     using const_reference = const T &;
-//     using size_type = size_t;
-
-//     public
-// };
-
 template <typename T> class Node {
     using value_type = T;
     using reference = T &;
@@ -52,27 +43,13 @@ template<typename T> class Stack {
 
     public:
         Stack() : sizeOf(0) {};
-
-        Stack(const Stack &s) {
-            std::cout<<"is invoked 2"<<std::endl;
-            head = s.head;
-            sizeOf = s.sizeOf;
-        }
-
-        Stack(Stack &&s) {
-            head = s.head;
-            sizeOf = s.sizeOf;
-        }
-
+        Stack(const Stack &s) : head(s.head), sizeOf(s.sizeOf) {};
+        Stack(Stack &&s) : head(s.head), sizeOf(s.sizeOf) {};
         Stack(std::initializer_list<value_type> buff) {
             for (const value_type * start = buff.begin(); start != buff.end(); ++start) {
-                Node<value_type> node(start);
-                node.back = (start == buff.begin()) ? nullptr : &head;
-                head = node;
-                ++sizeOf;
+                push(*start);
             }
         }
-
         ~Stack<T>() {};
 
         Stack & operator=(Stack &&s) {
@@ -81,42 +58,50 @@ template<typename T> class Stack {
             return *this;
         }
 
-        const_reference top() {return *(head.elem);}
+        Stack & operator=(Stack &s) {
+            head = s.head;
+            sizeOf = s.sizeOf;
+            return *this;
+        }
 
-        bool empty() { return (&head == nullptr); }
+        const_reference top() {
+            if (!head) throw std::out_of_range("stack::top() - the stack is empty");
+            return *(head->elem);
+        }
+
+        bool empty() { return (head) ? false : true; }
 
         size_type size() { return sizeOf; }
 
         void push(const_reference value) {
-            Node<value_type> chunk(value);
-            chunk.back = (&head == nullptr) ? nullptr : &head;
+            Node<value_type> * chunk = new Node<value_type>(value);
+            chunk->back = (head == nullptr) ? nullptr : head;
             head = chunk;
             ++sizeOf;
         }
 
         void pop() {
-            if (head.elem != nullptr) {
-                if (head.back != nullptr) {
-                    head = *(head.back);
-                } else {
-                    head = Node<value_type>();
-                }
+            if (head != nullptr) {
+                Node<value_type> * buffNode = head;
+                head = (head->back != nullptr) ? head->back : head;
+                delete buffNode;
                 --sizeOf;
             }
         }
 
         void swap(Stack & other) {
-            size_type buff_size = sizeOf;
-            Node<value_type> buff_head = head;
-            sizeOf = other.sizeOf;
-            head = other.head;
-            other.sizeOf = buff_size;
-            other.head = buff_head;
+            if (this != other) {
+                size_type buff_size = sizeOf;
+                Node<value_type> buff_head = head;
+                sizeOf = other.sizeOf;
+                head = other.head;
+                other.sizeOf = buff_size;
+                other.head = buff_head;
+            }
         }
 
 
-        Node<value_type> head;
     private:
+        Node<value_type> * head;
         size_type sizeOf;
 };
-
