@@ -1,29 +1,51 @@
-// #include <gtest>
+#include <gtest/gtest.h>
+
 #include "Stack.h"
 
-int main() {
-    // Stack<int> d {5, 4, 3, 1, 6};
-    Stack<int> d({5, 3, 2});
-    std::cout<<" "<<d.top()<<std::endl;
-    d.push(11);
-    float k = 15.4;
-    d.push(k);
-    std::cout<<" "<<d.top()<<std::endl;
-    d.pop();
-    std::cout<<" "<<d.top()<<std::endl;
-    d.pop();
-    std::cout<<" "<<d.top()<<std::endl;
-    d.pop();
-    std::cout<<" "<<d.top()<<std::endl;
-    d.pop();
-    std::cout<<" "<<d.top()<<std::endl;
-    // std::cout<<" "<<d.size()<<std::endl;
-    // std::cout<<" "<<d.head.back -> elem <<std::endl;
-    // std::cout<<" "<<d.head.back -> back -> elem <<std::endl;
-    // std::cout<<" "<<d.head.back -> back -> back -> elem <<std::endl;
-    // std::cout<<" "<<d.size()<<std::endl;
-    //     d.pop();
-    // std::cout<<" "<<d.size()<<std::endl;
-    // std::cout<<" "<<d.top()<<std::endl;
-    return 0;
+TEST(stack, init_1) {
+    s21_Stack<int> a;
+    s21_Stack<double> b;
+    s21_Stack<std::string> c;
+    ASSERT_EQ(sizeof(a), sizeof(b));
+    ASSERT_EQ(sizeof(a), sizeof(c));
+    ASSERT_EQ(sizeof(b), sizeof(c));
+}
+
+TEST(stack, init_2) {
+    s21_Stack<int> a {3, 4, 5, 6, 7, 8};
+    s21_Stack<double> b {1, 2};
+    s21_Stack<std::string> c {"abc", "def", ""};
+    ASSERT_EQ(sizeof(a), sizeof(b));
+    ASSERT_EQ(sizeof(a), sizeof(c));
+    ASSERT_EQ(sizeof(b), sizeof(c));
+}
+
+TEST(stack, init_3) {
+    s21_Stack<int> a {3, 4, 5, 6, 7, 8};
+    s21_Stack<int> b(a);
+    ASSERT_EQ(sizeof(a), sizeof(b));
+}
+
+TEST(stack, init_4) {
+    s21_Stack<int> a {3, 4, 5, 6, 7, 8};
+    s21_Stack<int> b = a;
+    ASSERT_EQ(sizeof(a), sizeof(b));
+}
+
+TEST(stack, init_5) {
+
+    s21_Stack<int> b = s21_Stack<int> {3, 4, 5, 6, 7, 8};
+    s21_Stack<int> a {3, 4, 5, 6, 7, 8};
+    s21_Node<int> c(5);
+    ASSERT_NE(sizeof(b), sizeof(c));
+    ASSERT_EQ(sizeof(b), sizeof(a));
+}
+
+#ifndef without_leaks
+
+#endif
+
+int main(int argc, char *argv[]) {
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 }
