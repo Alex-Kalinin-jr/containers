@@ -30,7 +30,8 @@ template<typename T> class s21_Stack {
         }
 
         s21_Stack & operator=(const s21_Stack &s) {
-            while (head != nullptr || sizeOf != 0) {
+            std::cout<<"copy blya"<<std::endl;
+            while (head != nullptr && sizeOf != 0) {
                 pop();
             }
             sizeOf = 0;
@@ -39,7 +40,6 @@ template<typename T> class s21_Stack {
                 value_type buffVal = chunk->get_elem();
                 push(buffVal);
                 chunk = chunk->get_back();
-                ++sizeOf;
             }
             return *this;
         }

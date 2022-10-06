@@ -4,7 +4,7 @@ GCOV= --coverage
 #our path
 ROAD=.
 #our file with main function
-TESTNAME=test.cc
+TESTNAME=test2.cc
 #our output binary file
 FILENAME=stack
 #our first file for compiling library. !!!ATTNTN!!! filename is libname
