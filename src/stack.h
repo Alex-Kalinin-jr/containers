@@ -8,15 +8,20 @@ template<typename T> class s21_Stack {
     using size_type = size_t;
 
     public:
-        s21_Stack() : sizeOf(0) {};
-        s21_Stack(const s21_Stack &s) : head(s.head), sizeOf(s.sizeOf) {};
+        s21_Stack() : head(nullptr), sizeOf(0) {};
+        s21_Stack(const s21_Stack &s) { *this = s;};
         s21_Stack(s21_Stack &&s) : head(s.head), sizeOf(s.sizeOf) {};
-        s21_Stack(std::initializer_list<value_type> buff) {
-            for (const value_type * start = buff.begin(); start != buff.end(); ++start) {
+        s21_Stack(std::initializer_list<value_type> buff) : s21_Stack() {
+            for (const value_type * start = buff.begin(); start < buff.end(); ++start) {
                 push(*start);
             }
         }
-        ~s21_Stack<T>() {};
+        ~s21_Stack<T>() {
+            std::cout<<"stack destr is invd"<<std::endl;
+            while (sizeOf > 0) {
+                pop();
+            }
+        };
 
         s21_Stack & operator=(s21_Stack &&s) {
             head = s.head;
@@ -24,14 +29,23 @@ template<typename T> class s21_Stack {
             return *this;
         }
 
-        s21_Stack & operator=(s21_Stack &s) {
-            head = s.head;
-            sizeOf = s.sizeOf;
+        s21_Stack & operator=(const s21_Stack &s) {
+            while (head != nullptr || sizeOf != 0) {
+                pop();
+            }
+            sizeOf = 0;
+            s21_Node<value_type> * chunk = s.head;
+            while (sizeOf < s.sizeOf) {
+                value_type buffVal = chunk->get_elem();
+                push(buffVal);
+                chunk = chunk->get_back();
+                ++sizeOf;
+            }
             return *this;
         }
 
         const_reference top() {
-            if (!head) throw std::out_of_range("s21_Stack::top() - the s21_Stack is empty");
+            if (!head || sizeOf == 0) throw std::out_of_range("s21_Stack::top() - the s21_Stack is empty");
             return *(head->elem);
         }
 
@@ -49,7 +63,7 @@ template<typename T> class s21_Stack {
         void pop() {
             if (head != nullptr) {
                 s21_Node<value_type> * buffNode = head;
-                head = (head->back != nullptr) ? head->back : head;
+                head = (head->get_back() != nullptr) ? head->get_back() : head;
                 delete buffNode;
                 --sizeOf;
             }
