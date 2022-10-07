@@ -115,6 +115,56 @@ TEST(stack, size5) {
     ASSERT_EQ(c.size(), 0);
 }
 
+TEST(stack, push1) {
+    s21_Stack<int> c;
+    c.push(34);
+    ASSERT_EQ(c.size(), 1);
+    ASSERT_EQ(c.top(), 34);
+}
+
+TEST(stack, push2) {
+    s21_Stack<int> c(s21_Stack<int> {3, 4, 6, 7, 8, 14});
+    c.push(34);
+    ASSERT_EQ(c.size(), 7);
+    ASSERT_EQ(c.top(), 34);
+    c.pop();
+    ASSERT_EQ(c.size(), 6);
+    ASSERT_EQ(c.top(), 14);
+}
+
+TEST(stack, push3) {
+    s21_Stack<int> c(s21_Stack<int> {3});
+    c.pop();
+    c.push(34);
+    c.push(35);
+    c.push(36);
+    ASSERT_EQ(c.size(), 3);
+    ASSERT_EQ(c.top(), 36);
+    c.pop();
+    c.pop();
+    ASSERT_EQ(c.size(), 1);
+    ASSERT_EQ(c.top(), 34);
+}
+
+
+TEST(stack, runtime1) {
+    s21_Stack<int> c;
+    int d = 0;
+    while (++d != 100000000) c.push(d);
+    ASSERT_EQ(c.size(), 99999999);
+    ASSERT_EQ(c.top(), 100000000);
+}
+
+TEST(stack, runtime2) {
+    s21_Stack<int> c;
+    int d = 0;
+    while (++d != 100000000) c.push(d);
+    ASSERT_EQ(c.size(), 99999999);
+    ASSERT_EQ(c.top(), 100000000);
+    while (--d != 0) c.pop();
+    ASSERT_EQ(c.size(), 0);
+}
+
 int main(int argc, char *argv[]) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();

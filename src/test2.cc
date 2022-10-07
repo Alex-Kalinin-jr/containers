@@ -2,7 +2,11 @@
 
 int main() {
     s21_Stack<int> c;
-    s21_Stack<int> d = c;
+    int d = 0;
+    while (d != 2) {
+        c.push(d);
+        ++d;
+    }
     std::cout<<" "<<std::endl;
     return 0;
 }

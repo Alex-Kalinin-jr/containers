@@ -1,6 +1,14 @@
 #include <iostream>
 #include "node.h"
 
+/* remember that stack is an method to organize data ordering,
+therefore it stores and handles the order of elements, not the elements themselves/
+If you put a VAR into stack and then change this VAR
+somwhere else, it is changed in stack too.
+For exmpl, when you try
+    int d = 0;
+    while (++d < 1000) stack.push(d)
+the last 1000 elements are all the "d" and are all equal to 1000*/
 template<typename T> class s21_Stack {
     using value_type = T;
     using reference = T &;
