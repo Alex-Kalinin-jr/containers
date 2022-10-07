@@ -6,7 +6,7 @@
       "type": "lldb",
       "request": "launch",
       "cwd": "/Users/cursebow/projects/containers/src",
-      "program": "${workspaceFolder}/stack",
+      "program": "${workspaceFolder}/queue",
       "args": [],
     }
   ]

@@ -1,12 +1,9 @@
-#include "Stack.h"
+#include "queue.h"
 
 int main() {
-    s21_Stack<int> c;
-    int d = 0;
-    while (d != 2) {
-        c.push(d);
-        ++d;
-    }
-    std::cout<<" "<<std::endl;
+    s21_Queue<int> c(s21_Queue<int> {3});
+    c.pop();
+    c.pop();
+    c.push(34);
     return 0;
 }

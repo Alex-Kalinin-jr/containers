@@ -4,11 +4,11 @@ GCOV= --coverage
 #our path
 ROAD=.
 #our file with main function
-TESTNAME=test.cc
+TESTNAME=test_queue.cc
 #our output binary file
-FILENAME=stack
+FILENAME=queue
 #our first file for compiling library. !!!ATTNTN!!! filename is libname
-FILE1=test
+FILE1=test_queue
 
 CHECKFLAGS=-fprofile-arcs -ftest-coverage
 
