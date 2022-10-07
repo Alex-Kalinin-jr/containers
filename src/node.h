@@ -12,12 +12,9 @@ template <typename T> class s21_Node {
 
         s21_Node(const value_type  * elem) : elem(elem), back(nullptr), fwd(nullptr) {};
         s21_Node(const_reference data) { elem = &data;};
-        s21_Node() {
-            elem = nullptr;
-            back = nullptr;
-            fwd = nullptr;
-        };
-        ~s21_Node() {std::cout<<" node destr is invokd"<<std::endl;};
+        s21_Node(s21_Node &other) {*this = other;};
+        s21_Node() : s21_Node(nullptr) {};
+        ~s21_Node() {};
 
         s21_Node & operator=(const s21_Node & other) {
             elem = other.elem;
