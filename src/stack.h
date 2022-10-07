@@ -1,3 +1,5 @@
+#ifndef _CONTAINERS_SRC_S21_STACK_
+#define _CONTAINERS_SRC_S21_STACK_
 #include <iostream>
 #include "node.h"
 
@@ -75,16 +77,16 @@ template<typename T> class s21_Stack {
         void pop() {
             if (head != nullptr) {
                 s21_Node<value_type> * buffNode = head;
-                head = head->get_back();
+                head = head->back;
                 delete buffNode;
                 --sizeOf;
             }
         }
 
         void swap(s21_Stack & other) {
-            if (this != other) {
+            if (this != &other) {
                 size_type buff_size = sizeOf;
-                s21_Node<value_type> buff_head = head;
+                s21_Node<value_type> * buff_head = head;
                 sizeOf = other.sizeOf;
                 head = other.head;
                 other.sizeOf = buff_size;
@@ -96,3 +98,5 @@ template<typename T> class s21_Stack {
         s21_Node<value_type> * head;
         size_type sizeOf;
 };
+
+#endif  // _CONTAINERS_SRC_S21_STACK_

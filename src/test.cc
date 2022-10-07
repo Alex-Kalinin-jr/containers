@@ -150,19 +150,37 @@ TEST(stack, push3) {
 TEST(stack, runtime1) {
     s21_Stack<int> c;
     int d = 0;
-    while (++d != 100000000) c.push(d);
-    ASSERT_EQ(c.size(), 99999999);
-    ASSERT_EQ(c.top(), 100000000);
+    while (++d != 10000000) c.push(d);
+    ASSERT_EQ(c.size(), 9999999);
+    ASSERT_EQ(c.top(), 10000000);
 }
 
 TEST(stack, runtime2) {
     s21_Stack<int> c;
     int d = 0;
-    while (++d != 100000000) c.push(d);
-    ASSERT_EQ(c.size(), 99999999);
-    ASSERT_EQ(c.top(), 100000000);
+    while (++d != 10000000) c.push(d);
+    ASSERT_EQ(c.size(), 9999999);
+    ASSERT_EQ(c.top(), 10000000);
     while (--d != 0) c.pop();
     ASSERT_EQ(c.size(), 0);
+}
+
+TEST(stack, swap1) {
+    s21_Stack<int> b = s21_Stack<int> {3, 4, 6, 7, 8, 14};
+    s21_Stack<int> d = s21_Stack<int> {3, 4, 6};
+    b.swap(d);
+    ASSERT_EQ(b.size(), 3);
+    ASSERT_EQ(d.size(), 6);
+}
+
+TEST(stack, swap2) {
+    s21_Stack<int> b = s21_Stack<int> {3, 4, 6, 7, 8, 14};
+    s21_Stack<int> d;
+    s21_Stack<int> e(d);
+    b.swap(e);
+    ASSERT_EQ(b.size(), 0);
+    ASSERT_EQ(e.size(), 6);
+    ASSERT_EQ(e.top(), 14);
 }
 
 int main(int argc, char *argv[]) {

@@ -1,5 +1,5 @@
-#ifndef _CONTAINERS_SRC_s21_Node_
-#define _CONTAINERS_SRC_s21_Node_
+#ifndef _CONTAINERS_SRC_S21_NODE_
+#define _CONTAINERS_SRC_S21_NODE_
 
 template <typename T> class s21_Node {
     using value_type = T;
@@ -7,8 +7,11 @@ template <typename T> class s21_Node {
     using const_reference = const T &;
     using size_type = size_t;
 
+    private:
+        const value_type * elem;
     public:
-
+        s21_Node * back;
+        s21_Node * fwd;
 
         s21_Node(const value_type  * elem) : elem(elem), back(nullptr), fwd(nullptr) {};
         s21_Node(const_reference data) { elem = &data;};
@@ -34,27 +37,7 @@ template <typename T> class s21_Node {
             return *elem;
         }
 
-        s21_Node * get_back() {
-            return back;
-        }
 
-        s21_Node * get_fwd() {
-            return fwd;
-        }
-
-        void set_back(s21_Node *val) {
-            back = val;
-        }
-
-        void set_fwd(s21_Node *val) {
-            fwd = val;
-        }
-
-
-        s21_Node * back;
-        s21_Node * fwd;
-    private:
-        const value_type * elem;
 };
 
-#endif  // _CONTAINERS_SRC_s21_Node_
+#endif  // _CONTAINERS_SRC_S21_NODE_
