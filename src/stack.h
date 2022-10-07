@@ -32,23 +32,25 @@ template<typename T> class s21_Stack {
             while (head != nullptr) {
                 pop();
             }
-            s21_Node<value_type> * chunk = new s21_Node(*(s.head));
-            head = chunk;
-            sizeOf++;
-            s21_Node<value_type> * iterator(head);
-            while (sizeOf < s.sizeOf) {
-                chunk = new s21_Node(*(chunk->back));
+            if (s.head != nullptr) {
+                s21_Node<value_type> * chunk = new s21_Node(*(s.head));
+                head = chunk;
                 sizeOf++;
-                iterator->back = chunk;
-                iterator = iterator->back;
+                s21_Node<value_type> * iterator(head);
+                while (sizeOf < s.sizeOf) {
+                    chunk = new s21_Node(*(chunk->back));
+                    sizeOf++;
+                    iterator->back = chunk;
+                    iterator = iterator->back;
 
+                }
             }
             return *this;
         }
 
         const_reference top() {
             if (!head || sizeOf == 0) throw std::out_of_range("s21_Stack::top() - the s21_Stack is empty");
-            return *(head->elem);
+            return head->get_elem();
         }
 
         bool empty() { return (head) ? false : true; }
