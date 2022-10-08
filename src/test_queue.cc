@@ -93,7 +93,7 @@ TEST(queue, empty2) {
     b.pop();
     ASSERT_FALSE(b.empty());
     b.pop();
-    // ASSERT_TRUE(b.empty()); //  wtf WTF WTF WTF WTF WTF WTF
+    ASSERT_TRUE(b.empty()); //  wtf WTF WTF WTF WTF WTF WTF
 }
 
 TEST(stack, size1) {
@@ -154,15 +154,16 @@ TEST(stack, push3) {
     s21_Queue<int> c;
     c.push(a);
     c.pop();  //  WTF WTF WTF WTF WTF WTF (if climb on 1 line)
-    // c.push(35);
-    // c.push(36);
-    // ASSERT_EQ(c.size(), 3);
-    // ASSERT_EQ(c.back(), 36);
-    // c.pop();
-    // c.pop();
-    // ASSERT_EQ(c.size(), 1);
-    // ASSERT_EQ(c.back(), 36);
-    // ASSERT_EQ(c.front(), 36);
+    c.push(35);
+    c.push(36);
+    c.push(37);
+    ASSERT_EQ(c.size(), 3);
+    ASSERT_EQ(c.back(), 37);
+    c.pop();
+    c.pop();
+    ASSERT_EQ(c.size(), 1);
+    ASSERT_EQ(c.back(), 37);
+    ASSERT_EQ(c.front(), 37);
 }
 
 TEST(stack, runtime1) {
