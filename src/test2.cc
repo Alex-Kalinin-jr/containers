@@ -2,10 +2,7 @@
 
 using kljd = const int &;
 
-void f(const int & b) {
-    const int * c = &b;
-
-}
+void f(const int &b) { const int *c = &b; }
 
 int main() {
     // s21_Queue<int> c(s21_Queue<int> {3});

@@ -11,13 +11,12 @@ endif
 
 CXX=g++
 CXXFLAGS=-Wall -Wextra -Werror -std=c++17 -g
-GCOV= --coverage
-CHECKFLAGS=-fprofile-arcs -ftest-coverage
+GCOV= --coverage -O0
 
 
 ROAD=.
 TESTNAME=test_main.cc
-FILENAME=queue
+FILENAME=containers
 
 
 FILE1=test_queue
@@ -31,12 +30,15 @@ test: $(FILE1).o $(FILE2).o
 	$(CXX) $(CXXFLAGS) $(TESTNAME) -L . $(LIBS) $(ALLFILES) -o $(ROAD)/$(FILENAME)
 	make run
 
-gcov_report: $(FILE1).a
-	g++ $(CHECKFLAGS) $(TESTNAME) -L . $(FILE1).cc $(LIBS) -o $(FILENAME)
-	./$(FILENAME)
-	lcov -t "s21_matrix" -o s21_matrix.info --include */src/*.cc -c -d .
-	genhtml -o report s21_matrix.info
-	gcov s21_matrix.info -f
+noleaks: $(FILE1).o $(FILE2).o
+	$(CXX) $(CXXFLAGS) $(TESTNAME) -L . -D without_leaks $(LIBS) $(ALLFILES) -o $(ROAD)/$(FILENAME)
+
+gcov_report: $(FILE1).o $(FILE2).o
+	$(CXX) $(GCOV) $(CXXFLAGS) $(TESTNAME) -L . $(LIBS) $(ALLFILES) -o $(ROAD)/$(FILENAME)
+	$(ROAD)/$(FILENAME)
+	lcov -t "$(FILENAME)" -o $(FILENAME).info --include */src/*.cc -c -d .
+	genhtml -o report $(FILENAME).info
+	gcov $(FILENAME).info -f
 	rm -rf *.gcda *.gcdo *.gcov *.gcno *.info *dSYM
 	$(OPEN) report/index.html
 
@@ -47,19 +49,13 @@ $(FILE1).o: $(FILE1).cc
 $(FILE2).o: $(FILE2).cc
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-
-
-
-
-
-
 run:
 	$(ROAD)/$(FILENAME)
 
 style:
-	clang-format -style="{BasedOnStyle: Google, IndentWidth: 4}" -i -n *.cc *.h
+	clang-format -style="{BasedOnStyle: Google, IndentWidth: 4}" -n *.cc *.h
 
-leaks: test_without_leaks
+leaks: noleaks
 	leaks -atExit -- $(ROAD)/$(FILENAME)
 
 clean:

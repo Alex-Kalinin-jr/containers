@@ -12,73 +12,60 @@ TEST(queue, init_1) {
 }
 
 TEST(queue, init_2) {
-    s21_Queue<int> a {3};
-    s21_Queue<double> b {1, 2};
-    s21_Queue<std::string> c {"abc", "def", ""};
+    s21_Queue<int> a{3};
+    s21_Queue<double> b{1, 2};
+    s21_Queue<std::string> c{"abc", "def", ""};
     ASSERT_EQ(sizeof(a), sizeof(b));
     ASSERT_EQ(sizeof(a), sizeof(c));
     ASSERT_EQ(sizeof(b), sizeof(c));
 }
 
 TEST(queue, init_3) {
-    s21_Queue<int> a {3, 4, 5, 6, 7, 8};
+    s21_Queue<int> a{3, 4, 5, 6, 7, 8};
     s21_Queue<int> b(a);
     ASSERT_EQ(sizeof(a), sizeof(b));
 }
 
 TEST(queue, init_4) {
-    s21_Queue<int> a {3, 4, 5, 6, 7, 8};
+    s21_Queue<int> a{3, 4, 5, 6, 7, 8};
     s21_Queue<int> b = a;
     ASSERT_EQ(sizeof(a), sizeof(b));
 }
 
 TEST(queue, init_5) {
-
-    s21_Queue<int> b = s21_Queue<int> {3, 4, 5, 6, 7, 8};
-    s21_Queue<int> a {3, 4, 5, 6, 7, 8};
+    s21_Queue<int> b = s21_Queue<int>{3, 4, 5, 6, 7, 8};
+    s21_Queue<int> a{3, 4, 5, 6, 7, 8};
     s21_Node<int> c(5);
     ASSERT_EQ(sizeof(b), sizeof(c));
     ASSERT_EQ(sizeof(b), sizeof(a));
 }
 
 TEST(queue, front1) {
-    s21_Queue<int> b = s21_Queue<int> {3, 4, 5, 6, 7, 8};
-    s21_Queue<int> a {3, 4, 5, 6, 7, 8};
+    s21_Queue<int> b = s21_Queue<int>{3, 4, 5, 6, 7, 8};
+    s21_Queue<int> a{3, 4, 5, 6, 7, 8};
     ASSERT_EQ(a.front(), b.front());
 }
 
 TEST(queue, front2) {
-    s21_Queue<int> b = s21_Queue<int> {3, 4, 5, 6, 7, 8};
+    s21_Queue<int> b = s21_Queue<int>{3, 4, 5, 6, 7, 8};
     s21_Queue<int> a{5};
     ASSERT_NE(a.front(), b.front());
 }
 
 TEST(queue, back1) {
-    s21_Queue<int> b = s21_Queue<int> {3, 4, 5, 6, 7, 8};
-    s21_Queue<int> a {3, 4, 5, 6, 7, 8};
+    s21_Queue<int> b = s21_Queue<int>{3, 4, 5, 6, 7, 8};
+    s21_Queue<int> a{3, 4, 5, 6, 7, 8};
     ASSERT_EQ(a.back(), b.back());
 }
 
 TEST(queue, back2) {
-    s21_Queue<int> b = s21_Queue<int> {3, 4, 5, 6, 7, 8};
+    s21_Queue<int> b = s21_Queue<int>{3, 4, 5, 6, 7, 8};
     s21_Queue<int> a{5};
     ASSERT_NE(a.back(), b.back());
 }
 
-#ifndef without_leaks
-TEST(queue, throw1) {
-    s21_Queue<int> a;
-    ASSERT_THROW(a.front(), std::out_of_range);
-}
-
-TEST(queue, throw2) {
-    s21_Queue<int> a;
-    ASSERT_THROW(a.back(), std::out_of_range);
-}
-#endif
-
 TEST(queue, empty1) {
-    s21_Queue<int> b = s21_Queue<int> {3, 4, 5, 6, 7, 8};
+    s21_Queue<int> b = s21_Queue<int>{3, 4, 5, 6, 7, 8};
     s21_Queue<int> a(b);
     ASSERT_FALSE(a.empty());
     s21_Queue<int> c;
@@ -88,16 +75,16 @@ TEST(queue, empty1) {
 }
 
 TEST(queue, empty2) {
-    s21_Queue<int> b = s21_Queue<int> {3, 4};
+    s21_Queue<int> b = s21_Queue<int>{3, 4};
     ASSERT_FALSE(b.empty());
     b.pop();
     ASSERT_FALSE(b.empty());
     b.pop();
-    ASSERT_TRUE(b.empty()); //  wtf WTF WTF WTF WTF WTF WTF
+    ASSERT_TRUE(b.empty());  //  wtf WTF WTF WTF WTF WTF WTF
 }
 
 TEST(queue, size1) {
-    s21_Queue<int> b = s21_Queue<int> {3, 4, 6, 7, 8, 14};
+    s21_Queue<int> b = s21_Queue<int>{3, 4, 6, 7, 8, 14};
     ASSERT_EQ(b.size(), 6);
     b.pop();
     ASSERT_EQ(b.size(), 5);
@@ -111,19 +98,19 @@ TEST(queue, size1) {
 }
 
 TEST(queue, size2) {
-    s21_Queue<int> b = s21_Queue<int> {3, 4, 6, 7, 8, 14};
+    s21_Queue<int> b = s21_Queue<int>{3, 4, 6, 7, 8, 14};
     s21_Queue<int> c = b;
     ASSERT_EQ(c.size(), 6);
 }
 
 TEST(queue, size3) {
-    s21_Queue<int> b = s21_Queue<int> {3, 4, 6, 7, 8, 14};
+    s21_Queue<int> b = s21_Queue<int>{3, 4, 6, 7, 8, 14};
     s21_Queue<int> c(b);
     ASSERT_EQ(c.size(), 6);
 }
 
 TEST(queue, size4) {
-    s21_Queue<int> c(s21_Queue<int> {3, 4, 6, 7, 8, 14});
+    s21_Queue<int> c(s21_Queue<int>{3, 4, 6, 7, 8, 14});
     ASSERT_EQ(c.size(), 6);
 }
 
@@ -140,7 +127,7 @@ TEST(queue, push1) {
 }
 
 TEST(queue, push2) {
-    s21_Queue<int> c(s21_Queue<int> {3, 4, 6, 7, 8, 14});
+    s21_Queue<int> c(s21_Queue<int>{3, 4, 6, 7, 8, 14});
     c.push(34);
     ASSERT_EQ(c.size(), 7);
     ASSERT_EQ(c.back(), 34);
@@ -185,15 +172,15 @@ TEST(queue, runtime2) {
 }
 
 TEST(queue, swap1) {
-    s21_Queue<int> b = s21_Queue<int> {3, 4, 6, 7, 8, 14};
-    s21_Queue<int> d = s21_Queue<int> {3, 4, 6};
+    s21_Queue<int> b = s21_Queue<int>{3, 4, 6, 7, 8, 14};
+    s21_Queue<int> d = s21_Queue<int>{3, 4, 6};
     b.swap(d);
     ASSERT_EQ(b.size(), 3);
     ASSERT_EQ(d.size(), 6);
 }
 
 TEST(queue, swap2) {
-    s21_Queue<int> b = s21_Queue<int> {3, 4, 6, 7, 8, 14};
+    s21_Queue<int> b = s21_Queue<int>{3, 4, 6, 7, 8, 14};
     s21_Queue<int> d;
     s21_Queue<int> e(d);
     b.swap(e);
