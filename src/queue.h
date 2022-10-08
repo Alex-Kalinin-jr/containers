@@ -16,6 +16,8 @@ template<typename T> class s21_Queue {
     using reference = T &;
     using const_reference = const T &;
     using size_type = size_t;
+    using node = s21_Node<value_type>;
+    using node_iterator = s21_Node<value_type> *;
 
     public:
         s21_Queue() : head(nullptr), tail(nullptr), sizeOf(0) {};
@@ -45,12 +47,12 @@ template<typename T> class s21_Queue {
             }
 
             if (s.head != nullptr) {
-                s21_Node<value_type> * chunk = new s21_Node<value_type>(*(s.head));
+                s21_Node<value_type> * chunk = new node(*(s.head));
                 head = chunk;
                 tail = chunk;
                 sizeOf++;
                 // HERE TO BE CAREFUL
-                s21_Node<value_type> * iterator(head);
+                node_iterator iterator(head);
                 while (sizeOf < s.sizeOf) {
                     chunk = new s21_Node<value_type>(*(chunk->back));
                     sizeOf++;
@@ -78,7 +80,7 @@ template<typename T> class s21_Queue {
         size_type size() { return sizeOf; }
 
         void push(const_reference value) {
-            s21_Node<value_type> * chunk = new s21_Node<value_type>(value);
+            node_iterator chunk = new s21_Node<value_type>(value);
             if (head == nullptr) {
                 head = chunk;
                 tail = chunk;
@@ -92,7 +94,7 @@ template<typename T> class s21_Queue {
 
         void pop() {
             if (head != nullptr) {
-                s21_Node<value_type> * buffNode = head;
+                node_iterator buffNode = head;
                 if (tail == head) tail = nullptr;
                 head = head->back;
                 delete buffNode;
@@ -103,8 +105,8 @@ template<typename T> class s21_Queue {
         void swap(s21_Queue & other) {
             if (this != &other) {
                 size_type buff_size = sizeOf;
-                s21_Node<value_type> * buff_head = head;
-                s21_Node<value_type> * buff_tail = tail;
+                node_iterator buff_head = head;
+                node_iterator buff_tail = tail;
                 sizeOf = other.sizeOf;
                 head = other.head;
                 tail = other.tail;
@@ -115,8 +117,8 @@ template<typename T> class s21_Queue {
         }
 
     private:
-        s21_Node<value_type> * head;
-        s21_Node<value_type> * tail;
+        node_iterator head;
+        node_iterator tail;
         size_type sizeOf;
 };
 

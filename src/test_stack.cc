@@ -183,7 +183,3 @@ TEST(stack, swap2) {
     ASSERT_EQ(e.top(), 14);
 }
 
-int main(int argc, char *argv[]) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}

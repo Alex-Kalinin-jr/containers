@@ -96,7 +96,7 @@ TEST(queue, empty2) {
     ASSERT_TRUE(b.empty()); //  wtf WTF WTF WTF WTF WTF WTF
 }
 
-TEST(stack, size1) {
+TEST(queue, size1) {
     s21_Queue<int> b = s21_Queue<int> {3, 4, 6, 7, 8, 14};
     ASSERT_EQ(b.size(), 6);
     b.pop();
@@ -110,36 +110,36 @@ TEST(stack, size1) {
     ASSERT_EQ(b.size(), 0);
 }
 
-TEST(stack, size2) {
+TEST(queue, size2) {
     s21_Queue<int> b = s21_Queue<int> {3, 4, 6, 7, 8, 14};
     s21_Queue<int> c = b;
     ASSERT_EQ(c.size(), 6);
 }
 
-TEST(stack, size3) {
+TEST(queue, size3) {
     s21_Queue<int> b = s21_Queue<int> {3, 4, 6, 7, 8, 14};
     s21_Queue<int> c(b);
     ASSERT_EQ(c.size(), 6);
 }
 
-TEST(stack, size4) {
+TEST(queue, size4) {
     s21_Queue<int> c(s21_Queue<int> {3, 4, 6, 7, 8, 14});
     ASSERT_EQ(c.size(), 6);
 }
 
-TEST(stack, size5) {
+TEST(queue, size5) {
     s21_Queue<int> c;
     ASSERT_EQ(c.size(), 0);
 }
 
-TEST(stack, push1) {
+TEST(queue, push1) {
     s21_Queue<int> c;
     c.push(34);
     ASSERT_EQ(c.size(), 1);
     ASSERT_EQ(c.back(), 34);
 }
 
-TEST(stack, push2) {
+TEST(queue, push2) {
     s21_Queue<int> c(s21_Queue<int> {3, 4, 6, 7, 8, 14});
     c.push(34);
     ASSERT_EQ(c.size(), 7);
@@ -149,7 +149,7 @@ TEST(stack, push2) {
     ASSERT_EQ(c.back(), 34);
 }
 
-TEST(stack, push3) {
+TEST(queue, push3) {
     int a = 3;
     s21_Queue<int> c;
     c.push(a);
@@ -166,7 +166,7 @@ TEST(stack, push3) {
     ASSERT_EQ(c.front(), 37);
 }
 
-TEST(stack, runtime1) {
+TEST(queue, runtime1) {
     s21_Queue<int> c;
     int d = 0;
     while (++d != 10000000) c.push(d);
@@ -174,7 +174,7 @@ TEST(stack, runtime1) {
     ASSERT_EQ(c.back(), 10000000);
 }
 
-TEST(stack, runtime2) {
+TEST(queue, runtime2) {
     s21_Queue<int> c;
     int d = 0;
     while (++d != 10000000) c.push(d);
@@ -184,7 +184,7 @@ TEST(stack, runtime2) {
     ASSERT_EQ(c.size(), 0);
 }
 
-TEST(stack, swap1) {
+TEST(queue, swap1) {
     s21_Queue<int> b = s21_Queue<int> {3, 4, 6, 7, 8, 14};
     s21_Queue<int> d = s21_Queue<int> {3, 4, 6};
     b.swap(d);
@@ -192,7 +192,7 @@ TEST(stack, swap1) {
     ASSERT_EQ(d.size(), 6);
 }
 
-TEST(stack, swap2) {
+TEST(queue, swap2) {
     s21_Queue<int> b = s21_Queue<int> {3, 4, 6, 7, 8, 14};
     s21_Queue<int> d;
     s21_Queue<int> e(d);
@@ -200,9 +200,4 @@ TEST(stack, swap2) {
     ASSERT_EQ(b.size(), 0);
     ASSERT_EQ(e.size(), 6);
     ASSERT_EQ(e.back(), 14);
-}
-
-int main(int argc, char *argv[]) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
 }

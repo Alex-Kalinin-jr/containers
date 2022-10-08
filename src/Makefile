@@ -1,17 +1,4 @@
-CC=g++
-FLAGS=-Wall -Wextra -Werror -std=c++17 -g
-GCOV= --coverage
-#our path
-ROAD=.
-#our file with main function
-TESTNAME=test_queue.cc
-#our output binary file
-FILENAME=queue
-#our first file for compiling library. !!!ATTNTN!!! filename is libname
-FILE1=test_queue
-
-CHECKFLAGS=-fprofile-arcs -ftest-coverage
-
+SHELL = /bin/sh
 OS=$(shell uname)
 ifeq ($(OS), Linux)
   LIBS=-lgtest -lrt -lm -lsubunit -lpthread
@@ -22,16 +9,26 @@ else
 endif
 
 
+CXX=g++
+CXXFLAGS=-Wall -Wextra -Werror -std=c++17 -g
+GCOV= --coverage
+CHECKFLAGS=-fprofile-arcs -ftest-coverage
+
+
+ROAD=.
+TESTNAME=test_main.cc
+FILENAME=queue
+
+
+FILE1=test_queue
+FILE2=test_stack
+ALLFILES=$(FILE1).o $(FILE2).o
 
 
 all: test test_without_leaks leaks clean gcov_report clean
 
-test: $(FILE1).a
-	$(CC) $(FLAGS) $(TESTNAME) -L . $(FILE1).a $(LIBS) -o $(ROAD)/$(FILENAME)
-	make run
-
-test_without_leaks: $(FILE1).a
-	$(CC) $(FLAGS) $(TESTNAME) -L . $(FILE1).a $(LIBS) -D without_leaks -o $(ROAD)/$(FILENAME)
+test: $(FILE1).o $(FILE2).o
+	$(CXX) $(CXXFLAGS) $(TESTNAME) -L . $(LIBS) $(ALLFILES) -o $(ROAD)/$(FILENAME)
 	make run
 
 gcov_report: $(FILE1).a
@@ -43,11 +40,18 @@ gcov_report: $(FILE1).a
 	rm -rf *.gcda *.gcdo *.gcov *.gcno *.info *dSYM
 	$(OPEN) report/index.html
 
-$(FILE1).a: $(FILE1).o
-	ar -rcs $(FILE1).a $(FILE1).o
 
 $(FILE1).o: $(FILE1).cc
-	$(CC) $(FLAGS) -c $(FILE1).cc  -o $(FILE1).o
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(FILE2).o: $(FILE2).cc
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+
+
+
+
+
 
 run:
 	$(ROAD)/$(FILENAME)

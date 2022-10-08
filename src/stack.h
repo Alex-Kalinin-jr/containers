@@ -15,7 +15,6 @@ template<typename T> class s21_Stack {
     using value_type = T;
     using reference = T &;
     using const_reference = const T &;
-    using iterator = T *;
     using size_type = size_t;
     using node = s21_Node<value_type>;
     using node_iterator = s21_Node<value_type> *;
