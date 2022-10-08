@@ -95,7 +95,7 @@ template<typename T> class s21_Stack {
         }
 
     private:
-        s21_Node<value_type> * head;
+        s21_Node<value_type> *head;
         size_type sizeOf;
 };
 
