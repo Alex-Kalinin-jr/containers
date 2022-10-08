@@ -15,8 +15,14 @@ template<typename T> class s21_Stack {
     using value_type = T;
     using reference = T &;
     using const_reference = const T &;
+    using iterator = T *;
     using size_type = size_t;
+    using node = s21_Node<value_type>;
+    using node_iterator = s21_Node<value_type> *;
 
+    private:
+        node_iterator head;
+        size_type sizeOf;
     public:
         s21_Stack() : head(nullptr), sizeOf(0) {};
         s21_Stack(const s21_Stack &s) : s21_Stack() { *this = s;};
@@ -43,10 +49,10 @@ template<typename T> class s21_Stack {
                 pop();
             }
             if (s.head != nullptr) {
-                s21_Node<value_type> * chunk = new s21_Node(*(s.head));
+                node_iterator chunk = new s21_Node(*(s.head));
                 head = chunk;
                 sizeOf++;
-                s21_Node<value_type> * iterator(head);
+                node_iterator iterator(head);
                 while (sizeOf < s.sizeOf) {
                     chunk = new s21_Node(*(chunk->back));
                     sizeOf++;
@@ -68,7 +74,7 @@ template<typename T> class s21_Stack {
         size_type size() { return sizeOf; }
 
         void push(const_reference value) {
-            s21_Node<value_type> * chunk = new s21_Node<value_type>(value);
+            node_iterator chunk = new node(value);
             chunk->back = head;
             head = chunk;
             ++sizeOf;
@@ -76,7 +82,7 @@ template<typename T> class s21_Stack {
 
         void pop() {
             if (head != nullptr) {
-                s21_Node<value_type> * buffNode = head;
+                node_iterator buffNode = head;
                 head = head->back;
                 delete buffNode;
                 --sizeOf;
@@ -86,17 +92,13 @@ template<typename T> class s21_Stack {
         void swap(s21_Stack & other) {
             if (this != &other) {
                 size_type buff_size = sizeOf;
-                s21_Node<value_type> * buff_head = head;
+                node_iterator buff_head = head;
                 sizeOf = other.sizeOf;
                 head = other.head;
                 other.sizeOf = buff_size;
                 other.head = buff_head;
             }
         }
-
-    private:
-        s21_Node<value_type> *head;
-        size_type sizeOf;
 };
 
 #endif  // _CONTAINERS_SRC_S21_STACK_
