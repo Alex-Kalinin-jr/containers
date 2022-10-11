@@ -19,6 +19,7 @@ class s21_Stack {
     using node = s21_Node<value_type>;
     using node_iterator = s21_Node<value_type> *;
 
+
    private:
     node_iterator head;
     size_type sizeOf;
