@@ -17,8 +17,8 @@ public:
         while (n-- > 0) {
             node_iterator buff = new node();
             buff->back = prev;
-            prev->next = buff;
-            prev = &buff;
+            prev->fwd = buff;
+            prev = buff;
         }
         end = prev;
     }
@@ -29,7 +29,10 @@ public:
             if (end) delete end;
             end = prev;
         }
+        delete end;
     }
+
+    size_type size() {return capacity;}
 
 private:
     node_iterator begin;

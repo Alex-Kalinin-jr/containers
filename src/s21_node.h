@@ -8,13 +8,14 @@ template <typename T> class s21_Node {
     using size_type = size_t;
 
    private:
-    const_reference elem;
+    value_type * elem;
 
    public:
     s21_Node *back;
     s21_Node *fwd;
-    explicit s21_Node(const_reference data) : elem(data), back(nullptr), fwd(nullptr){};
-    s21_Node(s21_Node &other)
+    explicit s21_Node(value_type * data) : elem(data), back(nullptr), fwd(nullptr){};
+    explicit s21_Node(const_reference data) : elem(&data), back(nullptr), fwd(nullptr){};
+    explicit s21_Node(s21_Node &other)
         : elem(other.elem), back(other.back), fwd(other.fwd){};
     explicit s21_Node() : s21_Node(nullptr){};
     ~s21_Node(){};
@@ -33,7 +34,7 @@ template <typename T> class s21_Node {
         return *this;
     }
 
-    const_reference get_elem() { return elem; }
+    const_reference get_elem() { return *elem; }
 };
 
 #endif  // _CONTAINERS_SRC_S21_NODE_
