@@ -2,7 +2,7 @@
 #define _CONTAINERS_SRC_S21_QUEUE_
 #include <iostream>
 
-#include "node.h"
+#include "s21_node.h"
 
 /* remember that queue is an method to organize data ordering,
 therefore it stores and handles the order of elements, not the elements

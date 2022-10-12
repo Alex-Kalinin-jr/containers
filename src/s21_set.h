@@ -50,7 +50,7 @@ template <class T> class SetIterator {
       }
     } else {
       if (node->parent != nullptr && node->parent->right == node) {
-        while (node->parent != nullptr && node->parent->left != node) {
+        while (node->parent != nullptr && node->parent->right == node) {
           node = node->parent;
         }
       }

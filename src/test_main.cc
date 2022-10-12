@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "node.h"
-#include "queue.h"
-#include "stack.h"
+#include "s21_node.h"
+#include "s21_queue.h"
+#include "s21_stack.h"
 
 #ifndef without_leaks
 TEST(queue, throw1) {

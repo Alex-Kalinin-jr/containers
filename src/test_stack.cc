@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Stack.h"
+#include "s21_stack.h"
 
 TEST(stack, init_1) {
     s21_Stack<int> a;

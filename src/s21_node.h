@@ -9,10 +9,10 @@ template <typename T> class s21_Node {
 
    private:
     const_reference elem;
-    s21_Node *back;
-    s21_Node *fwd;
 
    public:
+    s21_Node *back;
+    s21_Node *fwd;
     explicit s21_Node(const_reference data) : elem(data), back(nullptr), fwd(nullptr){};
     s21_Node(s21_Node &other)
         : elem(other.elem), back(other.back), fwd(other.fwd){};
