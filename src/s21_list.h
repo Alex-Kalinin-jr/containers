@@ -11,7 +11,7 @@ template<typename T> class s21_List {
 
 public:
     s21_List() : begin(0), end(0), capacity(0) {};
-    s21_List(size_type n) : capacity(n) {
+    s21_List(size_type n, ) : capacity(n) {
         node_iterator prev = new node();
         begin = prev;
         while (n-- > 0) {
@@ -33,10 +33,12 @@ public:
     }
 
     size_type size() {return capacity;}
+    bool empty() {return ((capacity == 0) && (begin == 0));}
 
 private:
     node_iterator begin;
     node_iterator end;
     size_type capacity;
+    size_type size;
 
 };

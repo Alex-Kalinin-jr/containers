@@ -4,7 +4,7 @@
 
 TEST(list, init_1) {
     s21_List<int> a;
-    ASSERT_TRUE(&a);
+    ASSERT_TRUE(a.empty());
 }
 
 TEST(list, init_2) {
