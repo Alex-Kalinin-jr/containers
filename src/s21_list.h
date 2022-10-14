@@ -62,25 +62,26 @@ public:
     }
 
     ~s21_List() {
+        if (begin != 0) {
             clear();
+        }
     }
 
     s21_List & operator=(s21_List &&other) {
-        if (*this != other) {
-            clear();
-            begin = other.begin;
-            end = other.end;
-            sizeOf = other.sizeOf;
-        }
+        clear();
+        begin = other.begin;
+        end = other.end;
+        sizeOf = other.sizeOf;
+        other.begin = 0;
+        other.end = 0;
+        other.sizeOf = 0;
         return *this;
     }
 
     s21_List & operator=(const s21_List &other) {
         if (this != &other) {
             clear();
-            begin = other.begin;
-            end = other.end;
-            sizeOf = other.sizeOf;
+            *this = s21_List(other);
         }
         return *this;
     }
@@ -89,14 +90,14 @@ public:
     bool empty() {return ((sizeOf == 0) && (begin == 0));}
 
     void clear() {
-        node_iterator prev;
-        while (end) {
-            prev = end->back;
-            delete end;
-            end = prev;
-        }
-        begin = 0;
-        end = 0;
+            node_iterator prev;
+            while (end) {
+                prev = end->back;
+                if (end) delete end;
+                end = prev;
+            }
+            begin = 0;
+            end = 0;
     }
 
 private:

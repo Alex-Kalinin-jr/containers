@@ -65,13 +65,13 @@ TEST(list, copy) {
 //HERE IS A LEAK!!!!!!!!!!!
 //HERE IS A LEAK!!!!!!!!!!!
 
-// TEST(list, assignmnt) {
-//     s21_List<double> e{5, 4, 3, 2, 1};
-//     s21_List<double> f{5, 4, 3};
-//     e = f;
+TEST(list, assignmnt) {
+    s21_List<double> e{5, 4, 3, 2, 1};
+    s21_List<double> f{5, 4, 3};
+    e = f;
 
-//     ASSERT_EQ(e.size(), 3);
-// }
+    ASSERT_EQ(e.size(), 3);
+}
 
 int main(int argc, char *argv[]) {
     ::testing::InitGoogleTest(&argc, argv);
