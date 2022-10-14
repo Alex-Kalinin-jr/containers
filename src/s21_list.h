@@ -119,6 +119,7 @@ public:
         chunck->fwd = pos;
         pos.back = chunck;
         sizeOf++;
+        if (begin_ == pos) begin_ = chunck;
         return chunck;
     }
 
@@ -126,6 +127,7 @@ public:
         pos->back->fwd = pos->fwd;
         pos->fwd->back = pos->back;
         sizeOf--;
+        if (end_ == pos) end_ = pos->back;
         delete pos;
     }
 
