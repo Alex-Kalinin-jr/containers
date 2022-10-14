@@ -11,8 +11,8 @@ TEST(list, init_1) {
     s21_List<int> a;
     ASSERT_TRUE(a.empty());
 
-    // s21_List<int> b(5, 4);
-    // ASSERT_EQ(b.size(), 5);
+    s21_List<int> b(5, 4);
+    ASSERT_EQ(b.size(), 5);
 }
 
 TEST(list, init_2) {
@@ -54,24 +54,43 @@ TEST(list, copy) {
     ASSERT_EQ(g.size(), 3);
 }
 
-//HERE IS A LEAK!!!!!!!!!!!
-//HERE IS A LEAK!!!!!!!!!!!
-//HERE IS A LEAK!!!!!!!!!!!
-//HERE IS A LEAK!!!!!!!!!!!
-//HERE IS A LEAK!!!!!!!!!!!
-//HERE IS A LEAK!!!!!!!!!!!
-//HERE IS A LEAK!!!!!!!!!!!
-//HERE IS A LEAK!!!!!!!!!!!
-//HERE IS A LEAK!!!!!!!!!!!
-//HERE IS A LEAK!!!!!!!!!!!
-
 TEST(list, assignmnt) {
     s21_List<double> e{5, 4, 3, 2, 1};
     s21_List<double> f{5, 4, 3};
     e = f;
 
     ASSERT_EQ(e.size(), 3);
+    ASSERT_EQ(f.size(), 3);
 }
+
+TEST(list, front_back) {
+    s21_List<double> e{5, 4, 3, 2, 1};
+    ASSERT_EQ(e.front(), 5);
+    ASSERT_EQ(e.back(), 1);
+}
+
+TEST(list, front_back_2) {
+    s21_List<char> e{5, 4, 3, 2, 1};
+    s21_List<char> f = e;
+    ASSERT_EQ(f.front(), 5);
+    ASSERT_EQ(f.back(), 1);
+}
+
+TEST(list, front_back_3) {
+    s21_List<char> g{5, 4, 3, 2, 1};
+    s21_List<char> h(g);
+    ASSERT_EQ(h.front(), 5);
+    ASSERT_EQ(h.back(), 1);
+
+}
+
+// TEST(list, begin_end) {
+//     s21_List<char> g{5, 4, 3, 2, 1};
+//     s21_List<char> h(g);
+//     ASSERT_EQ(h.begin(), 5);
+//     ASSERT_EQ(h.end(), 1);
+
+// }
 
 int main(int argc, char *argv[]) {
     ::testing::InitGoogleTest(&argc, argv);
