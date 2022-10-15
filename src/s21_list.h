@@ -114,21 +114,45 @@ public:
 
     node_iterator insert(node_iterator pos, const_reference value) {
         node_iterator chunck = new node(value);
-        pos.back.fwd = chunck;
-        chunck->back = pos.back;
-        chunck->fwd = pos;
-        pos.back = chunck;
+        if (pos == nullptr) {
+            begin_ = chunck;
+            end_ = chunck;
+        } else if (pos == begin_) {
+            pos->back = chunck;
+            chunck->fwd = pos;
+            begin_ = chunck;
+        } else {
+            pos->back->fwd = chunck;
+            chunck->back = pos->back;
+            chunck->fwd = pos;
+            pos->back = chunck;
+        }
         sizeOf++;
-        if (begin_ == pos) begin_ = chunck;
         return chunck;
     }
 
     void erase(node_iterator pos) {
-        pos->back->fwd = pos->fwd;
-        pos->fwd->back = pos->back;
+        if (pos == nullptr) return;
+        if (pos == begin_) {
+            pos->fwd->back = nullptr;
+            begin_ = pos->fwd;
+        } else if (pos == end_) {
+            pos->back->fwd = nullptr;
+            end_ = pos -> back;
+        } else {
+            pos->back->fwd = pos->fwd;
+            pos->fwd->back = pos->back;
+        }
         sizeOf--;
-        if (end_ == pos) end_ = pos->back;
         delete pos;
+    }
+
+    void push_back(const_reference value) {
+        insert(end_, value);
+    }
+
+    void pop_back() {
+        erase(end_);
     }
 
 private:
