@@ -89,29 +89,45 @@ TEST(list, begin_end) {
     s21_List<char> h(g);
     node_iterator<char> a1(h.begin());
     node_iterator<char> a2(g.begin());
-    ASSERT_EQ(a1.node_iterator::get_elem().s21_Node::get_elem(), 5);
-    ASSERT_EQ(a2.node_iterator::get_elem().s21_Node::get_elem(), 5);
+    ASSERT_EQ(a1.node_iterator::get_elem()->s21_Node<char>::get_elem(), 5);
+    ASSERT_EQ(a2.node_iterator::get_elem()->s21_Node<char>::get_elem(), 5);
 
     a1 = h.end();
     a2 = g.end();
-    ASSERT_EQ(a1.node_iterator::get_elem().s21_Node::get_elem(), 1);
-    ASSERT_EQ(a2.node_iterator::get_elem().s21_Node::get_elem(), 1);
+    ASSERT_EQ(a1.node_iterator::get_elem()->s21_Node<char>::get_elem(), 1);
+    ASSERT_EQ(a2.node_iterator::get_elem()->s21_Node<char>::get_elem(), 1);
 }
 
-// TEST(list, insert) {
-//     s21_List<char> g{5, 4, 3, 2, 1};
-//     s21_Node<char> * a1 = g.begin();
-//     g.insert(a1, 35);
-//     g.insert(a1, 43);
-//     ASSERT_EQ(g.size(), 7);
+TEST(list, insert_1) {
+    s21_List<char> g{5, 4, 3, 2, 1};
+    node_iterator<char> a1;
+    a1 = g.begin();
+    ++a1;
+    a1++;
+    g.insert(a1, 35);
+    g.insert(a1, 43);
+    ASSERT_EQ(g.size(), 7);
 
-//     a1 = g.end();
-//     g.insert(a1,24);
-//     g.insert(a1,234);
-//     ASSERT_EQ(g.size(), 9);
+    a1 = g.end();
+    g.insert(a1,24);
+    g.insert(a1,234);
+    ASSERT_EQ(g.size(), 9);
+}
+TEST(list, insert_2) {
+    s21_List<char> g;
+    node_iterator<char> a1;
+    a1 = g.begin();
+    ++a1;
+    a1++;
+    // g.insert(a1, 35);
+    // g.insert(a1, 43);
+    // ASSERT_EQ(g.size(), 2);
 
-//     node_iterator<char> itr(g.begin());
-// }
+    // a1 = g.end();
+    // g.insert(a1,24);
+    // g.insert(a1,234);
+    // ASSERT_EQ(g.size(), 4);
+}
 
 // TEST(list, erase) {
 //     s21_List<char> g{5, 4, 3, 2, 1};

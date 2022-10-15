@@ -46,14 +46,26 @@ template <typename T> class node_iterator {
     using size_type = size_t;
     using node = s21_Node<value_type>;
     using node_ptr = s21_Node<value_type> *;
+    using node_iter = node_iterator<value_type> &;
 public:
     node_iterator() : elem_(nullptr) {};
-    explicit node_iterator(node &elem) : elem_(&elem) {};
-    explicit node_iterator(node &&elem) {*elem_ = elem;};
-    explicit node_iterator(node_ptr elem) : elem_(elem) {};
+    node_iterator(const node &elem) : elem_(&elem) {};
+    node_iterator(const node_iter &elem) : elem_(elem.elem_) {};
+    node_iterator(node_ptr elem) : elem_(elem) {};
+
     ~node_iterator() {};
-    void operator++() {elem_ = elem_->fwd;}
-    void operator--() {elem_ = elem_->back;}
+    void operator++() {if (elem_ != nullptr) elem_ = elem_->fwd;}
+    void operator--() {if (elem_ != nullptr) elem_ = elem_->back;}
+    node_iter operator++(int) {
+        node_iter buff(*this);
+        if (elem_ != nullptr) elem_ = elem_->fwd;
+        return buff;
+    }
+    node_iter operator--(int) {
+        node_iter buff(*this);
+        if (elem_ != nullptr) elem_ = elem_->back;
+        return buff;
+    }
     bool operator==(const node_iterator other) {return elem_ == other.elem;}
     bool operator!=(const node_iterator other) {return elem_ != other.elem;}
     node_iterator &operator=(const node_iterator &other) {
@@ -62,13 +74,14 @@ public:
     }
     node_iterator &operator=(node_iterator &&other) {
         elem_ = other.elem;
+        other.elem = nullptr;
         return *this;
     }
     node_iterator &operator=(node_ptr other) {
         elem_ = other;
         return *this;
     }
-    node get_elem() {return *elem_;}
+    node_ptr get_elem() {return elem_;}
 protected:
     s21_Node<value_type> * elem_;
 };
