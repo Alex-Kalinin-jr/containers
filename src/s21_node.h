@@ -16,7 +16,6 @@ template <typename T> class s21_Node {
     explicit s21_Node(const_reference data) : elem(data), back(nullptr), fwd(nullptr){};
     s21_Node(s21_Node &other)
         : elem(other.elem), back(other.back), fwd(other.fwd){};
-    explicit s21_Node() : s21_Node(nullptr){};
     ~s21_Node(){};
 
     bool operator==(s21_Node<value_type> other) {return this = &other;}
