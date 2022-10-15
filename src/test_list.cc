@@ -130,7 +130,7 @@ TEST(list, erase) {
 
 }
 
-TEST(list, erase_popback) {
+TEST(list, back1) {
     s21_List<char> g{5, 4, 3, 2, 1};
     s21_List<char> g2(g);
     g.erase(g.end());
@@ -140,7 +140,7 @@ TEST(list, erase_popback) {
 
 }
 
-TEST(list, push_insert) {
+TEST(list, back2) {
     s21_List<char> g{5, 4, 3, 2, 1};
     s21_List<char> g2(g);
     g.insert(g.end(), 3);
@@ -149,6 +149,38 @@ TEST(list, push_insert) {
     ASSERT_EQ(g.size(), g2.size());
 
 }
+
+TEST(list, front1) {
+    s21_List<char> g{5, 4, 3, 2, 1};
+    s21_List<char> g2(g);
+    g.insert(g.begin(), 3);
+    g2.push_front(3);
+    ASSERT_EQ(g.size(), 6);
+    ASSERT_EQ(g.size(), g2.size());
+}
+
+TEST(list, front2) {
+    s21_List<char> g{5, 4, 3, 2, 1};
+    s21_List<char> g2(g);
+    g.erase(g.begin());
+    g2.pop_front();
+    ASSERT_EQ(g.size(), 4);
+    ASSERT_EQ(g.size(), g2.size());
+}
+
+TEST(list, front2) {
+    s21_List<char> g{5, 4, 3, 2, 1};
+    s21_List<char> g2(g);
+    g.erase(g.begin());
+    g2.pop_front();
+    ASSERT_EQ(g.size(), 4);
+    ASSERT_EQ(g.size(), g2.size());
+}
+
+
+
+
+
 
 int main(int argc, char *argv[]) {
     ::testing::InitGoogleTest(&argc, argv);

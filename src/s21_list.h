@@ -155,6 +155,14 @@ public:
         erase(end_);
     }
 
+    void push_front(const_reference value) {
+        insert(begin_, value);
+    }
+
+    void pop_front() {
+        erase(begin_);
+    }
+
 private:
     node_iterator begin_;
     node_iterator end_;
