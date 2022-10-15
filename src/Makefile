@@ -21,19 +21,20 @@ FILENAME=containers
 
 FILE1=test_queue
 FILE2=test_stack
-ALLFILES=$(FILE1).o $(FILE2).o
+FILE3=test_list
+ALLFILES=$(FILE1).o $(FILE2).o $(FILE3).o
 
 
 all: test test_without_leaks leaks clean gcov_report clean
 
-test: $(FILE1).o $(FILE2).o
+test: $(FILE1).o $(FILE2).o $(FILE3).o
 	$(CXX) $(CXXFLAGS) $(TESTNAME) -L . $(LIBS) $(ALLFILES) -o $(ROAD)/$(FILENAME)
 	make run
 
-noleaks: $(FILE1).o $(FILE2).o
+noleaks: $(FILE1).o $(FILE2).o $(FILE3).o
 	$(CXX) $(CXXFLAGS) $(TESTNAME) -L . -D without_leaks $(LIBS) $(ALLFILES) -o $(ROAD)/$(FILENAME)
 
-gcov_report: $(FILE1).o $(FILE2).o
+gcov_report: $(FILE1).o $(FILE2).o $(FILE3).o
 	$(CXX) $(GCOV) $(CXXFLAGS) $(TESTNAME) -L . $(LIBS) $(ALLFILES) -o $(ROAD)/$(FILENAME)
 	$(ROAD)/$(FILENAME)
 	lcov -t "$(FILENAME)" -o $(FILENAME).info --include */src/*.cc -c -d .
@@ -47,6 +48,9 @@ $(FILE1).o: $(FILE1).cc
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 $(FILE2).o: $(FILE2).cc
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(FILE3).o: $(FILE3).cc
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 run:

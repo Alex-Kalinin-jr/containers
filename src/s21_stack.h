@@ -17,11 +17,11 @@ class s21_Stack {
     using const_reference = const T &;
     using size_type = size_t;
     using node = s21_Node<value_type>;
-    using node_iterator = s21_Node<value_type> *;
+    using node_ptr = s21_Node<value_type> *;
 
 
    private:
-    node_iterator head;
+    node_ptr head;
     size_type sizeOf;
 
    public:
@@ -51,10 +51,10 @@ class s21_Stack {
             pop();
         }
         if (s.head != nullptr) {
-            node_iterator chunk = new s21_Node(*(s.head));
+            node_ptr chunk = new s21_Node(*(s.head));
             head = chunk;
             sizeOf++;
-            node_iterator iterator(head);
+            node_ptr iterator(head);
             while (sizeOf < s.sizeOf) {
                 chunk = new s21_Node(*(chunk->back));
                 sizeOf++;
@@ -77,7 +77,7 @@ class s21_Stack {
     size_type size() { return sizeOf; }
 
     void push(const_reference value) {
-        node_iterator chunk = new node(value);
+        node_ptr chunk = new node(value);
         chunk->back = head;
         head = chunk;
         ++sizeOf;
@@ -85,7 +85,7 @@ class s21_Stack {
 
     void pop() {
         if (head != nullptr) {
-            node_iterator buffNode = head;
+            node_ptr buffNode = head;
             head = head->back;
             delete buffNode;
             --sizeOf;
@@ -95,7 +95,7 @@ class s21_Stack {
     void swap(s21_Stack &other) {
         if (this != &other) {
             size_type buff_size = sizeOf;
-            node_iterator buff_head = head;
+            node_ptr buff_head = head;
             sizeOf = other.sizeOf;
             head = other.head;
             other.sizeOf = buff_size;

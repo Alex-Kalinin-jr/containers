@@ -1,9 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "s21_list.h"
-// namespace s21 {
-//     iterator =
-// }
+
 struct two_ints {
     int a;
     double b;
@@ -89,100 +87,95 @@ TEST(list, front_back_3) {
 TEST(list, begin_end) {
     s21_List<char> g{5, 4, 3, 2, 1};
     s21_List<char> h(g);
-    s21_Node<char> * a1 = h.begin();
-    s21_Node<char> * a2 = g.begin();
-    ASSERT_EQ(a1->get_elem(), 5);
-    ASSERT_EQ(a2->get_elem(), 5);
+    node_iterator<char> a1(h.begin());
+    node_iterator<char> a2(g.begin());
+    ASSERT_EQ(a1.node_iterator::get_elem().s21_Node::get_elem(), 5);
+    ASSERT_EQ(a2.node_iterator::get_elem().s21_Node::get_elem(), 5);
 
     a1 = h.end();
     a2 = g.end();
-    ASSERT_EQ(a1->get_elem(), 1);
-    ASSERT_EQ(a2->get_elem(), 1);
+    ASSERT_EQ(a1.node_iterator::get_elem().s21_Node::get_elem(), 1);
+    ASSERT_EQ(a2.node_iterator::get_elem().s21_Node::get_elem(), 1);
 }
 
-TEST(list, insert) {
-    s21_List<char> g{5, 4, 3, 2, 1};
-    s21_Node<char> * a1 = g.begin();
-    g.insert(a1, 35);
-    g.insert(a1, 43);
-    ASSERT_EQ(g.size(), 7);
+// TEST(list, insert) {
+//     s21_List<char> g{5, 4, 3, 2, 1};
+//     s21_Node<char> * a1 = g.begin();
+//     g.insert(a1, 35);
+//     g.insert(a1, 43);
+//     ASSERT_EQ(g.size(), 7);
 
-    a1 = g.end();
-    g.insert(a1,24);
-    g.insert(a1,234);
-    ASSERT_EQ(g.size(), 9);
+//     a1 = g.end();
+//     g.insert(a1,24);
+//     g.insert(a1,234);
+//     ASSERT_EQ(g.size(), 9);
 
-}
+//     node_iterator<char> itr(g.begin());
+// }
 
-TEST(list, erase) {
-    s21_List<char> g{5, 4, 3, 2, 1};
-    s21_Node<char> * a1 = g.begin();
-    g.erase(a1);
-    a1 = g.begin();
-    g.erase(a1);
-    ASSERT_EQ(g.size(), 3);
+// TEST(list, erase) {
+//     s21_List<char> g{5, 4, 3, 2, 1};
+//     s21_Node<char> * a1 = g.begin();
+//     g.erase(a1);
+//     a1 = g.begin();
+//     g.erase(a1);
+//     ASSERT_EQ(g.size(), 3);
 
-    a1 = g.end();
-    g.erase(a1);
-    a1 = g.end();
-    g.erase(a1);
-    ASSERT_EQ(g.size(), 1);
+//     a1 = g.end();
+//     g.erase(a1);
+//     a1 = g.end();
+//     g.erase(a1);
+//     ASSERT_EQ(g.size(), 1);
 
-}
+// }
 
-TEST(list, back1) {
-    s21_List<char> g{5, 4, 3, 2, 1};
-    s21_List<char> g2(g);
-    g.erase(g.end());
-    g2.pop_back();
-    ASSERT_EQ(g.size(), 4);
-    ASSERT_EQ(g.size(), g2.size());
+// TEST(list, back1) {
+//     s21_List<char> g{5, 4, 3, 2, 1};
+//     s21_List<char> g2(g);
+//     g.erase(g.end());
+//     g2.pop_back();
+//     ASSERT_EQ(g.size(), 4);
+//     ASSERT_EQ(g.size(), g2.size());
 
-}
+// }
 
-TEST(list, back2) {
-    s21_List<char> g{5, 4, 3, 2, 1};
-    s21_List<char> g2(g);
-    g.insert(g.end(), 3);
-    g2.push_back(3);
-    ASSERT_EQ(g.size(), 6);
-    ASSERT_EQ(g.size(), g2.size());
+// TEST(list, back2) {
+//     s21_List<char> g{5, 4, 3, 2, 1};
+//     s21_List<char> g2(g);
+//     g.insert(g.end(), 3);
+//     g2.push_back(3);
+//     ASSERT_EQ(g.size(), 6);
+//     ASSERT_EQ(g.size(), g2.size());
 
-}
+// }
 
-TEST(list, front1) {
-    s21_List<char> g{5, 4, 3, 2, 1};
-    s21_List<char> g2(g);
-    g.insert(g.begin(), 3);
-    g2.push_front(3);
-    ASSERT_EQ(g.size(), 6);
-    ASSERT_EQ(g.size(), g2.size());
-}
+// TEST(list, front1) {
+//     s21_List<char> g{5, 4, 3, 2, 1};
+//     s21_List<char> g2(g);
+//     g.insert(g.begin(), 3);
+//     g2.push_front(3);
+//     ASSERT_EQ(g.size(), 6);
+//     ASSERT_EQ(g.size(), g2.size());
+// }
 
-TEST(list, front2) {
-    s21_List<char> g{5, 4, 3, 2, 1};
-    s21_List<char> g2(g);
-    g.erase(g.begin());
-    g2.pop_front();
-    ASSERT_EQ(g.size(), 4);
-    ASSERT_EQ(g.size(), g2.size());
-}
+// TEST(list, front2) {
+//     s21_List<char> g{5, 4, 3, 2, 1};
+//     s21_List<char> g2(g);
+//     node_iterator<char> itr(g.begin());
+//     ++itr;
+//     ++itr;
 
-TEST(list, front2) {
-    s21_List<char> g{5, 4, 3, 2, 1};
-    s21_List<char> g2(g);
-    g.erase(g.begin());
-    g2.pop_front();
-    ASSERT_EQ(g.size(), 4);
-    ASSERT_EQ(g.size(), g2.size());
-}
+//     g.erase(g.begin());
+//     g2.pop_front();
+//     ASSERT_EQ(g.size(), 4);
+//     ASSERT_EQ(g.size(), g2.size());
+// }
 
-
-
-
-
-
-int main(int argc, char *argv[]) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}
+// TEST(list, front2) {
+//     s21_List<char> g{5, 4, 3, 2, 1};
+//     s21_List<char> g2(g);
+//     g.erase(g.begin());
+//     g2.pop_front();
+//     ASSERT_EQ(g.size(), 4);
+//     ASSERT_EQ(g.size(), g2.size());
+// }

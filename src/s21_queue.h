@@ -17,7 +17,7 @@ class s21_Queue {
     using const_reference = const T &;
     using size_type = size_t;
     using node = s21_Node<value_type>;
-    using node_iterator = s21_Node<value_type> *;
+    using node_ptr = s21_Node<value_type> *;
 
    public:
     s21_Queue() : head(nullptr), tail(nullptr), sizeOf(0){};
@@ -53,7 +53,7 @@ class s21_Queue {
             tail = chunk;
             sizeOf++;
             // HERE TO BE CAREFUL
-            node_iterator iterator(head);
+            node_ptr iterator(head);
             while (sizeOf < s.sizeOf) {
                 chunk = new s21_Node<value_type>(*(chunk->back));
                 sizeOf++;
@@ -84,7 +84,7 @@ class s21_Queue {
     size_type size() { return sizeOf; }
 
     void push(const_reference value) {
-        node_iterator chunk = new s21_Node<value_type>(value);
+        node_ptr chunk = new s21_Node<value_type>(value);
         if (head == nullptr) {
             head = chunk;
             tail = chunk;
@@ -98,7 +98,7 @@ class s21_Queue {
 
     void pop() {
         if (head != nullptr) {
-            node_iterator buffNode = head;
+            node_ptr buffNode = head;
             if (tail == head) tail = nullptr;
             head = head->back;
             delete buffNode;
@@ -109,8 +109,8 @@ class s21_Queue {
     void swap(s21_Queue &other) {
         if (this != &other) {
             size_type buff_size = sizeOf;
-            node_iterator buff_head = head;
-            node_iterator buff_tail = tail;
+            node_ptr buff_head = head;
+            node_ptr buff_tail = tail;
             sizeOf = other.sizeOf;
             head = other.head;
             tail = other.tail;
@@ -121,8 +121,8 @@ class s21_Queue {
     }
 
    private:
-    node_iterator head;
-    node_iterator tail;
+    node_ptr head;
+    node_ptr tail;
     size_type sizeOf;
 };
 
