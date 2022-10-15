@@ -1,3 +1,9 @@
+// what is better?
+// to save flexibility and implicit redefinition to have possibility of:
+// erase(ptr)::danger:: node can be of other container, i.e. stack and bad programming
+// will crash all the program
+// or to redefine classes node and iterator, to write "explicit" and to lose flexibility
+// but increase safety??????
 #include "s21_node.h"
 
 template<typename T> class s21_List {
@@ -62,7 +68,9 @@ public:
     }
 
     ~s21_List() {
+        if (begin_ != nullptr) {
             clear();
+        }
     }
 
     s21_List & operator=(s21_List &&other) {
@@ -89,9 +97,9 @@ public:
 
     void clear() {
             node_ptr prev;
-            while (end_) {
+            while (end_ != nullptr) {
                 prev = end_->back;
-                if (end_) delete end_;
+                if (end_!= nullptr) delete end_;
                 end_ = prev;
             }
             begin_ = nullptr;
@@ -136,38 +144,43 @@ public:
         return iter;
     }
 
-    // void erase(node_iter itr) {
-    //     node_ptr pos = itr->get_elem();
-    //     if (pos == nullptr) return;
-    //     if (pos == begin_) {
-    //         pos->fwd->back = nullptr;
-    //         begin_ = pos->fwd;
-    //     } else if (pos == end_) {
-    //         pos->back->fwd = nullptr;
-    //         end_ = pos -> back;
-    //     } else {
-    //         pos->back->fwd = pos->fwd;
-    //         pos->fwd->back = pos->back;
-    //     }
-    //     sizeOf--;
-    //     delete pos;
-    // }
+    void erase(node_iter itr) {
+        node_ptr pos = itr.get_elem();
+        if (pos == nullptr) return;
+        if (begin_ != end_) {
+            if (pos == begin_) {
+                pos->fwd->back = nullptr;
+                begin_ = pos->fwd;
+            } else if (pos == end_) {
+                pos->back->fwd = nullptr;
+                end_ = pos -> back;
+            } else {
+                pos->back->fwd = pos->fwd;
+                pos->fwd->back = pos->back;
+            }
+        } else {
+            begin_ = nullptr;
+            end_ = nullptr;
+        }
+        sizeOf--;
+        delete pos;
+    }
 
-    // void push_back(const_reference value) {
-    //     insert(end_, value);
-    // }
+    void push_back(const_reference value) {
+        insert(end_, value);
+    }
 
-    // void pop_back() {
-    //     erase(end_);
-    // }
+    void pop_back() {
+        erase(end_);
+    }
 
-    // void push_front(const_reference value) {
-    //     insert(begin_, value);
-    // }
+    void push_front(const_reference value) {
+        insert(begin_, value);
+    }
 
-    // void pop_front() {
-    //     erase(begin_);
-    // }
+    void pop_front() {
+        erase(begin_);
+    }
 
 private:
     node_ptr begin_;

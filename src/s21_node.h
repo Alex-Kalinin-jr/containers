@@ -39,6 +39,14 @@ template <typename T> class s21_Node {
 };
 
 
+
+
+
+
+
+
+
+
 template <typename T> class node_iterator {
     using value_type = T;
     using reference = T &;
@@ -66,7 +74,7 @@ public:
         if (elem_ != nullptr) elem_ = elem_->back;
         return buff;
     }
-    bool operator==(const node_iterator other) {return elem_ == other.elem;}
+    // bool operator==(const node_iterator other) {return elem_ == other.elem;}
     bool operator!=(const node_iterator other) {return elem_ != other.elem;}
     node_iterator &operator=(const node_iterator &other) {
         elem_ = other.elem;
