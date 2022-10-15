@@ -19,7 +19,7 @@ public:
     s21_List() : begin_(nullptr), end_(nullptr), sizeOf(0) {
         value_type zero;
         node_ptr endNode = new node(zero);
-        endNode->fwd = endNode;
+        end_ = endNode;
     };
     s21_List(size_type n, const_reference el) : sizeOf(n) {
         node_ptr prev = new node(el);
@@ -106,28 +106,91 @@ public:
     bool empty() {return ((sizeOf == 0) && (begin_ == nullptr));}
 
     void clear() {
-            node_ptr prev;
-            while (end_ != nullptr) {
-                prev = end_->back;
-                if (end_!= nullptr) delete end_;
-                end_ = prev;
+            node_ptr next;
+        if (begin_ != nullptr) {
+            while (begin_->fwd != end_) {
+                next = begin_->fwd;
+                delete begin_;
+                begin_ = next;
             }
             begin_ = nullptr;
-            end_ = nullptr;
+            end_->back = nullptr;
+        }
     }
 
     const_reference front() const {
         if (begin_ == nullptr) throw std::out_of_range("s21_list is empty: can not get an elem");
-        return begin_->get_elem();
+        return begin_->node::get_elem();
         }
 
     const_reference back() const {
         if (begin_ == nullptr) throw std::out_of_range("s21_list is empty: can not get an elem");
-        return end_->back->get_elem();
+        return end_->back->node::get_elem();
     }
 
     node_ptr begin() const {return begin_;}
     node_ptr end() const {return end_;}
+
+    bool empty() const {return begin_ == nullptr || sizeOf != 0;}
+    size_type size() {return sizeOf;}
+    size_type max_size() const {return size_type(-1);}
+
+    node_iter insert(node_iter iter, const_reference value) {
+        node_ptr pos = iter.node_iter::get_elem();
+        node_ptr chunck = new node(value);
+        if (begin_ == nullptr) {
+            begin_ = chunck;
+            chunck->fwd = end_;
+            end_->back = chunck;
+        } else if (pos == begin_) {
+            pos->back = chunck;
+            chunck->fwd = pos;
+            begin_ = chunck;
+        } else {
+            chunck->fwd = pos;
+            if (begin_ == nullptr) {
+                begin_ = chunck;
+                pos->back = chunck;
+            } else {
+                chunck->back = pos->back;
+                pos->back->fwd = chunck;
+                pos->back = chunck;
+            }
+        }
+        sizeOf++;
+        iter = chunck;
+        return iter;
+    }
+
+    void erase(node_iter itr) {
+        node_ptr pos = itr.get_elem();
+        if (pos == nullptr || pos == end_) return;
+        if (pos == begin_) {
+            pos->fwd->back = nullptr;
+            begin_ = (begin_->fwd == end_) ? nullptr : begin_ -> fwd;
+        } else {
+            pos->back->fwd = pos->fwd;
+            pos->fwd->back = pos->back;
+        }
+        sizeOf--;
+        delete pos;
+    }
+
+    void push_back(const_reference value) {
+        insert(end_, value);
+    }
+
+    void pop_back() {
+        erase(end_->back);
+    }
+
+    void push_front(const_reference value) {
+        insert(begin_, value);
+    }
+
+    void pop_front() {
+        erase(begin_);
+    }
 
 private:
     node_ptr begin_;
@@ -145,66 +208,7 @@ private:
 
 
 
-    // bool empty() const {return begin_ == nullptr || sizeOf != 0;}
-    // size_type size() {return sizeOf;}
-    // size_type max_size() const {return size_type(-1);}
 
-    // node_iter insert(node_iter iter, const_reference value) {
-    //     node_ptr pos = iter.node_iter::get_elem();
-    //     node_ptr chunck = new node(value);
-    //     if (pos == nullptr) {
-    //         begin_ = chunck;
-    //         end_ = chunck;
-    //     } else if (pos == begin_) {
-    //         pos->back = chunck;
-    //         chunck->fwd = pos;
-    //         begin_ = chunck;
-    //     } else {
-    //         pos->back->fwd = chunck;
-    //         chunck->back = pos->back;
-    //         chunck->fwd = pos;
-    //         pos->back = chunck;
-    //     }
-    //     sizeOf++;
-    //     iter = chunck;
-    //     return iter;
-    // }
 
-    // void erase(node_iter itr) {
-    //     node_ptr pos = itr.get_elem();
-    //     if (pos == nullptr) return;
-    //     if (begin_ != end_) {
-    //         if (pos == begin_) {
-    //             pos->fwd->back = nullptr;
-    //             begin_ = pos->fwd;
-    //         } else if (pos == end_) {
-    //             pos->back->fwd = nullptr;
-    //             end_ = pos -> back;
-    //         } else {
-    //             pos->back->fwd = pos->fwd;
-    //             pos->fwd->back = pos->back;
-    //         }
-    //     } else {
-    //         begin_ = nullptr;
-    //         end_ = nullptr;
-    //     }
-    //     sizeOf--;
-    //     delete pos;
-    // }
 
-    // void push_back(const_reference value) {
-    //     insert(end_, value);
-    // }
-
-    // void pop_back() {
-    //     erase(end_);
-    // }
-
-    // void push_front(const_reference value) {
-    //     insert(begin_, value);
-    // }
-
-    // void pop_front() {
-    //     erase(begin_);
-    // }
 
