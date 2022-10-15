@@ -74,15 +74,15 @@ public:
         if (elem_ != nullptr) elem_ = elem_->back;
         return buff;
     }
-    // bool operator==(const node_iterator other) {return elem_ == other.elem;}
+    bool operator==(const node_iterator other) {return elem_ == other.elem;}
     bool operator!=(const node_iterator other) {return elem_ != other.elem;}
     node_iterator &operator=(const node_iterator &other) {
         elem_ = other.elem;
         return *this;
     }
     node_iterator &operator=(node_iterator &&other) {
-        elem_ = other.elem;
-        other.elem = nullptr;
+        elem_ = other.elem_;
+        other.elem_ = nullptr;
         return *this;
     }
     node_iterator &operator=(node_ptr other) {

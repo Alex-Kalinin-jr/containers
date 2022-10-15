@@ -213,10 +213,41 @@ TEST(list, front3) {
 }
 
 TEST(list, main_add_del_test) {
-    struct two_ints a1 = {5, 4};
-    struct two_ints a1 = {5, 4};
-    struct two_ints a1 = {5, 4};
-    struct two_ints a1 = {5, 4};
-    ASSERT_EQ(g.size(), 4);
-    ASSERT_EQ(g.size(), g2.size());
+    std::string a1 = "{1, 1}";
+    std::string a2 = "{2, 2}";
+    std::string a3 = "{3, 3}";
+    std::string a4 = "{4, 4}";
+    std::string a5 = "{5, 5}";
+    s21_List<std::string> g;
+    node_iterator<std::string> itr(g.begin());
+    ASSERT_TRUE(g.empty());
+    itr = g.insert(itr, a1);
+    ASSERT_EQ(itr.node_iterator::get_elem()->s21_Node::get_elem(), a1);
+    node_iterator<std::string> itr2(g.begin());
+    ASSERT_EQ(itr.node_iterator::get_elem(), itr2.node_iterator::get_elem());
+    ASSERT_EQ(g.size(), 1);
+    // g.push_front(a2);
+    // ASSERT_EQ(g.size(), 2);
+    // g.push_back(a3);
+    // ASSERT_EQ(g.size(), 3);
+    // ASSERT_EQ(itr.node_iterator::get_elem(), itr2.node_iterator::get_elem());
+    // // ASSERT_EQ(itr.node_iterator::get_elem(), );
+    // --itr;
+    // ASSERT_NE(itr.node_iterator::get_elem(), itr2.node_iterator::get_elem());
+    // g.insert(itr2, a4);
+    // g.insert(itr2, a5);
+    // ASSERT_NE(itr.node_iterator::get_elem(), itr2.node_iterator::get_elem());
+    // --itr2;
+    // itr++;
+    // itr2--;
+    // ASSERT_EQ(itr.node_iterator::get_elem(), itr2.node_iterator::get_elem());
+    // ASSERT_EQ(g.size(), 5);
+    // ++itr2;
+    // ++itr2;
+    // node_iterator<std::string> itr3 = itr2++;
+    // ASSERT_NE(itr2.node_iterator::get_elem(), itr3.node_iterator::get_elem());
+    // ASSERT_NE(itr.node_iterator::get_elem(), itr3.node_iterator::get_elem());
+    // itr++;
+    // ++itr;
+    // ASSERT_EQ(itr.node_iterator::get_elem(), itr3.node_iterator::get_elem());
 }
