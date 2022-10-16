@@ -48,27 +48,26 @@ public:
             prev = buff;
             ++sizeOf;
         }
-        node_ptr endNode = new node(*prev);
-        endNode->back = prev;
-        endNode->fwd = nullptr;
-        prev->fwd = endNode;
-        end_ = endNode;
+        end_->back = prev;
+        prev->fwd = end_;
     }
 
-    s21_List(const s21_List &other) {
+    s21_List(const s21_List &other) : s21_List() {
         sizeOf = other.sizeOf;
         node_ptr iter = other.begin_;
         node_ptr prev = new node(*iter);
         begin_ = prev;
-        while (iter != other.end_) {
+        while (iter != other.end_->back) {
             iter = iter->fwd;
             node_ptr buff = new node(*iter);
             buff->back = prev;
             prev->fwd = buff;
             prev = buff;
         }
-        end_ = prev;
+        end_->back = prev;
+        prev->fwd = end_;
     }
+
     s21_List(s21_List &&other) {
         begin_ = other.begin_;
         end_ = other.end_;
@@ -85,6 +84,7 @@ public:
 
     s21_List & operator=(s21_List &&other) {
         clear();
+        delete end_;
         begin_ = other.begin_;
         end_ = other.end_;
         sizeOf = other.sizeOf;
