@@ -59,8 +59,8 @@ public:
     node_iterator(const node &elem) : elem_(&elem) {};
     node_iterator(const node_iter &elem) : elem_(elem.elem_) {};
     node_iterator(node_ptr elem) : elem_(elem) {};
-
     ~node_iterator() {};
+
     void operator++() {if (elem_ != nullptr) elem_ = elem_->fwd;}
     void operator--() {if (elem_ != nullptr) elem_ = elem_->back;}
     node_iter operator++(int) {
@@ -73,8 +73,8 @@ public:
         if (elem_ != nullptr) elem_ = elem_->back;
         return buff;
     }
-    bool operator==(const node_iterator other) {return elem_ == other.elem;}
-    bool operator!=(const node_iterator other) {return elem_ != other.elem;}
+    bool operator==(const node_iterator other) const {return elem_ == other.elem;}
+    bool operator!=(const node_iterator other) const {return elem_ != other.elem;}
     node_iterator &operator=(const node_iterator &other) {
         elem_ = other.elem;
         return *this;
@@ -88,7 +88,7 @@ public:
         elem_ = other;
         return *this;
     }
-    node_ptr get_elem() {return elem_;}
+    node_ptr get_elem() const {return elem_;}
 protected:
     s21_Node<value_type> * elem_;
 };

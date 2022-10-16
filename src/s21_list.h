@@ -35,6 +35,7 @@ public:
         prev->fwd = endNode;
         end_ = endNode;
     }
+
     s21_List(std::initializer_list<value_type> const &items) : s21_List() {
         auto el = items.begin();
         node_ptr prev = new node(*el);
@@ -53,6 +54,7 @@ public:
         prev->fwd = endNode;
         end_ = endNode;
     }
+
     s21_List(const s21_List &other) {
         sizeOf = other.sizeOf;
         node_ptr iter = other.begin_;
@@ -76,9 +78,8 @@ public:
         other.sizeOf = 0;
     }
     ~s21_List() {
-        if (begin_ != nullptr) {
-            clear();
-        }
+        clear();
+        delete end_;
     }
 
 
@@ -106,9 +107,9 @@ public:
     bool empty() {return ((sizeOf == 0) && (begin_ == nullptr));}
 
     void clear() {
-            node_ptr next;
+        node_ptr next;
         if (begin_ != nullptr) {
-            while (begin_->fwd != end_) {
+            while (begin_ != end_) {
                 next = begin_->fwd;
                 delete begin_;
                 begin_ = next;
@@ -192,12 +193,67 @@ public:
         erase(begin_);
     }
 
+    void swap(s21_List & other) {
+        if (this != &other) {
+            s21_List b(other);
+            other = *this;
+            *this = b;
+        }
+    }
+
+    // void merge(list& other)
+
+    void splice(const node_iter poshn, s21_List& other) {
+        if (other.begin_ == nullptr) return;
+        node_ptr pos = poshn.get_elem();
+        pos->back = other.end_->back;
+        other.end_->back->fwd = pos;
+        begin_ = other.begin_;
+        sizeOf += other.sizeOf;
+        delete other.end_;
+        other.end_ = nullptr;
+        other.begin_ = nullptr;
+        other.sizeOf = 0;
+    }
+
+    void reverse() {
+        if (begin_ == nullptr) return;
+        node_ptr buff;
+        node_ptr swapper = begin_;
+        while (begin_ != end_) {
+            buff = begin_->fwd;
+            begin_->fwd = begin_->back;
+            if (buff != end_) begin_->back = buff;
+            begin_ = buff;
+        }
+        swapper->fwd = end_;
+        begin_ = end_->back;
+        end_->back = swapper;
+    }
+
+    void unique() {
+        if (begin_ == nullptr) return;
+        node_ptr buff = begin_;
+        node_ptr for_del;
+        while(buff->fwd != end_) {
+            if (buff->fwd->node::get_elem() ==
+            buff->node::get_elem()) {
+                for_del = buff->fwd;
+                buff->fwd = for_del->fwd;
+                for_del->fwd->back = buff;
+                sizeOf--;
+                delete for_del;
+            } else {
+                buff = buff->fwd;
+            }
+        }
+    }
 private:
     node_ptr begin_;
     node_ptr end_;
     size_type sizeOf;
-
 };
+
 
 
 
