@@ -1,9 +1,3 @@
-// what is better?
-// to save flexibility and implicit redefinition to have possibility of:
-// erase(ptr)::danger:: node can be of other container, i.e. stack and bad programming
-// will crash all the program
-// or to redefine classes node and iterator, to write "explicit" and to lose flexibility
-// but increase safety??????
 #include "s21_node.h"
 
 template<typename T> class s21_List {
@@ -202,13 +196,13 @@ public:
     }
 
     void merge(s21_List& other) {
-        sizeOf += other.sizeOf;
         if (other.begin_ == nullptr) return;
         if (begin_ == nullptr) {
             *this = s21_List(other);
+            return;
         }
-        node_ptr buff = begin_, buff_2 = other.begin_;
-        node_ptr newList, chunck;
+        sizeOf += other.sizeOf;
+        node_ptr buff = begin_, buff_2 = other.begin_, newList, chunck;
         if (buff->node::get_elem() < buff_2->node::get_elem()) {
             newList = buff;
             buff = buff->fwd;
@@ -221,14 +215,12 @@ public:
             if (buff->node::get_elem() < buff_2->node::get_elem()) {
                 chunck = buff;
                 buff = buff->fwd;
-                chunck->back = newList;
-                newList->fwd = chunck;
             } else {
                 chunck = buff_2;
                 buff_2 = buff_2->fwd;
-                chunck->back = newList;
-                newList->fwd = chunck;
             }
+            chunck->back = newList;
+            newList->fwd = chunck;
             newList = newList->fwd;
         }
         if (buff == end_) {
@@ -293,12 +285,31 @@ public:
     }
 
     void sort() {
-        node_ptr lh = begin_;
-        node_ptr rh = end_->back;
-        while (lh != rh) {
-
+        if (begin_ == nullptr || end_->back == begin_) return;
+        node_ptr buff = begin_;
+        node_ptr chunck = begin_;
+        for (size_type i = 0; i < sizeOf - 2; ++i) {
+            for (size_type j = 0; j < sizeOf - i - 2; ++j) {
+                chunck = buff->fwd;
+                if (chunck->node::get_elem() < buff->node::get_elem()) {
+                    if (buff == begin_) {
+                        begin_ = buff->fwd;
+                    }
+                    if (buff->fwd == end_->back) {
+                        end_->back = buff;
+                    }
+                    chunck->back = buff->back;
+                    buff->back = chunck;
+                    buff->fwd = chunck->fwd;
+                    chunck->fwd = buff;
+                } else {
+                    buff = chunck;
+                }
+            }
+            buff = begin_;
         }
     }
+
 private:
     node_ptr begin_;
     node_ptr end_;

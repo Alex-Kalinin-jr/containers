@@ -34,12 +34,6 @@ template <typename T> class s21_Node {
         return *this;
     }
 
-    void swap(s21_Node &other) {
-        s21_Node buff = *this;
-        *this = other;
-        other = buff;
-    }
-
     const_reference get_elem() { return elem; }
 };
 

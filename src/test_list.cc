@@ -315,3 +315,12 @@ TEST(list, merge3) {
     ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), 8);
     ASSERT_EQ(a.size(), 6);
 }
+
+TEST(list, sort) {
+    s21_List<char> a{1, 6, 3};
+    a.sort();
+    node_iterator<char> itrA(a.end());
+    --itrA;
+    ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), 6);
+    ASSERT_EQ(a.size(), 3);
+}
