@@ -270,3 +270,48 @@ TEST(list, unique) {
     ASSERT_EQ(a.front(), 5);
     ASSERT_EQ(a.back(), 51);
 }
+
+TEST(list, merge) {
+    s21_List<char> a{1, 2, 3, 4};
+    s21_List<char> b{1, 3, 6};
+    a.merge(b);
+    ASSERT_EQ(a.size(), 7);
+    node_iterator<char> itrA(a.end());
+    itrA--;
+    ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), 6);
+    --itrA;
+    --itrA;
+    --itrA;
+    --itrA;
+    ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), 2);
+}
+
+TEST(list, merge2) {
+    s21_List<char> a;
+    s21_List<char> b{1, 3, 6};
+    a.merge(b);
+    ASSERT_EQ(a.size(), 3);
+    node_iterator<char> itrA(a.end());
+    itrA--;
+    ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), 6);
+    itrA = a.begin();
+    ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), 1);
+}
+
+TEST(list, merge3) {
+    s21_List<char> b;
+    s21_List<char> a{1, 3, 6};
+    s21_List<char> c{0, 2, 8};
+    a.merge(b);
+    ASSERT_EQ(a.size(), 3);
+    node_iterator<char> itrA(a.end());
+    itrA--;
+    ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), 6);
+    itrA = a.begin();
+    ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), 1);
+    a.merge(c);
+    itrA = a.end();
+    itrA--;
+    ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), 8);
+    ASSERT_EQ(a.size(), 6);
+}

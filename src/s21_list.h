@@ -201,7 +201,50 @@ public:
         }
     }
 
-    // void merge(list& other)
+    void merge(s21_List& other) {
+        sizeOf += other.sizeOf;
+        if (other.begin_ == nullptr) return;
+        if (begin_ == nullptr) {
+            *this = s21_List(other);
+        }
+        node_ptr buff = begin_, buff_2 = other.begin_;
+        node_ptr newList, chunck;
+        if (buff->node::get_elem() < buff_2->node::get_elem()) {
+            newList = buff;
+            buff = buff->fwd;
+        } else {
+            newList = buff_2;
+            buff_2 = buff_2->fwd;
+        }
+        begin_ = newList;
+        while (buff != end_ && buff_2 != other.end_) {
+            if (buff->node::get_elem() < buff_2->node::get_elem()) {
+                chunck = buff;
+                buff = buff->fwd;
+                chunck->back = newList;
+                newList->fwd = chunck;
+            } else {
+                chunck = buff_2;
+                buff_2 = buff_2->fwd;
+                chunck->back = newList;
+                newList->fwd = chunck;
+            }
+            newList = newList->fwd;
+        }
+        if (buff == end_) {
+            delete buff;
+            newList->fwd = buff_2;
+            buff_2->back = newList;
+            end_ = other.end_;
+            other.end_ = nullptr;
+        } else {
+            newList->fwd = buff;
+            buff->back = newList;
+            other.end_->back = nullptr;
+        }
+        other.begin_ = nullptr;
+        other.sizeOf = 0;
+    }
 
     void splice(const node_iter poshn, s21_List& other) {
         if (other.begin_ == nullptr) return;
@@ -246,6 +289,14 @@ public:
             } else {
                 buff = buff->fwd;
             }
+        }
+    }
+
+    void sort() {
+        node_ptr lh = begin_;
+        node_ptr rh = end_->back;
+        while (lh != rh) {
+
         }
     }
 private:
