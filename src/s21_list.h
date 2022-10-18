@@ -1,6 +1,7 @@
 #include "s21_node.h"
 
-template<typename T> class s21_List {
+template <typename T>
+class s21_List {
     using value_type = T;
     using reference = T &;
     using const_reference = const T &;
@@ -9,7 +10,7 @@ template<typename T> class s21_List {
     using node_ptr = s21_Node<value_type> *;
     using node_iter = node_iterator<value_type>;
 
-public:
+   public:
     s21_List() : begin_(nullptr), end_(nullptr), sizeOf(0) {
         value_type zero;
         node_ptr endNode = new node(zero);
@@ -75,8 +76,7 @@ public:
         delete end_;
     }
 
-
-    s21_List & operator=(s21_List &&other) {
+    s21_List &operator=(s21_List &&other) {
         clear();
         delete end_;
         begin_ = other.begin_;
@@ -88,7 +88,7 @@ public:
         return *this;
     }
 
-    s21_List & operator=(const s21_List &other) {
+    s21_List &operator=(const s21_List &other) {
         if (this != &other) {
             clear();
             *this = s21_List(other);
@@ -96,9 +96,9 @@ public:
         return *this;
     }
 
-    size_type size() const {return sizeOf;}
+    size_type size() const { return sizeOf; }
 
-    bool empty() {return ((sizeOf == 0) && (begin_ == nullptr));}
+    bool empty() { return ((sizeOf == 0) && (begin_ == nullptr)); }
 
     void clear() {
         node_ptr next;
@@ -114,21 +114,23 @@ public:
     }
 
     const_reference front() const {
-        if (begin_ == nullptr) throw std::out_of_range("s21_list is empty: can not get an elem");
+        if (begin_ == nullptr)
+            throw std::out_of_range("s21_list is empty: can not get an elem");
         return begin_->node::get_elem();
-        }
+    }
 
     const_reference back() const {
-        if (begin_ == nullptr) throw std::out_of_range("s21_list is empty: can not get an elem");
+        if (begin_ == nullptr)
+            throw std::out_of_range("s21_list is empty: can not get an elem");
         return end_->back->node::get_elem();
     }
 
-    node_ptr begin() const {return begin_;}
-    node_ptr end() const {return end_;}
+    node_ptr begin() const { return begin_; }
+    node_ptr end() const { return end_; }
 
-    bool empty() const {return begin_ == nullptr || sizeOf != 0;}
-    size_type size() {return sizeOf;}
-    size_type max_size() const {return size_type(-1);}
+    bool empty() const { return begin_ == nullptr || sizeOf != 0; }
+    size_type size() { return sizeOf; }
+    size_type max_size() const { return size_type(-1); }
 
     node_iter insert(node_iter iter, const_reference value) {
         node_ptr pos = iter.node_iter::get_elem();
@@ -162,7 +164,7 @@ public:
         if (pos == nullptr || pos == end_) return;
         if (pos == begin_) {
             pos->fwd->back = nullptr;
-            begin_ = (begin_->fwd == end_) ? nullptr : begin_ -> fwd;
+            begin_ = (begin_->fwd == end_) ? nullptr : begin_->fwd;
         } else {
             pos->back->fwd = pos->fwd;
             pos->fwd->back = pos->back;
@@ -171,23 +173,15 @@ public:
         delete pos;
     }
 
-    void push_back(const_reference value) {
-        insert(end_, value);
-    }
+    void push_back(const_reference value) { insert(end_, value); }
 
-    void pop_back() {
-        erase(end_->back);
-    }
+    void pop_back() { erase(end_->back); }
 
-    void push_front(const_reference value) {
-        insert(begin_, value);
-    }
+    void push_front(const_reference value) { insert(begin_, value); }
 
-    void pop_front() {
-        erase(begin_);
-    }
+    void pop_front() { erase(begin_); }
 
-    void swap(s21_List & other) {
+    void swap(s21_List &other) {
         if (this != &other) {
             s21_List b(other);
             other = *this;
@@ -195,7 +189,7 @@ public:
         }
     }
 
-    void merge(s21_List& other) {
+    void merge(s21_List &other) {
         if (other.begin_ == nullptr) return;
         if (begin_ == nullptr) {
             *this = s21_List(other);
@@ -238,7 +232,7 @@ public:
         other.sizeOf = 0;
     }
 
-    void splice(const node_iter poshn, s21_List& other) {
+    void splice(const node_iter poshn, s21_List &other) {
         if (other.begin_ == nullptr) return;
         node_ptr pos = poshn.get_elem();
         pos->back = other.end_->back;
@@ -270,9 +264,8 @@ public:
         if (begin_ == nullptr) return;
         node_ptr buff = begin_;
         node_ptr for_del;
-        while(buff->fwd != end_) {
-            if (buff->fwd->node::get_elem() ==
-            buff->node::get_elem()) {
+        while (buff->fwd != end_) {
+            if (buff->fwd->node::get_elem() == buff->node::get_elem()) {
                 for_del = buff->fwd;
                 buff->fwd = for_del->fwd;
                 for_del->fwd->back = buff;
@@ -311,23 +304,8 @@ public:
         }
     }
 
-private:
+   private:
     node_ptr begin_;
     node_ptr end_;
     size_type sizeOf;
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

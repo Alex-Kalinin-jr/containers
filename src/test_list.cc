@@ -35,7 +35,7 @@ TEST(list, copy) {
     s21_List<std::string> e{c};
     ASSERT_EQ(e.size(), 5);
 
-    s21_List<struct two_ints> f{{5,3}, {6, 4.0}, {-456, 2}};
+    s21_List<struct two_ints> f{{5, 3}, {6, 4.0}, {-456, 2}};
     s21_List<struct two_ints> g(f);
 
     ASSERT_EQ(f.size(), 3);
@@ -69,7 +69,6 @@ TEST(list, front_back_3) {
     s21_List<char> h(g);
     ASSERT_EQ(h.front(), 5);
     ASSERT_EQ(h.back(), 1);
-
 }
 
 TEST(list, begin_end) {
@@ -99,8 +98,8 @@ TEST(list, insert_1) {
     ASSERT_EQ(g.size(), 7);
 
     a1 = g.end();
-    g.insert(a1,24);
-    g.insert(a1,234);
+    g.insert(a1, 24);
+    g.insert(a1, 234);
     ASSERT_EQ(g.size(), 9);
 }
 TEST(list, insert_2) {
@@ -112,8 +111,8 @@ TEST(list, insert_2) {
     ASSERT_EQ(g.size(), 2);
 
     a1 = g.end();
-    g.insert(a1,24);
-    g.insert(a1,234);
+    g.insert(a1, 24);
+    g.insert(a1, 234);
     ASSERT_EQ(g.size(), 4);
 }
 
@@ -137,7 +136,7 @@ TEST(list, erase_1) {
 
 TEST(list, erase_2) {
     s21_List<char> g;
-    s21_Node<char> * a1(g.begin());
+    s21_Node<char>* a1(g.begin());
     g.erase(a1);
     a1 = g.begin();
     g.erase(a1);
@@ -348,9 +347,9 @@ TEST(list, sort2) {
 TEST(list, sort3_runtime) {
     s21_List<int> a;
     node_iterator<int> itrA(a.end());
-    int * k = new int[10000];
+    int* k = new int[10000];
     for (int i = 10001; i > 1; --i) {
-        k[10001-i] = i - 1;
+        k[10001 - i] = i - 1;
     }
     for (int i = 0; i < 10000; ++i) {
         a.insert(itrA, k[i]);

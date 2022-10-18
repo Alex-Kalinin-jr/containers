@@ -12,24 +12,27 @@
 
 // namespace s21 {
 
-template<typename T> class list_alloc {
-using value_type = T;
-using reference = T &;
-using const_reference = const T &;
-using size_type = size_t;
+template <typename T>
+class list_alloc {
+    using value_type = T;
+    using reference = T &;
+    using const_reference = const T &;
+    using size_type = size_t;
 
-public:
-    list_allocr() : mem(0), ptr(0), capacity(DEFAULT_SIZE), offset(0),  {}
-    ~list_allocr() { if (mem) delete[] mem }
-
-    size_type * allocate() {
-        capacity = DEFAULT_SIZE;
-        reinterpret_cast<value_type *>mem = new value_type[DEFAULT_SIZE];
+   public:
+    list_allocr() : mem(0), ptr(0), capacity(DEFAULT_SIZE), offset(0), {}
+    ~list_allocr() {
+        if (mem) delete[] mem
     }
 
-    size_type * allocate(size_type n) {
+    size_type *allocate() {
+        capacity = DEFAULT_SIZE;
+        reinterpret_cast<value_type *> mem = new value_type[DEFAULT_SIZE];
+    }
+
+    size_type *allocate(size_type n) {
         capacity = n;
-        reinterpret_cast<value_type *>mem = new value_type[n];
+        reinterpret_cast<value_type *> mem = new value_type[n];
     }
 
     void realloc(size_type n) {
@@ -39,23 +42,11 @@ public:
         }
     }
 
-
-protected:
-    size_type * mem;
-    size_type * ptr;
+   protected:
+    size_type *mem;
+    size_type *ptr;
     size_type capacity;
     size_type offset;
-
 };
-
-
-
-
-
-
-
-
-
-
 
 // }

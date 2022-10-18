@@ -115,14 +115,14 @@ test_struct_ddd test_pack_add[] = {
 
 START_TEST(test_add) {
     s21_decimal result;
-    int result_code = s21_add(test_pack_add[_i].op1, test_pack_add[_i].op2, &result);
+    int result_code =
+        s21_add(test_pack_add[_i].op1, test_pack_add[_i].op2, &result);
     ck_assert_int_eq(result_code, test_pack_add[_i].result_code);
     if (result_code == RESULT_SUCCESS) {
         ck_assert_mem_eq(&result, &test_pack_add[_i].wait, sizeof(s21_decimal));
     }
 }
 END_TEST
-
 
 test_struct_ddd test_pack_sub[] = {
     {{{0x00000008, 0x00000000, 0x00000000, 0x00000000}},
@@ -188,7 +188,6 @@ START_TEST(test_sub) {
 }
 END_TEST
 
-
 test_struct_ddd test_pack_mul[] = {
     {{{0x0000000a, 0x00000000, 0x0000000a, 0x00010000}},
      {{0x02433305, 0x9701bb81, 0x1c529ce7, 0x00050000}},
@@ -206,8 +205,8 @@ test_struct_ddd test_pack_mul[] = {
      RESULT_SUCCESS},
 
     {{{0x00000002, 0x00000000, 0x00000000, 0x00000000}},
-    {{0x00000002, 0x00000000, 0x00000000, 0x00000000}},
-    {{0x00000004, 0x00000000, 0x00000000, 0x00000000}},
+     {{0x00000002, 0x00000000, 0x00000000, 0x00000000}},
+     {{0x00000004, 0x00000000, 0x00000000, 0x00000000}},
      RESULT_SUCCESS},
 
     {{{0xffffffff, 0x00000000, 0x00000000, 0x00030000}},
@@ -335,7 +334,8 @@ test_struct_ddd test_pack_div[] = {
 
 START_TEST(test_div) {
     s21_decimal result;
-    int result_code = s21_div(test_pack_div[_i].op1, test_pack_div[_i].op2, &result);
+    int result_code =
+        s21_div(test_pack_div[_i].op1, test_pack_div[_i].op2, &result);
     ck_assert_int_eq(result_code, test_pack_div[_i].result_code);
     if (result_code == RESULT_SUCCESS) {
         ck_assert_mem_eq(&result, &test_pack_div[_i].wait, sizeof(s21_decimal));
@@ -367,7 +367,7 @@ test_struct_ddd test_pack_mod[] = {
     {{{0xC046A714, 0x000043E6, 0x00000000, 0x00030000}},
      {{0x0000000b, 0x00000000, 0x00000000, 0x00010000}},
      {{0x000001B4, 0x00000000, 0x00000000, 0x00030000}},
-    RESULT_SUCCESS},
+     RESULT_SUCCESS},
 
     {{{0x9CE50C1C, 0x195CBDE1, 0x00065317, 0x000E0000}},
      {{0x45A70FC2, 0x00000001, 0x00000000, 0x00000000}},
@@ -395,241 +395,242 @@ END_TEST
 /*COMPARE TESTS*/
 
 START_TEST(is_less) {
-  s21_decimal case1[] = {{{10, 0, 0, 0}}, {{3, 0, 0, 0}},  {{9, 0, 0, 0}},
-                         {{4, 0, 0, 0}},  {{0, 0, 0, 0}},  {{0, 0, 0, 0}},
-                         {{0, 0, 0, 0}},  {{10, 0, 0, 0}}, {{3, 0, 0, 0}},
-                         {{5, 0, 0, 0}},  {{5, 0, 0, 0}},  {{8, 0, 0, 0}},
-                         {{8, 0, 0, 0}}};
-  s21_decimal case2[] = {{{2, 0, 0, 0}},  {{7, 0, 0, 0}}, {{2, 0, 0, 0}},
-                         {{15, 0, 0, 0}}, {{0, 0, 0, 0}}, {{0, 0, 0, 0}},
-                         {{0, 0, 0, 0}},  {{2, 0, 0, 0}}, {{15, 0, 0, 0}},
-                         {{5, 0, 0, 0}},  {{5, 0, 0, 0}}, {{8, 0, 0, 0}},
-                         {{8, 0, 0, 0}}};
-  case1[2].bits[3] |= 1 << 31;
-  case2[2].bits[3] |= 1 << 31;
-  case1[3].bits[3] |= 1 << 31;
-  case2[3].bits[3] |= 1 << 31;
-  case1[5].bits[3] |= 1 << 31;
-  case2[6].bits[3] |= 1 << 31;
-  case2[7].bits[3] |= 1 << 31;
-  case1[8].bits[3] |= 1 << 31;
-  case1[9].bits[3] |= 1 << 31;
-  case2[9].bits[3] |= 1 << 31;
-  case1[11].bits[3] |= 1 << 31;
-  case2[12].bits[3] |= 1 << 31;
-  ck_assert_int_eq(s21_is_less(case1[0], case2[0]), 0);
-  ck_assert_int_eq(s21_is_less(case1[1], case2[1]), 1);
-  ck_assert_int_eq(s21_is_less(case1[2], case2[2]), 1);
-  ck_assert_int_eq(s21_is_less(case1[3], case2[3]), 0);
-  ck_assert_int_eq(s21_is_less(case1[4], case2[4]), 0);
-  ck_assert_int_eq(s21_is_less(case1[5], case2[5]), 0);
-  ck_assert_int_eq(s21_is_less(case1[6], case2[6]), 0);
-  ck_assert_int_eq(s21_is_less(case1[7], case2[7]), 0);
-  ck_assert_int_eq(s21_is_less(case1[8], case2[8]), 1);
-  ck_assert_int_eq(s21_is_less(case1[9], case2[9]), 0);
-  ck_assert_int_eq(s21_is_less(case1[10], case2[10]), 0);
-  ck_assert_int_eq(s21_is_less(case1[11], case2[11]), 1);
-  ck_assert_int_eq(s21_is_less(case1[12], case2[12]), 0);
+    s21_decimal case1[] = {{{10, 0, 0, 0}}, {{3, 0, 0, 0}},  {{9, 0, 0, 0}},
+                           {{4, 0, 0, 0}},  {{0, 0, 0, 0}},  {{0, 0, 0, 0}},
+                           {{0, 0, 0, 0}},  {{10, 0, 0, 0}}, {{3, 0, 0, 0}},
+                           {{5, 0, 0, 0}},  {{5, 0, 0, 0}},  {{8, 0, 0, 0}},
+                           {{8, 0, 0, 0}}};
+    s21_decimal case2[] = {{{2, 0, 0, 0}},  {{7, 0, 0, 0}}, {{2, 0, 0, 0}},
+                           {{15, 0, 0, 0}}, {{0, 0, 0, 0}}, {{0, 0, 0, 0}},
+                           {{0, 0, 0, 0}},  {{2, 0, 0, 0}}, {{15, 0, 0, 0}},
+                           {{5, 0, 0, 0}},  {{5, 0, 0, 0}}, {{8, 0, 0, 0}},
+                           {{8, 0, 0, 0}}};
+    case1[2].bits[3] |= 1 << 31;
+    case2[2].bits[3] |= 1 << 31;
+    case1[3].bits[3] |= 1 << 31;
+    case2[3].bits[3] |= 1 << 31;
+    case1[5].bits[3] |= 1 << 31;
+    case2[6].bits[3] |= 1 << 31;
+    case2[7].bits[3] |= 1 << 31;
+    case1[8].bits[3] |= 1 << 31;
+    case1[9].bits[3] |= 1 << 31;
+    case2[9].bits[3] |= 1 << 31;
+    case1[11].bits[3] |= 1 << 31;
+    case2[12].bits[3] |= 1 << 31;
+    ck_assert_int_eq(s21_is_less(case1[0], case2[0]), 0);
+    ck_assert_int_eq(s21_is_less(case1[1], case2[1]), 1);
+    ck_assert_int_eq(s21_is_less(case1[2], case2[2]), 1);
+    ck_assert_int_eq(s21_is_less(case1[3], case2[3]), 0);
+    ck_assert_int_eq(s21_is_less(case1[4], case2[4]), 0);
+    ck_assert_int_eq(s21_is_less(case1[5], case2[5]), 0);
+    ck_assert_int_eq(s21_is_less(case1[6], case2[6]), 0);
+    ck_assert_int_eq(s21_is_less(case1[7], case2[7]), 0);
+    ck_assert_int_eq(s21_is_less(case1[8], case2[8]), 1);
+    ck_assert_int_eq(s21_is_less(case1[9], case2[9]), 0);
+    ck_assert_int_eq(s21_is_less(case1[10], case2[10]), 0);
+    ck_assert_int_eq(s21_is_less(case1[11], case2[11]), 1);
+    ck_assert_int_eq(s21_is_less(case1[12], case2[12]), 0);
 }
 END_TEST
 
 START_TEST(is_less_or_equal) {
-  s21_decimal case1[] = {{{10, 0, 0, 0}}, {{3, 0, 0, 0}},  {{9, 0, 0, 0}},
-                         {{4, 0, 0, 0}},  {{0, 0, 0, 0}},  {{0, 0, 0, 0}},
-                         {{0, 0, 0, 0}},  {{10, 0, 0, 0}}, {{3, 0, 0, 0}},
-                         {{5, 0, 0, 0}},  {{5, 0, 0, 0}},  {{8, 0, 0, 0}},
-                         {{8, 0, 0, 0}}};
-  s21_decimal case2[] = {{{2, 0, 0, 0}},  {{7, 0, 0, 0}}, {{2, 0, 0, 0}},
-                         {{15, 0, 0, 0}}, {{0, 0, 0, 0}}, {{0, 0, 0, 0}},
-                         {{0, 0, 0, 0}},  {{2, 0, 0, 0}}, {{15, 0, 0, 0}},
-                         {{5, 0, 0, 0}},  {{5, 0, 0, 0}}, {{8, 0, 0, 0}},
-                         {{8, 0, 0, 0}}};
-  case1[2].bits[3] |= 1 << 31;
-  case2[2].bits[3] |= 1 << 31;
-  case1[3].bits[3] |= 1 << 31;
-  case2[3].bits[3] |= 1 << 31;
-  case1[5].bits[3] |= 1 << 31;
-  case2[6].bits[3] |= 1 << 31;
-  case2[7].bits[3] |= 1 << 31;
-  case1[8].bits[3] |= 1 << 31;
-  case1[9].bits[3] |= 1 << 31;
-  case2[9].bits[3] |= 1 << 31;
-  case1[11].bits[3] |= 1 << 31;
-  case2[12].bits[3] |= 1 << 31;
-  ck_assert_int_eq(s21_is_less_or_equal(case1[0], case2[0]), 0);
-  ck_assert_int_eq(s21_is_less_or_equal(case1[1], case2[1]), 1);
-  ck_assert_int_eq(s21_is_less_or_equal(case1[2], case2[2]), 1);
-  ck_assert_int_eq(s21_is_less_or_equal(case1[3], case2[3]), 0);
-  ck_assert_int_eq(s21_is_less_or_equal(case1[4], case2[4]), 1);
-  ck_assert_int_eq(s21_is_less_or_equal(case1[5], case2[5]), 1);
-  ck_assert_int_eq(s21_is_less_or_equal(case1[6], case2[6]), 1);
-  ck_assert_int_eq(s21_is_less_or_equal(case1[7], case2[7]), 0);
-  ck_assert_int_eq(s21_is_less_or_equal(case1[8], case2[8]), 1);
-  ck_assert_int_eq(s21_is_less_or_equal(case1[9], case2[9]), 1);
-  ck_assert_int_eq(s21_is_less_or_equal(case1[10], case2[10]), 1);
-  ck_assert_int_eq(s21_is_less_or_equal(case1[11], case2[11]), 1);
-  ck_assert_int_eq(s21_is_less_or_equal(case1[12], case2[12]), 0);
+    s21_decimal case1[] = {{{10, 0, 0, 0}}, {{3, 0, 0, 0}},  {{9, 0, 0, 0}},
+                           {{4, 0, 0, 0}},  {{0, 0, 0, 0}},  {{0, 0, 0, 0}},
+                           {{0, 0, 0, 0}},  {{10, 0, 0, 0}}, {{3, 0, 0, 0}},
+                           {{5, 0, 0, 0}},  {{5, 0, 0, 0}},  {{8, 0, 0, 0}},
+                           {{8, 0, 0, 0}}};
+    s21_decimal case2[] = {{{2, 0, 0, 0}},  {{7, 0, 0, 0}}, {{2, 0, 0, 0}},
+                           {{15, 0, 0, 0}}, {{0, 0, 0, 0}}, {{0, 0, 0, 0}},
+                           {{0, 0, 0, 0}},  {{2, 0, 0, 0}}, {{15, 0, 0, 0}},
+                           {{5, 0, 0, 0}},  {{5, 0, 0, 0}}, {{8, 0, 0, 0}},
+                           {{8, 0, 0, 0}}};
+    case1[2].bits[3] |= 1 << 31;
+    case2[2].bits[3] |= 1 << 31;
+    case1[3].bits[3] |= 1 << 31;
+    case2[3].bits[3] |= 1 << 31;
+    case1[5].bits[3] |= 1 << 31;
+    case2[6].bits[3] |= 1 << 31;
+    case2[7].bits[3] |= 1 << 31;
+    case1[8].bits[3] |= 1 << 31;
+    case1[9].bits[3] |= 1 << 31;
+    case2[9].bits[3] |= 1 << 31;
+    case1[11].bits[3] |= 1 << 31;
+    case2[12].bits[3] |= 1 << 31;
+    ck_assert_int_eq(s21_is_less_or_equal(case1[0], case2[0]), 0);
+    ck_assert_int_eq(s21_is_less_or_equal(case1[1], case2[1]), 1);
+    ck_assert_int_eq(s21_is_less_or_equal(case1[2], case2[2]), 1);
+    ck_assert_int_eq(s21_is_less_or_equal(case1[3], case2[3]), 0);
+    ck_assert_int_eq(s21_is_less_or_equal(case1[4], case2[4]), 1);
+    ck_assert_int_eq(s21_is_less_or_equal(case1[5], case2[5]), 1);
+    ck_assert_int_eq(s21_is_less_or_equal(case1[6], case2[6]), 1);
+    ck_assert_int_eq(s21_is_less_or_equal(case1[7], case2[7]), 0);
+    ck_assert_int_eq(s21_is_less_or_equal(case1[8], case2[8]), 1);
+    ck_assert_int_eq(s21_is_less_or_equal(case1[9], case2[9]), 1);
+    ck_assert_int_eq(s21_is_less_or_equal(case1[10], case2[10]), 1);
+    ck_assert_int_eq(s21_is_less_or_equal(case1[11], case2[11]), 1);
+    ck_assert_int_eq(s21_is_less_or_equal(case1[12], case2[12]), 0);
 }
 END_TEST
 
 START_TEST(is_greater) {
-  s21_decimal case1[] = {{{10, 0, 0, 0}}, {{3, 0, 0, 0}},  {{9, 0, 0, 0}},
-                         {{4, 0, 0, 0}},  {{0, 0, 0, 0}},  {{0, 0, 0, 0}},
-                         {{0, 0, 0, 0}},  {{10, 0, 0, 0}}, {{3, 0, 0, 0}},
-                         {{5, 0, 0, 0}},  {{5, 0, 0, 0}},  {{8, 0, 0, 0}},
-                         {{8, 0, 0, 0}}};
-  s21_decimal case2[] = {{{2, 0, 0, 0}},  {{7, 0, 0, 0}}, {{2, 0, 0, 0}},
-                         {{15, 0, 0, 0}}, {{0, 0, 0, 0}}, {{0, 0, 0, 0}},
-                         {{0, 0, 0, 0}},  {{2, 0, 0, 0}}, {{15, 0, 0, 0}},
-                         {{5, 0, 0, 0}},  {{5, 0, 0, 0}}, {{8, 0, 0, 0}},
-                         {{8, 0, 0, 0}}};
-  case1[2].bits[3] |= 1 << 31;
-  case2[2].bits[3] |= 1 << 31;
-  case1[3].bits[3] |= 1 << 31;
-  case2[3].bits[3] |= 1 << 31;
-  case1[5].bits[3] |= 1 << 31;
-  case2[6].bits[3] |= 1 << 31;
-  case2[7].bits[3] |= 1 << 31;
-  case1[8].bits[3] |= 1 << 31;
-  case1[9].bits[3] |= 1 << 31;
-  case2[9].bits[3] |= 1 << 31;
-  case1[11].bits[3] |= 1 << 31;
-  case2[12].bits[3] |= 1 << 31;
-  ck_assert_int_eq(s21_is_greater(case1[0], case2[0]), 1);
-  ck_assert_int_eq(s21_is_greater(case1[1], case2[1]), 0);
-  ck_assert_int_eq(s21_is_greater(case1[2], case2[2]), 0);
-  ck_assert_int_eq(s21_is_greater(case1[3], case2[3]), 1);
-  ck_assert_int_eq(s21_is_greater(case1[4], case2[4]), 0);
-  ck_assert_int_eq(s21_is_greater(case1[5], case2[5]), 0);
-  ck_assert_int_eq(s21_is_greater(case1[6], case2[6]), 0);
-  ck_assert_int_eq(s21_is_greater(case1[7], case2[7]), 1);
-  ck_assert_int_eq(s21_is_greater(case1[8], case2[8]), 0);
-  ck_assert_int_eq(s21_is_greater(case1[9], case2[9]), 0);
-  ck_assert_int_eq(s21_is_greater(case1[10], case2[10]), 0);
-  ck_assert_int_eq(s21_is_greater(case1[11], case2[11]), 0);
-  ck_assert_int_eq(s21_is_greater(case1[12], case2[12]), 1);
+    s21_decimal case1[] = {{{10, 0, 0, 0}}, {{3, 0, 0, 0}},  {{9, 0, 0, 0}},
+                           {{4, 0, 0, 0}},  {{0, 0, 0, 0}},  {{0, 0, 0, 0}},
+                           {{0, 0, 0, 0}},  {{10, 0, 0, 0}}, {{3, 0, 0, 0}},
+                           {{5, 0, 0, 0}},  {{5, 0, 0, 0}},  {{8, 0, 0, 0}},
+                           {{8, 0, 0, 0}}};
+    s21_decimal case2[] = {{{2, 0, 0, 0}},  {{7, 0, 0, 0}}, {{2, 0, 0, 0}},
+                           {{15, 0, 0, 0}}, {{0, 0, 0, 0}}, {{0, 0, 0, 0}},
+                           {{0, 0, 0, 0}},  {{2, 0, 0, 0}}, {{15, 0, 0, 0}},
+                           {{5, 0, 0, 0}},  {{5, 0, 0, 0}}, {{8, 0, 0, 0}},
+                           {{8, 0, 0, 0}}};
+    case1[2].bits[3] |= 1 << 31;
+    case2[2].bits[3] |= 1 << 31;
+    case1[3].bits[3] |= 1 << 31;
+    case2[3].bits[3] |= 1 << 31;
+    case1[5].bits[3] |= 1 << 31;
+    case2[6].bits[3] |= 1 << 31;
+    case2[7].bits[3] |= 1 << 31;
+    case1[8].bits[3] |= 1 << 31;
+    case1[9].bits[3] |= 1 << 31;
+    case2[9].bits[3] |= 1 << 31;
+    case1[11].bits[3] |= 1 << 31;
+    case2[12].bits[3] |= 1 << 31;
+    ck_assert_int_eq(s21_is_greater(case1[0], case2[0]), 1);
+    ck_assert_int_eq(s21_is_greater(case1[1], case2[1]), 0);
+    ck_assert_int_eq(s21_is_greater(case1[2], case2[2]), 0);
+    ck_assert_int_eq(s21_is_greater(case1[3], case2[3]), 1);
+    ck_assert_int_eq(s21_is_greater(case1[4], case2[4]), 0);
+    ck_assert_int_eq(s21_is_greater(case1[5], case2[5]), 0);
+    ck_assert_int_eq(s21_is_greater(case1[6], case2[6]), 0);
+    ck_assert_int_eq(s21_is_greater(case1[7], case2[7]), 1);
+    ck_assert_int_eq(s21_is_greater(case1[8], case2[8]), 0);
+    ck_assert_int_eq(s21_is_greater(case1[9], case2[9]), 0);
+    ck_assert_int_eq(s21_is_greater(case1[10], case2[10]), 0);
+    ck_assert_int_eq(s21_is_greater(case1[11], case2[11]), 0);
+    ck_assert_int_eq(s21_is_greater(case1[12], case2[12]), 1);
 }
 END_TEST
 
 START_TEST(is_greater_or_equal) {
-  s21_decimal case1[] = {{{10, 0, 0, 0}}, {{3, 0, 0, 0}},  {{9, 0, 0, 0}},
-                         {{4, 0, 0, 0}},  {{0, 0, 0, 0}},  {{0, 0, 0, 0}},
-                         {{0, 0, 0, 0}},  {{10, 0, 0, 0}}, {{3, 0, 0, 0}},
-                         {{5, 0, 0, 0}},  {{5, 0, 0, 0}},  {{8, 0, 0, 0}},
-                         {{8, 0, 0, 0}}};
-  s21_decimal case2[] = {{{2, 0, 0, 0}},  {{7, 0, 0, 0}}, {{2, 0, 0, 0}},
-                         {{15, 0, 0, 0}}, {{0, 0, 0, 0}}, {{0, 0, 0, 0}},
-                         {{0, 0, 0, 0}},  {{2, 0, 0, 0}}, {{15, 0, 0, 0}},
-                         {{5, 0, 0, 0}},  {{5, 0, 0, 0}}, {{8, 0, 0, 0}},
-                         {{8, 0, 0, 0}}};
-  case1[2].bits[3] |= 1 << 31;
-  case2[2].bits[3] |= 1 << 31;
-  case1[3].bits[3] |= 1 << 31;
-  case2[3].bits[3] |= 1 << 31;
-  case1[5].bits[3] |= 1 << 31;
-  case2[6].bits[3] |= 1 << 31;
-  case2[7].bits[3] |= 1 << 31;
-  case1[8].bits[3] |= 1 << 31;
-  case1[9].bits[3] |= 1 << 31;
-  case2[9].bits[3] |= 1 << 31;
-  case1[11].bits[3] |= 1 << 31;
-  case2[12].bits[3] |= 1 << 31;
-  ck_assert_int_eq(s21_is_greater_or_equal(case1[0], case2[0]), 1);
-  ck_assert_int_eq(s21_is_greater_or_equal(case1[1], case2[1]), 0);
-  ck_assert_int_eq(s21_is_greater_or_equal(case1[2], case2[2]), 0);
-  ck_assert_int_eq(s21_is_greater_or_equal(case1[3], case2[3]), 1);
-  ck_assert_int_eq(s21_is_greater_or_equal(case1[4], case2[4]), 1);
-  ck_assert_int_eq(s21_is_greater_or_equal(case1[5], case2[5]), 1);
-  ck_assert_int_eq(s21_is_greater_or_equal(case1[6], case2[6]), 1);
-  ck_assert_int_eq(s21_is_greater_or_equal(case1[7], case2[7]), 1);
-  ck_assert_int_eq(s21_is_greater_or_equal(case1[8], case2[8]), 0);
-  ck_assert_int_eq(s21_is_greater_or_equal(case1[9], case2[9]), 1);
-  ck_assert_int_eq(s21_is_greater_or_equal(case1[10], case2[10]), 1);
-  ck_assert_int_eq(s21_is_greater_or_equal(case1[11], case2[11]), 0);
-  ck_assert_int_eq(s21_is_greater_or_equal(case1[12], case2[12]), 1);
+    s21_decimal case1[] = {{{10, 0, 0, 0}}, {{3, 0, 0, 0}},  {{9, 0, 0, 0}},
+                           {{4, 0, 0, 0}},  {{0, 0, 0, 0}},  {{0, 0, 0, 0}},
+                           {{0, 0, 0, 0}},  {{10, 0, 0, 0}}, {{3, 0, 0, 0}},
+                           {{5, 0, 0, 0}},  {{5, 0, 0, 0}},  {{8, 0, 0, 0}},
+                           {{8, 0, 0, 0}}};
+    s21_decimal case2[] = {{{2, 0, 0, 0}},  {{7, 0, 0, 0}}, {{2, 0, 0, 0}},
+                           {{15, 0, 0, 0}}, {{0, 0, 0, 0}}, {{0, 0, 0, 0}},
+                           {{0, 0, 0, 0}},  {{2, 0, 0, 0}}, {{15, 0, 0, 0}},
+                           {{5, 0, 0, 0}},  {{5, 0, 0, 0}}, {{8, 0, 0, 0}},
+                           {{8, 0, 0, 0}}};
+    case1[2].bits[3] |= 1 << 31;
+    case2[2].bits[3] |= 1 << 31;
+    case1[3].bits[3] |= 1 << 31;
+    case2[3].bits[3] |= 1 << 31;
+    case1[5].bits[3] |= 1 << 31;
+    case2[6].bits[3] |= 1 << 31;
+    case2[7].bits[3] |= 1 << 31;
+    case1[8].bits[3] |= 1 << 31;
+    case1[9].bits[3] |= 1 << 31;
+    case2[9].bits[3] |= 1 << 31;
+    case1[11].bits[3] |= 1 << 31;
+    case2[12].bits[3] |= 1 << 31;
+    ck_assert_int_eq(s21_is_greater_or_equal(case1[0], case2[0]), 1);
+    ck_assert_int_eq(s21_is_greater_or_equal(case1[1], case2[1]), 0);
+    ck_assert_int_eq(s21_is_greater_or_equal(case1[2], case2[2]), 0);
+    ck_assert_int_eq(s21_is_greater_or_equal(case1[3], case2[3]), 1);
+    ck_assert_int_eq(s21_is_greater_or_equal(case1[4], case2[4]), 1);
+    ck_assert_int_eq(s21_is_greater_or_equal(case1[5], case2[5]), 1);
+    ck_assert_int_eq(s21_is_greater_or_equal(case1[6], case2[6]), 1);
+    ck_assert_int_eq(s21_is_greater_or_equal(case1[7], case2[7]), 1);
+    ck_assert_int_eq(s21_is_greater_or_equal(case1[8], case2[8]), 0);
+    ck_assert_int_eq(s21_is_greater_or_equal(case1[9], case2[9]), 1);
+    ck_assert_int_eq(s21_is_greater_or_equal(case1[10], case2[10]), 1);
+    ck_assert_int_eq(s21_is_greater_or_equal(case1[11], case2[11]), 0);
+    ck_assert_int_eq(s21_is_greater_or_equal(case1[12], case2[12]), 1);
 }
 END_TEST
 
 START_TEST(is_equal) {
-  s21_decimal case1[] = {{{10, 0, 0, 0}}, {{3, 0, 0, 0}},  {{9, 0, 0, 0}},
-                         {{4, 0, 0, 0}},  {{0, 0, 0, 0}},  {{0, 0, 0, 0}},
-                         {{0, 0, 0, 0}},  {{10, 0, 0, 0}}, {{3, 0, 0, 0}},
-                         {{5, 0, 0, 0}},  {{5, 0, 0, 0}},  {{8, 0, 0, 0}},
-                         {{8, 0, 0, 0}}};
-  s21_decimal case2[] = {{{2, 0, 0, 0}},  {{7, 0, 0, 0}}, {{2, 0, 0, 0}},
-                         {{15, 0, 0, 0}}, {{0, 0, 0, 0}}, {{0, 0, 0, 0}},
-                         {{0, 0, 0, 0}},  {{2, 0, 0, 0}}, {{15, 0, 0, 0}},
-                         {{5, 0, 0, 0}},  {{5, 0, 0, 0}}, {{8, 0, 0, 0}},
-                         {{8, 0, 0, 0}}};
-  case1[2].bits[3] |= 1 << 31;
-  case2[2].bits[3] |= 1 << 31;
-  case1[3].bits[3] |= 1 << 31;
-  case2[3].bits[3] |= 1 << 31;
-  case1[5].bits[3] |= 1 << 31;
-  case2[6].bits[3] |= 1 << 31;
-  case2[7].bits[3] |= 1 << 31;
-  case1[8].bits[3] |= 1 << 31;
-  case1[9].bits[3] |= 1 << 31;
-  case2[9].bits[3] |= 1 << 31;
-  case1[11].bits[3] |= 1 << 31;
-  case2[12].bits[3] |= 1 << 31;
-  ck_assert_int_eq(s21_is_equal(case1[0], case2[0]), 0);
-  ck_assert_int_eq(s21_is_equal(case1[1], case2[1]), 0);
-  ck_assert_int_eq(s21_is_equal(case1[2], case2[2]), 0);
-  ck_assert_int_eq(s21_is_equal(case1[3], case2[3]), 0);
-  ck_assert_int_eq(s21_is_equal(case1[4], case2[4]), 1);
-  ck_assert_int_eq(s21_is_equal(case1[5], case2[5]), 1);
-  ck_assert_int_eq(s21_is_equal(case1[6], case2[6]), 1);
-  ck_assert_int_eq(s21_is_equal(case1[7], case2[7]), 0);
-  ck_assert_int_eq(s21_is_equal(case1[8], case2[8]), 0);
-  ck_assert_int_eq(s21_is_equal(case1[9], case2[9]), 1);
-  ck_assert_int_eq(s21_is_equal(case1[10], case2[10]), 1);
-  ck_assert_int_eq(s21_is_equal(case1[11], case2[11]), 0);
-  ck_assert_int_eq(s21_is_equal(case1[12], case2[12]), 0);
+    s21_decimal case1[] = {{{10, 0, 0, 0}}, {{3, 0, 0, 0}},  {{9, 0, 0, 0}},
+                           {{4, 0, 0, 0}},  {{0, 0, 0, 0}},  {{0, 0, 0, 0}},
+                           {{0, 0, 0, 0}},  {{10, 0, 0, 0}}, {{3, 0, 0, 0}},
+                           {{5, 0, 0, 0}},  {{5, 0, 0, 0}},  {{8, 0, 0, 0}},
+                           {{8, 0, 0, 0}}};
+    s21_decimal case2[] = {{{2, 0, 0, 0}},  {{7, 0, 0, 0}}, {{2, 0, 0, 0}},
+                           {{15, 0, 0, 0}}, {{0, 0, 0, 0}}, {{0, 0, 0, 0}},
+                           {{0, 0, 0, 0}},  {{2, 0, 0, 0}}, {{15, 0, 0, 0}},
+                           {{5, 0, 0, 0}},  {{5, 0, 0, 0}}, {{8, 0, 0, 0}},
+                           {{8, 0, 0, 0}}};
+    case1[2].bits[3] |= 1 << 31;
+    case2[2].bits[3] |= 1 << 31;
+    case1[3].bits[3] |= 1 << 31;
+    case2[3].bits[3] |= 1 << 31;
+    case1[5].bits[3] |= 1 << 31;
+    case2[6].bits[3] |= 1 << 31;
+    case2[7].bits[3] |= 1 << 31;
+    case1[8].bits[3] |= 1 << 31;
+    case1[9].bits[3] |= 1 << 31;
+    case2[9].bits[3] |= 1 << 31;
+    case1[11].bits[3] |= 1 << 31;
+    case2[12].bits[3] |= 1 << 31;
+    ck_assert_int_eq(s21_is_equal(case1[0], case2[0]), 0);
+    ck_assert_int_eq(s21_is_equal(case1[1], case2[1]), 0);
+    ck_assert_int_eq(s21_is_equal(case1[2], case2[2]), 0);
+    ck_assert_int_eq(s21_is_equal(case1[3], case2[3]), 0);
+    ck_assert_int_eq(s21_is_equal(case1[4], case2[4]), 1);
+    ck_assert_int_eq(s21_is_equal(case1[5], case2[5]), 1);
+    ck_assert_int_eq(s21_is_equal(case1[6], case2[6]), 1);
+    ck_assert_int_eq(s21_is_equal(case1[7], case2[7]), 0);
+    ck_assert_int_eq(s21_is_equal(case1[8], case2[8]), 0);
+    ck_assert_int_eq(s21_is_equal(case1[9], case2[9]), 1);
+    ck_assert_int_eq(s21_is_equal(case1[10], case2[10]), 1);
+    ck_assert_int_eq(s21_is_equal(case1[11], case2[11]), 0);
+    ck_assert_int_eq(s21_is_equal(case1[12], case2[12]), 0);
 }
 END_TEST
 
 START_TEST(is_not_equal) {
-  s21_decimal case1[] = {{{10, 0, 0, 0}}, {{3, 0, 0, 0}},  {{9, 0, 0, 0}},
-                         {{4, 0, 0, 0}},  {{0, 0, 0, 0}},  {{0, 0, 0, 0}},
-                         {{0, 0, 0, 0}},  {{10, 0, 0, 0}}, {{3, 0, 0, 0}},
-                         {{5, 0, 0, 0}},  {{5, 0, 0, 0}},  {{8, 0, 0, 0}},
-                         {{8, 0, 0, 0}}};
-  s21_decimal case2[] = {{{2, 0, 0, 0}},  {{7, 0, 0, 0}}, {{2, 0, 0, 0}},
-                         {{15, 0, 0, 0}}, {{0, 0, 0, 0}}, {{0, 0, 0, 0}},
-                         {{0, 0, 0, 0}},  {{2, 0, 0, 0}}, {{15, 0, 0, 0}},
-                         {{5, 0, 0, 0}},  {{5, 0, 0, 0}}, {{8, 0, 0, 0}},
-                         {{8, 0, 0, 0}}};
-  case1[2].bits[3] |= 1 << 31;
-  case2[2].bits[3] |= 1 << 31;
-  case1[3].bits[3] |= 1 << 31;
-  case2[3].bits[3] |= 1 << 31;
-  case1[5].bits[3] |= 1 << 31;
-  case2[6].bits[3] |= 1 << 31;
-  case2[7].bits[3] |= 1 << 31;
-  case1[8].bits[3] |= 1 << 31;
-  case1[9].bits[3] |= 1 << 31;
-  case2[9].bits[3] |= 1 << 31;
-  case1[11].bits[3] |= 1 << 31;
-  case2[12].bits[3] |= 1 << 31;
-  ck_assert_int_eq(s21_is_not_equal(case1[0], case2[0]), 1);
-  ck_assert_int_eq(s21_is_not_equal(case1[1], case2[1]), 1);
-  ck_assert_int_eq(s21_is_not_equal(case1[2], case2[2]), 1);
-  ck_assert_int_eq(s21_is_not_equal(case1[3], case2[3]), 1);
-  ck_assert_int_eq(s21_is_not_equal(case1[4], case2[4]), 0);
-  ck_assert_int_eq(s21_is_not_equal(case1[5], case2[5]), 0);
-  ck_assert_int_eq(s21_is_not_equal(case1[6], case2[6]), 0);
-  ck_assert_int_eq(s21_is_not_equal(case1[7], case2[7]), 1);
-  ck_assert_int_eq(s21_is_not_equal(case1[8], case2[8]), 1);
-  ck_assert_int_eq(s21_is_not_equal(case1[9], case2[9]), 0);
-  ck_assert_int_eq(s21_is_not_equal(case1[10], case2[10]), 0);
-  ck_assert_int_eq(s21_is_not_equal(case1[11], case2[11]), 1);
-  ck_assert_int_eq(s21_is_not_equal(case1[12], case2[12]), 1);
+    s21_decimal case1[] = {{{10, 0, 0, 0}}, {{3, 0, 0, 0}},  {{9, 0, 0, 0}},
+                           {{4, 0, 0, 0}},  {{0, 0, 0, 0}},  {{0, 0, 0, 0}},
+                           {{0, 0, 0, 0}},  {{10, 0, 0, 0}}, {{3, 0, 0, 0}},
+                           {{5, 0, 0, 0}},  {{5, 0, 0, 0}},  {{8, 0, 0, 0}},
+                           {{8, 0, 0, 0}}};
+    s21_decimal case2[] = {{{2, 0, 0, 0}},  {{7, 0, 0, 0}}, {{2, 0, 0, 0}},
+                           {{15, 0, 0, 0}}, {{0, 0, 0, 0}}, {{0, 0, 0, 0}},
+                           {{0, 0, 0, 0}},  {{2, 0, 0, 0}}, {{15, 0, 0, 0}},
+                           {{5, 0, 0, 0}},  {{5, 0, 0, 0}}, {{8, 0, 0, 0}},
+                           {{8, 0, 0, 0}}};
+    case1[2].bits[3] |= 1 << 31;
+    case2[2].bits[3] |= 1 << 31;
+    case1[3].bits[3] |= 1 << 31;
+    case2[3].bits[3] |= 1 << 31;
+    case1[5].bits[3] |= 1 << 31;
+    case2[6].bits[3] |= 1 << 31;
+    case2[7].bits[3] |= 1 << 31;
+    case1[8].bits[3] |= 1 << 31;
+    case1[9].bits[3] |= 1 << 31;
+    case2[9].bits[3] |= 1 << 31;
+    case1[11].bits[3] |= 1 << 31;
+    case2[12].bits[3] |= 1 << 31;
+    ck_assert_int_eq(s21_is_not_equal(case1[0], case2[0]), 1);
+    ck_assert_int_eq(s21_is_not_equal(case1[1], case2[1]), 1);
+    ck_assert_int_eq(s21_is_not_equal(case1[2], case2[2]), 1);
+    ck_assert_int_eq(s21_is_not_equal(case1[3], case2[3]), 1);
+    ck_assert_int_eq(s21_is_not_equal(case1[4], case2[4]), 0);
+    ck_assert_int_eq(s21_is_not_equal(case1[5], case2[5]), 0);
+    ck_assert_int_eq(s21_is_not_equal(case1[6], case2[6]), 0);
+    ck_assert_int_eq(s21_is_not_equal(case1[7], case2[7]), 1);
+    ck_assert_int_eq(s21_is_not_equal(case1[8], case2[8]), 1);
+    ck_assert_int_eq(s21_is_not_equal(case1[9], case2[9]), 0);
+    ck_assert_int_eq(s21_is_not_equal(case1[10], case2[10]), 0);
+    ck_assert_int_eq(s21_is_not_equal(case1[11], case2[11]), 1);
+    ck_assert_int_eq(s21_is_not_equal(case1[12], case2[12]), 1);
 }
 END_TEST
 
 START_TEST(from_int_to_decimal) {
-    s21_decimal cmp[]= {{{10000, 0, 0, 0}}, {{(unsigned)INT_MAX + 1, 0x0, 0x0, 0x80000000}}};
+    s21_decimal cmp[] = {{{10000, 0, 0, 0}},
+                         {{(unsigned)INT_MAX + 1, 0x0, 0x0, 0x80000000}}};
     int src[] = {10000, INT_MIN};
     s21_decimal result;
     int f_result[] = {0, 0};
@@ -641,9 +642,9 @@ START_TEST(from_int_to_decimal) {
 END_TEST
 
 START_TEST(from_float_to_decimal) {
-    s21_decimal cmp[]= {{{3, 0, 0, 0x00020000}}, {{1271234, 0, 0, 0x00040000}},
-    {{1020000000, 0, 0, 0}},
-    {{0, 0, 0, 0}}, {{0, 0, 0, 0}}, {{0, 0, 0, 0}}};
+    s21_decimal cmp[] = {{{3, 0, 0, 0x00020000}}, {{1271234, 0, 0, 0x00040000}},
+                         {{1020000000, 0, 0, 0}}, {{0, 0, 0, 0}},
+                         {{0, 0, 0, 0}},          {{0, 0, 0, 0}}};
     s21_decimal result;
     float src[] = {0.03F, 127.1234F, 1.02E+09F, INFINITY, -INFINITY, NAN};
     int f_result[] = {0, 0, 0, 1, 1, 1};
@@ -655,9 +656,12 @@ START_TEST(from_float_to_decimal) {
 END_TEST
 
 START_TEST(from_decimal_to_int) {
-    s21_decimal src[] = {{{10000, 0, 0, 0}}, {{INT_MAX, 0, 0, 0}},
-    {{(unsigned)INT_MAX + 1, 0, 0, 0x80000000}}, {{(unsigned)INT_MAX + 1, 0, 0, 0}},
-    {{(unsigned)INT_MAX + 2, 0, 0, 0x80000000}}, {{0x173c1c7, 0, 0, 0x80070000}}};
+    s21_decimal src[] = {{{10000, 0, 0, 0}},
+                         {{INT_MAX, 0, 0, 0}},
+                         {{(unsigned)INT_MAX + 1, 0, 0, 0x80000000}},
+                         {{(unsigned)INT_MAX + 1, 0, 0, 0}},
+                         {{(unsigned)INT_MAX + 2, 0, 0, 0x80000000}},
+                         {{0x173c1c7, 0, 0, 0x80070000}}};
     int result;
     int cmp[] = {10000, INT_MAX, INT_MIN, 0, 0, -2};
     int f_result[] = {0, 0, 0, 1, 1, 0};
@@ -668,8 +672,10 @@ START_TEST(from_decimal_to_int) {
 END_TEST
 
 START_TEST(from_decimal_to_float) {
-    s21_decimal src[] = {{{0x0000fe65, 0, 0, 0x80030000}}, {{3, 0, 0, 0x00020000}},
-    {{1271234, 0, 0, 0x00040000}}, {{1020000000, 0, 0, 0}}};
+    s21_decimal src[] = {{{0x0000fe65, 0, 0, 0x80030000}},
+                         {{3, 0, 0, 0x00020000}},
+                         {{1271234, 0, 0, 0x00040000}},
+                         {{1020000000, 0, 0, 0}}};
     float result;
     float cmp[] = {-65.125, 0.03F, 127.1234F, 1.02E+09F};
     int f_result[] = {0, 0, 0, 0};
@@ -680,12 +686,18 @@ START_TEST(from_decimal_to_float) {
 END_TEST
 
 test_struct_dd test_pack_floor[] = {
-    {{{0x0000000f, 0x00000000, 0x00000000, 0x00010000}}, {{0x00000001, 0x00000000, 0x00000000, 0x00000000}}},
-    {{{0x0000000f, 0x00000000, 0x00000000, 0x80010000}}, {{0x00000002, 0x00000000, 0x00000000, 0x80000000}}},
-    {{{0xE110C39E, 0x00E1C0B3, 0x00000000, 0x80040000}}, {{0x7E419033, 0x000005C7, 0x00000000, 0x80000000}}},
-    {{{0x000000ff, 0x00000000, 0x00000000, 0x80000000}}, {{0x000000ff, 0x00000000, 0x00000000, 0x80000000}}},
-    {{{0xFF42F47D, 0x27D5BD5C, 0x00000004, 0x80120000}}, {{0x0000004D, 0x00000000, 0x00000000, 0x80000000}}},
-    {{{0xFF42F47D, 0x27D5BD5C, 0x00000004, 0x00120000}}, {{0x0000004C, 0x00000000, 0x00000000, 0x00000000}}},
+    {{{0x0000000f, 0x00000000, 0x00000000, 0x00010000}},
+     {{0x00000001, 0x00000000, 0x00000000, 0x00000000}}},
+    {{{0x0000000f, 0x00000000, 0x00000000, 0x80010000}},
+     {{0x00000002, 0x00000000, 0x00000000, 0x80000000}}},
+    {{{0xE110C39E, 0x00E1C0B3, 0x00000000, 0x80040000}},
+     {{0x7E419033, 0x000005C7, 0x00000000, 0x80000000}}},
+    {{{0x000000ff, 0x00000000, 0x00000000, 0x80000000}},
+     {{0x000000ff, 0x00000000, 0x00000000, 0x80000000}}},
+    {{{0xFF42F47D, 0x27D5BD5C, 0x00000004, 0x80120000}},
+     {{0x0000004D, 0x00000000, 0x00000000, 0x80000000}}},
+    {{{0xFF42F47D, 0x27D5BD5C, 0x00000004, 0x00120000}},
+     {{0x0000004C, 0x00000000, 0x00000000, 0x00000000}}},
 };
 
 START_TEST(test_floor) {
@@ -695,15 +707,21 @@ START_TEST(test_floor) {
 }
 END_TEST
 
-
 test_struct_dd test_pack_round[] = {
-    {{{0x00000011, 0x00000000, 0x00000000, 0x00010000}}, {{0x00000002, 0x00000000, 0x00000000, 0x00000000}}},
-    {{{0x00000010, 0x00000000, 0x00000000, 0x00010000}}, {{0x00000002, 0x00000000, 0x00000000, 0x00000000}}},
-    {{{0x00002810, 0x00000000, 0x00000000, 0x00030000}}, {{0x0000000a, 0x00000000, 0x00000000, 0x00000000}}},
-    {{{0x00000010, 0x00000000, 0x00000000, 0x80010000}}, {{0x00000002, 0x00000000, 0x00000000, 0x80000000}}},
-    {{{0x0000000f, 0x00000000, 0x00000000, 0x80010000}}, {{0x00000002, 0x00000000, 0x00000000, 0x80000000}}},
-    {{{0x00000095, 0x00000000, 0x00000000, 0x80020000}}, {{0x00000001, 0x00000000, 0x00000000, 0x80000000}}},
-    {{{0x442EF47D, 0x250F326C, 0x00000004, 0x80120000}}, {{0x0000004C, 0x00000000, 0x00000000, 0x80000000}}},
+    {{{0x00000011, 0x00000000, 0x00000000, 0x00010000}},
+     {{0x00000002, 0x00000000, 0x00000000, 0x00000000}}},
+    {{{0x00000010, 0x00000000, 0x00000000, 0x00010000}},
+     {{0x00000002, 0x00000000, 0x00000000, 0x00000000}}},
+    {{{0x00002810, 0x00000000, 0x00000000, 0x00030000}},
+     {{0x0000000a, 0x00000000, 0x00000000, 0x00000000}}},
+    {{{0x00000010, 0x00000000, 0x00000000, 0x80010000}},
+     {{0x00000002, 0x00000000, 0x00000000, 0x80000000}}},
+    {{{0x0000000f, 0x00000000, 0x00000000, 0x80010000}},
+     {{0x00000002, 0x00000000, 0x00000000, 0x80000000}}},
+    {{{0x00000095, 0x00000000, 0x00000000, 0x80020000}},
+     {{0x00000001, 0x00000000, 0x00000000, 0x80000000}}},
+    {{{0x442EF47D, 0x250F326C, 0x00000004, 0x80120000}},
+     {{0x0000004C, 0x00000000, 0x00000000, 0x80000000}}},
 };
 
 START_TEST(test_round) {
@@ -713,32 +731,45 @@ START_TEST(test_round) {
 }
 END_TEST
 
-
 test_struct_dd test_pack_truncate[] = {
     {{{0x0052f2, 0, 0, 0x040000}}, {{2, 0, 0, 0}}},
-    {{{0x000052f2, 0x00000000, 0x00000000, 0x00040000}}, {{0x00000002, 0x00000000, 0x00000000, 0x00000000}}},
-    {{{0x1b3d4441, 0x00000000, 0x00000000, 0x00060000}}, {{0x000001c9, 0x00000000, 0x00000000, 0x00000000}}},
-    {{{0x000007d0, 0x00000000, 0x00000000, 0x00030000}}, {{0x00000002, 0x00000000, 0x00000000, 0x00000000}}},
-    {{{0x00000000, 0x00000000, 0x00000000, 0x801b0000}}, {{0x00000000, 0x00000000, 0x00000000, 0x80000000}}},
-    {{{0x00000003, 0x00000000, 0x00000000, 0x80000000}}, {{0x00000003, 0x00000000, 0x00000000, 0x80000000}}},
-    {{{0x0021e884, 0x00000000, 0x00000000, 0x00060000}}, {{0x00000002, 0x00000000, 0x00000000, 0x00000000}}},
+    {{{0x000052f2, 0x00000000, 0x00000000, 0x00040000}},
+     {{0x00000002, 0x00000000, 0x00000000, 0x00000000}}},
+    {{{0x1b3d4441, 0x00000000, 0x00000000, 0x00060000}},
+     {{0x000001c9, 0x00000000, 0x00000000, 0x00000000}}},
+    {{{0x000007d0, 0x00000000, 0x00000000, 0x00030000}},
+     {{0x00000002, 0x00000000, 0x00000000, 0x00000000}}},
+    {{{0x00000000, 0x00000000, 0x00000000, 0x801b0000}},
+     {{0x00000000, 0x00000000, 0x00000000, 0x80000000}}},
+    {{{0x00000003, 0x00000000, 0x00000000, 0x80000000}},
+     {{0x00000003, 0x00000000, 0x00000000, 0x80000000}}},
+    {{{0x0021e884, 0x00000000, 0x00000000, 0x00060000}},
+     {{0x00000002, 0x00000000, 0x00000000, 0x00000000}}},
 };
 
 START_TEST(test_truncate) {
     s21_decimal result;
     s21_truncate(test_pack_truncate[_i].op, &result);
-    ck_assert_mem_eq(&result, &test_pack_truncate[_i].wait, sizeof(s21_decimal));
+    ck_assert_mem_eq(&result, &test_pack_truncate[_i].wait,
+                     sizeof(s21_decimal));
 }
 END_TEST
 
 test_struct_dd test_pack_negate[] = {
-    {{{0x00000011, 0x00000000, 0x00000000, 0x00010000}}, {{0x00000011, 0x00000000, 0x00000000, 0x80010000}}},
-    {{{0x00000010, 0x00000000, 0x00000000, 0x00010000}}, {{0x00000010, 0x00000000, 0x00000000, 0x80010000}}},
-    {{{0x00002810, 0x00000000, 0x00000000, 0x00030000}}, {{0x00002810, 0x00000000, 0x00000000, 0x80030000}}},
-    {{{0x00000010, 0x00000000, 0x00000000, 0x80010000}}, {{0x00000010, 0x00000000, 0x00000000, 0x00010000}}},
-    {{{0x0000000f, 0x00000000, 0x00000000, 0x80010000}}, {{0x0000000f, 0x00000000, 0x00000000, 0x00010000}}},
-    {{{0x00000095, 0x00000000, 0x00000000, 0x80020000}}, {{0x00000095, 0x00000000, 0x00000000, 0x00020000}}},
-    {{{0x1b3d4441, 0x1b3d4441, 0x1b3d4441, 0x80020000}}, {{0x1b3d4441, 0x1b3d4441, 0x1b3d4441, 0x00020000}}},
+    {{{0x00000011, 0x00000000, 0x00000000, 0x00010000}},
+     {{0x00000011, 0x00000000, 0x00000000, 0x80010000}}},
+    {{{0x00000010, 0x00000000, 0x00000000, 0x00010000}},
+     {{0x00000010, 0x00000000, 0x00000000, 0x80010000}}},
+    {{{0x00002810, 0x00000000, 0x00000000, 0x00030000}},
+     {{0x00002810, 0x00000000, 0x00000000, 0x80030000}}},
+    {{{0x00000010, 0x00000000, 0x00000000, 0x80010000}},
+     {{0x00000010, 0x00000000, 0x00000000, 0x00010000}}},
+    {{{0x0000000f, 0x00000000, 0x00000000, 0x80010000}},
+     {{0x0000000f, 0x00000000, 0x00000000, 0x00010000}}},
+    {{{0x00000095, 0x00000000, 0x00000000, 0x80020000}},
+     {{0x00000095, 0x00000000, 0x00000000, 0x00020000}}},
+    {{{0x1b3d4441, 0x1b3d4441, 0x1b3d4441, 0x80020000}},
+     {{0x1b3d4441, 0x1b3d4441, 0x1b3d4441, 0x00020000}}},
 };
 
 START_TEST(test_negate) {
@@ -786,7 +817,8 @@ test_struct_df test_pack_fftd[] = {
 
 START_TEST(test_fftd) {
     s21_decimal result;
-    int result_code = s21_from_float_to_decimal(test_pack_fftd[_i].op2, &result);
+    int result_code =
+        s21_from_float_to_decimal(test_pack_fftd[_i].op2, &result);
     ck_assert_int_eq(result_code, test_pack_fftd[_i].result_code);
     if (result_code == RESULT_SUCCESS) {
         ck_assert_mem_eq(&result, &test_pack_fftd[_i].op1, sizeof(s21_decimal));
@@ -795,7 +827,9 @@ START_TEST(test_fftd) {
 END_TEST
 
 test_struct_df test_pack_fdtf[] = {
-    {{{0x0000fe65, 0x00000000, 0x00000000, 0x80030000}}, -65.125, RESULT_SUCCESS},
+    {{{0x0000fe65, 0x00000000, 0x00000000, 0x80030000}},
+     -65.125,
+     RESULT_SUCCESS},
     {{{1271234, 0, 0, 0x00040000}}, 127.1234F, RESULT_SUCCESS},
     {{{1020000000, 0, 0, 0}}, 1.02E+09F, RESULT_SUCCESS},
 };
@@ -808,11 +842,11 @@ START_TEST(test_fdtf) {
 END_TEST
 
 Suite *dec_test_suite(void) {
-  Suite *s;
-  TCase *tc_decimal;
-  s = suite_create("Testing in progress");
-  tc_decimal = tcase_create("Test Functions");
-  int test_pack_size = sizeof(test_pack_add) / sizeof(test_struct_ddd);
+    Suite *s;
+    TCase *tc_decimal;
+    s = suite_create("Testing in progress");
+    tc_decimal = tcase_create("Test Functions");
+    int test_pack_size = sizeof(test_pack_add) / sizeof(test_struct_ddd);
     tcase_add_loop_test(tc_decimal, test_add, 0, test_pack_size);
 
     test_pack_size = sizeof(test_pack_sub) / sizeof(test_struct_ddd);
@@ -826,16 +860,16 @@ Suite *dec_test_suite(void) {
 
     test_pack_size = sizeof(test_pack_mod) / sizeof(test_struct_ddd);
     tcase_add_loop_test(tc_decimal, test_mod, 0, test_pack_size);
-  tcase_add_test(tc_decimal, is_less);
-  tcase_add_test(tc_decimal, is_less_or_equal);
-  tcase_add_test(tc_decimal, is_greater);
-  tcase_add_test(tc_decimal, is_greater_or_equal);
-  tcase_add_test(tc_decimal, is_equal);
-  tcase_add_test(tc_decimal, is_not_equal);
-  tcase_add_test(tc_decimal, from_int_to_decimal);
-  tcase_add_test(tc_decimal, from_float_to_decimal);
-  tcase_add_test(tc_decimal, from_decimal_to_int);
-  tcase_add_test(tc_decimal, from_decimal_to_float);
+    tcase_add_test(tc_decimal, is_less);
+    tcase_add_test(tc_decimal, is_less_or_equal);
+    tcase_add_test(tc_decimal, is_greater);
+    tcase_add_test(tc_decimal, is_greater_or_equal);
+    tcase_add_test(tc_decimal, is_equal);
+    tcase_add_test(tc_decimal, is_not_equal);
+    tcase_add_test(tc_decimal, from_int_to_decimal);
+    tcase_add_test(tc_decimal, from_float_to_decimal);
+    tcase_add_test(tc_decimal, from_decimal_to_int);
+    tcase_add_test(tc_decimal, from_decimal_to_float);
 
     int test_pack_size_fitd = sizeof(test_pack_fitd) / sizeof(test_struct_di);
     tcase_add_loop_test(tc_decimal, test_fitd, 0, test_pack_size_fitd);
@@ -849,7 +883,7 @@ Suite *dec_test_suite(void) {
     int test_pack_size_fdtf = sizeof(test_pack_fdtf) / sizeof(test_struct_df);
     tcase_add_loop_test(tc_decimal, test_fdtf, 0, test_pack_size_fdtf);
 
-  test_pack_size = sizeof(test_pack_floor) / sizeof(test_struct_dd);
+    test_pack_size = sizeof(test_pack_floor) / sizeof(test_struct_dd);
     tcase_add_loop_test(tc_decimal, test_floor, 0, test_pack_size);
 
     test_pack_size = sizeof(test_pack_round) / sizeof(test_struct_dd);
@@ -860,16 +894,16 @@ Suite *dec_test_suite(void) {
 
     test_pack_size = sizeof(test_pack_negate) / sizeof(test_struct_dd);
     tcase_add_loop_test(tc_decimal, test_negate, 0, test_pack_size);
-  suite_add_tcase(s, tc_decimal);
-  return s;
+    suite_add_tcase(s, tc_decimal);
+    return s;
 }
 
 int main(void) {
-  int number_failed;
-  Suite *s = dec_test_suite();
-  SRunner *sr = srunner_create(s);
-  srunner_run_all(sr, CK_NORMAL);
-  number_failed = srunner_ntests_failed(sr);
-  srunner_free(sr);
-  return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+    int number_failed;
+    Suite *s = dec_test_suite();
+    SRunner *sr = srunner_create(s);
+    srunner_run_all(sr, CK_NORMAL);
+    number_failed = srunner_ntests_failed(sr);
+    srunner_free(sr);
+    return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }

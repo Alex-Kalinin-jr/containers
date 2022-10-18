@@ -57,7 +57,7 @@ run:
 	$(ROAD)/$(FILENAME)
 
 style:
-	clang-format -style="{BasedOnStyle: Google, IndentWidth: 4}" -n *.cc *.h
+	clang-format -style="{BasedOnStyle: Google, IndentWidth: 4}" -i -n *.cc *.h
 
 leaks: noleaks
 	leaks -atExit -- $(ROAD)/$(FILENAME)

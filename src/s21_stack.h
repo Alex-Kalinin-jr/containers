@@ -19,7 +19,6 @@ class s21_Stack {
     using node = s21_Node<value_type>;
     using node_ptr = s21_Node<value_type> *;
 
-
    private:
     node_ptr head;
     size_type sizeOf;
