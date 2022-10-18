@@ -30,7 +30,7 @@ class s21_List {
         }
     }
     s21_List(const s21_List &other) : s21_List() {
-        if (other.begin != nullptr) {
+        if (other.begin_ != nullptr) {
             node_iter iter = end();
             node_iter iter_2 = other.begin();
             while (iter_2.node_iter::get_elem() != other.end()) {
@@ -72,9 +72,6 @@ class s21_List {
         return *this;
     }
 
-    size_type size() const { return sizeOf; }
-
-    bool empty() { return ((sizeOf == 0) && (begin_ == nullptr)); }
 
     void clear() {
         node_ptr next;
@@ -101,11 +98,14 @@ class s21_List {
         return end_->back->node::get_elem();
     }
 
+    bool empty() const { return begin_ == nullptr; }
+
     node_ptr begin() const { return begin_; }
+
     node_ptr end() const { return end_; }
 
-    bool empty() const { return begin_ == nullptr || sizeOf != 0; }
-    size_type size() { return sizeOf; }
+    size_type size() const { return sizeOf; }
+
     size_type max_size() const { return size_type(-1); }
 
     node_iter insert(node_iter iter, const_reference value) {
@@ -121,16 +121,11 @@ class s21_List {
             begin_ = chunck;
         } else {
             chunck->fwd = pos;
-            if (begin_ == nullptr) {
-                begin_ = chunck;
-                pos->back = chunck;
-            } else {
-                chunck->back = pos->back;
-                pos->back->fwd = chunck;
-                pos->back = chunck;
-            }
+            chunck->back = pos->back;
+            pos->back->fwd = chunck;
+            pos->back = chunck;
         }
-        sizeOf++;
+        ++sizeOf;
         iter = chunck;
         return iter;
     }
@@ -145,7 +140,7 @@ class s21_List {
             pos->back->fwd = pos->fwd;
             pos->fwd->back = pos->back;
         }
-        sizeOf--;
+        --sizeOf;
         delete pos;
     }
 
