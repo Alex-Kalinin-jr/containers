@@ -287,26 +287,27 @@ public:
     void sort() {
         if (begin_ == nullptr || end_->back == begin_) return;
         node_ptr buff = begin_;
-        node_ptr chunck = begin_;
-        for (size_type i = 0; i < sizeOf - 2; ++i) {
-            for (size_type j = 0; j < sizeOf - i - 2; ++j) {
+        node_ptr chunck;
+        node_ptr optimizer = end_;
+        while (optimizer->back != begin_) {
+            while (buff != optimizer->back) {
                 chunck = buff->fwd;
                 if (chunck->node::get_elem() < buff->node::get_elem()) {
                     if (buff == begin_) {
-                        begin_ = buff->fwd;
-                    }
-                    if (buff->fwd == end_->back) {
-                        end_->back = buff;
+                        begin_ = chunck;
                     }
                     chunck->back = buff->back;
+                    if (chunck != begin_) buff->back->fwd = chunck;
                     buff->back = chunck;
                     buff->fwd = chunck->fwd;
+                    chunck->fwd->back = buff;
                     chunck->fwd = buff;
                 } else {
                     buff = chunck;
                 }
             }
             buff = begin_;
+            optimizer = optimizer->back;
         }
     }
 

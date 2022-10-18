@@ -61,22 +61,45 @@ public:
     node_iterator(node_ptr elem) : elem_(elem) {};
     ~node_iterator() {};
 
-    void operator++() {if (elem_ != nullptr) elem_ = elem_->fwd;}
-    void operator--() {if (elem_ != nullptr) elem_ = elem_->back;}
+    void operator++() {if (elem_ != nullptr &&
+                        elem_->fwd != nullptr) elem_ = elem_->fwd;}
+    void operator--() {if (elem_ != nullptr
+                        && elem_->back != nullptr) elem_ = elem_->back;}
+
     node_iter operator++(int) {
         node_iter buff(*this);
         if (elem_ != nullptr) elem_ = elem_->fwd;
         return buff;
     }
+
     node_iter operator--(int) {
         node_iter buff(*this);
         if (elem_ != nullptr) elem_ = elem_->back;
         return buff;
     }
+
+    node_iter operator-(const int &rv) {
+        node_iter buff(*this);
+        for (int i = 0; i < rv; ++i) {
+            if (buff.elem_ != nullptr
+            && buff.elem_->back != nullptr) buff.elem_ = buff.elem_->back;
+        }
+        return buff;
+    }
+
+    node_iter operator+(const int &rv) {
+        node_iter buff(*this);
+        for (int i = 0; i < rv; ++i) {
+            if (buff.elem_ != nullptr
+            && buff.elem_->fwd != nullptr) buff.elem_ = buff.elem_->fwd;
+        }
+        return buff;
+    }
+
     bool operator==(const node_iterator other) const {return elem_ == other.elem;}
     bool operator!=(const node_iterator other) const {return elem_ != other.elem;}
     node_iterator &operator=(const node_iterator &other) {
-        elem_ = other.elem;
+        elem_ = other.elem_;
         return *this;
     }
     node_iterator &operator=(node_iterator &&other) {
@@ -90,7 +113,7 @@ public:
     }
     node_ptr get_elem() const {return elem_;}
 protected:
-    s21_Node<value_type> * elem_;
+    node_ptr elem_;
 };
 
 #endif  // _CONTAINERS_SRC_S21_NODE_

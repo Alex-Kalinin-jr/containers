@@ -324,3 +324,47 @@ TEST(list, sort) {
     ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), 6);
     ASSERT_EQ(a.size(), 3);
 }
+
+TEST(list, sort2) {
+    s21_List<char> a{1, 6, 3, 4, -5, 3, 3, 6, 1, 6, 2};
+    a.sort();
+    node_iterator<char> itrA(a.end());
+    --itrA;
+    ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), 6);
+    --itrA;
+    ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), 6);
+    --itrA;
+    ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), 6);
+    --itrA;
+    ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), 4);
+    itrA = a.begin();
+    itrA = itrA + 1;
+    ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), 1);
+    itrA = itrA - 1;
+    ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), -5);
+    ASSERT_EQ(a.size(), 11);
+}
+
+TEST(list, sort3_runtime) {
+    s21_List<int> a;
+    node_iterator<int> itrA(a.end());
+    int * k = new int[10000];
+    for (int i = 10001; i > 1; --i) {
+        k[10001-i] = i - 1;
+    }
+    for (int i = 0; i < 10000; ++i) {
+        a.insert(itrA, k[i]);
+    }
+    itrA--;
+    ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), 1);
+    itrA = a.begin();
+    ASSERT_EQ((itrA).node_iterator::get_elem()->s21_Node::get_elem(), 10000);
+    a.sort();
+    itrA = a.begin();
+    ASSERT_EQ((itrA).node_iterator::get_elem()->s21_Node::get_elem(), 1);
+    itrA = a.end();
+    --itrA;
+    itrA = itrA - 60;
+    ASSERT_EQ((itrA).node_iterator::get_elem()->s21_Node::get_elem(), 9940);
+    delete[] k;
+}
