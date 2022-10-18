@@ -16,53 +16,29 @@ class s21_List {
         node_ptr endNode = new node(zero);
         end_ = endNode;
     };
-    s21_List(size_type n, const_reference el) : sizeOf(n) {
-        node_ptr prev = new node(el);
-        begin_ = prev;
-        while (--n > 0) {
-            node_ptr buff = new node(el);
-            buff->back = prev;
-            prev->fwd = buff;
-            prev = buff;
-        }
-        node_ptr endNode = new node(el);
-        endNode->back = prev;
-        prev->fwd = endNode;
-        end_ = endNode;
+    s21_List(size_type n, const_reference el) : s21_List() {
+        ++n;
+        node_iter iter = end();
+        while(--n > 0) insert(iter, el);
     }
-
     s21_List(std::initializer_list<value_type> const &items) : s21_List() {
         auto el = items.begin();
-        node_ptr prev = new node(*el);
-        begin_ = prev;
-        ++sizeOf;
-        while ((++el) != items.end()) {
-            node_ptr buff = new node(*el);
-            buff->back = prev;
-            prev->fwd = buff;
-            prev = buff;
-            ++sizeOf;
+        node_iter iter = end();
+        while (el != items.end()) {
+            insert(iter, *el);
+            ++el;
         }
-        end_->back = prev;
-        prev->fwd = end_;
     }
-
     s21_List(const s21_List &other) : s21_List() {
-        sizeOf = other.sizeOf;
-        node_ptr iter = other.begin_;
-        node_ptr prev = new node(*iter);
-        begin_ = prev;
-        while (iter != other.end_->back) {
-            iter = iter->fwd;
-            node_ptr buff = new node(*iter);
-            buff->back = prev;
-            prev->fwd = buff;
-            prev = buff;
+        if (other.begin != nullptr) {
+            node_iter iter = end();
+            node_iter iter_2 = other.begin();
+            while (iter_2.node_iter::get_elem() != other.end()) {
+                insert(iter, iter_2.node_iter::get_elem()->node::get_elem());
+                ++iter_2;
+            }
         }
-        end_->back = prev;
-        prev->fwd = end_;
     }
-
     s21_List(s21_List &&other) {
         begin_ = other.begin_;
         end_ = other.end_;
