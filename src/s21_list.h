@@ -236,7 +236,8 @@ class s21_List {
         node_ptr buff = begin_;
         node_ptr for_del;
         while (buff->fwd != end_) {
-            if (buff->fwd->node::get_elem() == buff->node::get_elem()) {
+            if (buff->fwd->node::get_elem() == buff->node::get_elem() &&
+            buff->fwd != end_) {
                 for_del = buff->fwd;
                 buff->fwd = for_del->fwd;
                 for_del->fwd->back = buff;
