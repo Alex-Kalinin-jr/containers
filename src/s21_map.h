@@ -1,51 +1,48 @@
-#ifndef SRC_S21_SET_H_
-#define SRC_S21_SET_H_
+#ifndef SRC_S21_MAP_H_
+#define SRC_S21_MAP_H_
 
-#include <cstddef>
+#include <stdexcept>
 #include <initializer_list>
 #include <utility>
 
 namespace s21 {
 
-template <class T>
+
+template <class Key, class T>
 class Node {
- public:
+public:
   Node* parent = nullptr;
   Node* left = nullptr;
   Node* right = nullptr;
 
   T value;
+  const Key key;
 
-  explicit Node(const T &value) : value(value) {}
+  explicit Node(Key key, const T &value) : value(value), key(key) {}
 };
 
-template <class T>
-class SetIterator {
- public:
+template <class Key, class T>
+class MapIterator {
+public:
 
-  explicit SetIterator(Node<T>* node) : node(node) {}
+  explicit MapIterator(Node<Key,T>* node) : node(node) {}
 
-  T& value() const { return node->value; }
+  T& value() { return node->value; }
+  const Key key() const { return node->key; }
 
   void operator++() { increase(); }
   void operator++(int) { increase(); }
   void operator--() { decrease(); }
   void operator--(int) { decrease(); }
-  bool operator==(const SetIterator& other) { return node == other.node; }
-  bool operator!=(const SetIterator& other) { return node != other.node; }
-  T &operator*() const { 
-    if (node != nullptr) {
-      return node->value;
-    } else {
-      throw std::out_of_range("aaaa");
-    }
-  }
+  bool operator==(const MapIterator& other) { return node == other.node; }
+  bool operator!=(const MapIterator& other) { return node != other.node; }
 
 
- protected:
-  Node<T>* node;
+protected:
+  Node<Key,T>* node;
 
- private:
+private:
+
   void increase() {
     if (node == nullptr) return;
 
@@ -81,61 +78,91 @@ class SetIterator {
       node = node->parent;
     }
   }
-
 };
 
-template <class T>
-class SetConstIterator : public SetIterator<T> {
- public:
-  explicit SetConstIterator(Node<T>* node) : SetIterator<T>(node) {}
+template <class Key, class T>
+class MapConstIterator : public MapIterator<Key, T> {
+public:
+  explicit MapConstIterator(Node<Key, T>* node) : MapIterator<Key, T>(node) {}
 
-  const T value() const { return SetIterator<T>::node->value; }
+  const Key key() const { return MapIterator<Key, T>::node->key; }
+  const T value() const { return MapIterator<Key, T>::node->key; }
 
-  bool operator==(const SetConstIterator& other) { return SetIterator<T>::node == other.node; }
-  bool operator!=(const SetConstIterator& other) { return SetIterator<T>::node != other.node; }
+  bool operator==(const MapConstIterator& other) { return MapIterator<Key, T>::node == other.node; }
+  bool operator!=(const MapConstIterator& other) { return MapIterator<Key, T>::node != other.node; }
 };
 
-template <class Key>
-class set {
 
- public:
-
+template <class Key, class T>
+class map {
+public:
   using key_type = Key;
-  using value_type = Key;
+  using mapped_type = T;
+  using value_type = std::pair<const key_type, mapped_type>;
   using reference = value_type&;
   using const_reference = const value_type&;
-  using iterator = SetIterator<Key>;
-  using const_iterator = SetConstIterator<Key>;
+  using iterator = MapIterator<Key, T>;
+  using const_iterator = MapConstIterator<Key, T>;
   using size_type = size_t;
 
-  set() {}
+  map() {}
 
-  set(std::initializer_list<value_type> const &items) {
-    for (auto it = items.begin(); it != items.end(); ++it) {
-      insert(*it);
+  map(std::initializer_list<value_type> const &items) {
+    for (auto it : items) {
+      insert(it);
     }
   }
 
-  set(const set &s) : size_(s.size_) {
-    CopyTree(s.root_);
+  map(const map &m) : size_(m.size_) {
+    CopyTree(m.root_);
   }
 
-  set(set &&s) : size_(s.size_), root_(s.root_) {
-    s.size_ = 0;
-    s.root_ = nullptr;
+  map(map &&m) : size_(m.size_), root_(m.root_) {
+    m.size_ = 0;
+    m.root_ = nullptr;
   }
 
-  ~set() { DeleteTree(root_); }
+  ~map() { DeleteTree(root_); }
 
-  void operator=(set &&s) {
-    if (this != &s) {
-      size_ = s.size_;
-      CopyTree(s.root_);
+  operator=(map &&m) {
+    if (this != &m) {
+      size_ = m.size_;
+      CopyTree(m.root_);
+    }
+  }
+
+  T& at(const Key& key) {
+    Node<Key,T>* node = root_;
+    while (key != node->key) {
+      if (key < node->key) {
+        if (node->key != nullptr ) {
+          node = node->left;
+        } else {
+          throw std::out_of_range("index not found!");
+        }
+      } else {
+        if (node->key != nullptr) {
+          node = node->right;
+        } else {
+          throw std::out_of_range("index not found!");
+        }
+      }
+    }
+    return node->value;
+  }
+
+  T& operator[](const Key& key) {
+    if (!contains(key)) {
+      std::pair<iterator, bool> tmp = insert(key, T);
+      iterator it = tmp.first;
+      return it.value();
+    } else {
+      return at(key);
     }
   }
 
   iterator begin() {
-    Node<Key>* node = root_;
+    Node<Key, T>* node = root_;
     while (node != nullptr && node->left != nullptr) {
       node = node->left;
     }
@@ -143,6 +170,7 @@ class set {
   }
 
   iterator end() { return iterator(nullptr); }
+
   const_iterator cbegin() { return begin(); }
   const_iterator cend() { return end(); }
 
@@ -150,26 +178,30 @@ class set {
   size_type size() { return size_; }
   size_type max_size() { return max_size_; }
 
+
   void clear() {
     DeleteTree(root_);
-    size_ = 0;
     root_ = nullptr;
+    size_ = 0;
+  }
+  std::pair<iterator, bool> insert(const value_type& value) {
+    return insert(value.first, value.second);
   }
 
-  std::pair<iterator, bool> insert(const value_type& value) {
+  std::pair<iterator, bool> insert(const Key& key, const T& obj) {
     if (size_ >= max_size_) {
       return std::make_pair(iterator(nullptr), false);
     }
-    Node<Key>* node = new Node<Key>(value);
+    Node<Key, T>* node = new Node<Key, T>(key, obj);
     std::pair<iterator, bool> result = std::make_pair(iterator(node), true);
     ++size_;
 
     if(root_ == nullptr) {
       root_ = node;
     } else {
-      Node<Key>* tmp = root_;
+      Node<Key, T>* tmp = root_;
       while(tmp != nullptr) {
-        if (value < tmp->value) {
+        if (key < tmp->key) {
           if (tmp->left == nullptr) {
             tmp->left = node;
             node->parent = tmp;
@@ -177,7 +209,7 @@ class set {
           } else {
             tmp = tmp->left;
           }
-        } else if (value > tmp->value) {
+        } else if (key > tmp->key) {
           if (tmp->right == nullptr) {
             tmp->right = node;
             node->parent = tmp;
@@ -196,10 +228,51 @@ class set {
     return result;
   }
 
+  std::pair<iterator, bool> insert_or_assign(const Key& key, const T& obj) {
+    if (size_ >= max_size_) {
+      return std::make_pair(iterator(nullptr), false);
+    }
+    Node<Key, T>* node = new Node<Key, T>(key, obj);
+    std::pair<iterator, bool> result = std::make_pair(iterator(node), true);
+    ++size_;
+
+    if(root_ == nullptr) {
+      root_ = node;
+    } else {
+      Node<Key, T>* tmp = root_;
+      while(tmp != nullptr) {
+        if (key < tmp->key) {
+          if (tmp->left == nullptr) {
+            tmp->left = node;
+            node->parent = tmp;
+            break;
+          } else {
+            tmp = tmp->left;
+          }
+        } else if (key > tmp->key) {
+          if (tmp->right == nullptr) {
+            tmp->right = node;
+            node->parent = tmp;
+            break;
+          } else {
+            tmp = tmp->right;
+          }
+        } else {
+          tmp->value = node->value;
+          result = std::make_pair(iterator(tmp), true);
+          --size_;
+          delete node;
+          break;
+        }
+      }
+    }
+    return result;
+  }
+
   void erase(iterator pos) {
-    Node<Key>* node = root_;
-    while (node != nullptr && node->value != pos.value()) {
-      if (pos.value() < node->value) {
+    Node<Key, T>* node = root_;
+    while (node != nullptr && node->key != pos.key()) {
+      if (pos.key() < node->key) {
         node = node->left;
       } else {
         node = node->right;
@@ -245,7 +318,7 @@ class set {
           root_ = node->left;
         }
       } else {
-        Node<Key>* tmp = node->right;
+        Node<Key, T>* tmp = node->right;
         while (tmp->left != nullptr) {
           tmp = tmp->left;
         }
@@ -269,7 +342,19 @@ class set {
     }
   }
 
-  void swap(set& other) {
+bool contains(const Key& key) {
+  Node<Key, T>* node = root_;
+    while (node != nullptr && node->key != key) {
+      if (key < node->key) {
+        node = node->left;
+      } else {
+        node = node->right;
+      }
+    }
+    return node != nullptr;
+}
+
+void swap(map& other) {
     if (this != &other) {
       root_ = other.root_;
       size_ = other.size_;
@@ -278,53 +363,31 @@ class set {
     }
   }
 
-  void merge(set& other) {
-    for (iterator it = other.begin(); it != other.end();) {
-      if (!contains(it.value())) {
-        insert(it.value());
-        other.erase(it);
-        it = other.begin();
-      } else {
-        ++it;
-      }
+void merge(map& other) {
+  for (iterator it = other.begin(); it != other.end();) {
+    if (!contains(it.key())) {
+      insert(it.key(), it.value());
+      other.erase(it);
+      it = other.begin();
+    } else {
+      ++it;
     }
   }
+}
 
-  bool contains(const Key& key) {
-    Node<Key>* node = root_;
-    while (node != nullptr && node->value != key) {
-      if (key < node->value) {
-        node = node->left;
-      } else {
-        node = node->right;
-      }
-    }
-    return node != nullptr;
-  }
 
-  iterator find(const Key& key) {
-    Node<Key>* node = root_;
-    while (node != nullptr && node->value != key) {
-      if (key < node->value) {
-        node = node->left;
-      } else {
-        node = node->right;
-      }
-    }
-    return iterator(node);
-  }
 
- private:
-  const double lLong_ = 1e+9; 
+private:
+  const double lLong_ = 1e+9;
 
   size_type size_ = 0;
   size_type max_size_ = lLong_ / sizeof(value_type);
-  Node<Key>* root_ = nullptr;
+  Node<Key, T>* root_ = nullptr;
 
-  void CopyTree(Node<Key>* node) {
+  void CopyTree(Node<Key, T>* node) {
     if (node == nullptr) return;
 
-    insert(node->value);
+    insert(node->key, node->value);
 
     if (node->left != nullptr) {
       CopyTree(node->left);
@@ -334,7 +397,7 @@ class set {
     }
   }
 
-  void DeleteTree(Node<Key>* node) {
+  void DeleteTree(Node<Key, T>* node) {
     if (node == nullptr) return;
 
     if (node->left != nullptr) {
@@ -347,6 +410,8 @@ class set {
   }
 };
 
-}
 
-#endif  // SRC_S21_SET_H_
+};
+
+
+#endif // SRC_S21_MAP_H_
