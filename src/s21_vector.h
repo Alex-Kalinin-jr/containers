@@ -4,6 +4,7 @@
 #include <cmath>
 #include <initializer_list>
 #include <stdexcept>
+#include <climits>
 
 namespace s21 {
 
@@ -72,16 +73,16 @@ void operator=(vector&& v) {
 //
 
 reference at(size_type pos) {
-  if (pos > size_) 
+  if (pos >= size_) 
     throw std::out_of_range("Index out of range!");
   
   return data_[pos];
 }
 
-reference operator[](size_type pos) { return at(pos); }
+reference operator[](size_type pos) { return data_[pos]; }
 const_reference front() { return at(0); }
 const_reference back() { return at(size_ - 1); }
-T* data() { return data_; }
+iterator data() { return data_; }
 
 //
 // Iterators
@@ -177,12 +178,24 @@ void swap(vector& other) {
   }
 }
 
+// gtests
+bool operator==(const vector<T>& v) {
+    const double Eps_ = 1e-6;
+    bool result = true;
+    if (size_ == v.size_) {
+      for (size_type i = 0; i < size_; i++)
+        if (fabs(data_[i] - v.data_[i]) > Eps_)
+          result = false;
+    } else {
+      result = false;
+    }
+    return result;
+  }
 
-private:
-  const double lLong_ = 1e+9; 
+private: 
 
   size_type size_ = 0;
-  size_type max_size_ = lLong_ / sizeof(value_type);
+  size_type max_size_ = LLONG_MAX / sizeof(value_type);
   size_type capacity_ = 0;
   T* data_ = nullptr;
 
@@ -203,5 +216,6 @@ private:
 
 };
 
-}; // namespace s21
+}
+
 #endif // SRC_S21_VECTOR_H_

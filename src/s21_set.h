@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <initializer_list>
 #include <utility>
+#include <climits>
 
 namespace s21 {
 
@@ -315,10 +316,9 @@ class set {
   }
 
  private:
-  const double lLong_ = 1e+9; 
 
   size_type size_ = 0;
-  size_type max_size_ = lLong_ / sizeof(value_type);
+  size_type max_size_ = LLONG_MAX / sizeof(value_type);
   Node<Key>* root_ = nullptr;
 
   void CopyTree(Node<Key>* node) {
