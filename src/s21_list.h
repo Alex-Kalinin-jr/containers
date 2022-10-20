@@ -34,7 +34,7 @@ class s21_List {
             node_iter iter = end();
             node_iter iter_2 = other.begin();
             while (iter_2.node_iter::get_elem() != other.end()) {
-                insert(iter, iter_2.node_iter::get_elem()->node::get_elem());
+                insert(iter, *iter_2);
                 ++iter_2;
             }
         }

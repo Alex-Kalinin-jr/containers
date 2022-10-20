@@ -76,15 +76,15 @@ TEST(list, begin_end) {
     s21_List<char> h(g);
     node_iterator<char> a1(h.begin());
     node_iterator<char> a2(g.begin());
-    ASSERT_EQ(a1.node_iterator::get_elem()->s21_Node<char>::get_elem(), 5);
-    ASSERT_EQ(a2.node_iterator::get_elem()->s21_Node<char>::get_elem(), 5);
+    ASSERT_EQ(*a1, 5);
+    ASSERT_EQ(*a2, 5);
 
     a1 = h.end();
     a1--;
     a2 = g.end();
     --a2;
-    ASSERT_EQ(a1.node_iterator::get_elem()->s21_Node<char>::get_elem(), 1);
-    ASSERT_EQ(a2.node_iterator::get_elem()->s21_Node<char>::get_elem(), 1);
+    ASSERT_EQ(*a1, 1);
+    ASSERT_EQ(*a2, 1);
 }
 
 TEST(list, insert_1) {
@@ -208,10 +208,10 @@ TEST(list, main_add_del_test) {
     g.push_front(a2);
     g.push_back(a3);
     --itr;
-    ASSERT_EQ(itr.node_iterator::get_elem()->s21_Node::get_elem(), a2);
+    ASSERT_EQ(*itr, a2);
     g.insert(itr2, a4);
     g.insert(itr2, a5);
-    ASSERT_EQ(itr.node_iterator::get_elem()->s21_Node::get_elem(), a2);
+    ASSERT_EQ(*itr, a2);
     ASSERT_EQ(g.back(), a3);
     ASSERT_EQ(g.front(), a2);
     itr = g.begin();
@@ -219,7 +219,7 @@ TEST(list, main_add_del_test) {
     itr++;
     itr++;
     itr++;
-    ASSERT_EQ(itr.node_iterator::get_elem()->s21_Node::get_elem(), a3);
+    ASSERT_EQ(*itr, a3);
 }
 
 TEST(list, swap) {
@@ -240,8 +240,7 @@ TEST(list, splice) {
     node_iterator<char> itrA(a.begin());
     a.splice(itrA, b);
     ASSERT_EQ(a.size(), 10);
-    ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), 5);
-    // ASSERT_EQ(fl2, fl22);
+    ASSERT_EQ(*itrA, 5);
 }
 
 TEST(list, reverse) {
@@ -277,12 +276,12 @@ TEST(list, merge) {
     ASSERT_EQ(a.size(), 7);
     node_iterator<char> itrA(a.end());
     itrA--;
-    ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), 6);
+    ASSERT_EQ(*itrA, 6);
     --itrA;
     --itrA;
     --itrA;
     --itrA;
-    ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), 2);
+    ASSERT_EQ(*itrA, 2);
 }
 
 TEST(list, merge2) {
@@ -292,9 +291,9 @@ TEST(list, merge2) {
     ASSERT_EQ(a.size(), 3);
     node_iterator<char> itrA(a.end());
     itrA--;
-    ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), 6);
+    ASSERT_EQ(*itrA, 6);
     itrA = a.begin();
-    ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), 1);
+    ASSERT_EQ(*itrA, 1);
 }
 
 TEST(list, merge3) {
@@ -305,13 +304,13 @@ TEST(list, merge3) {
     ASSERT_EQ(a.size(), 3);
     node_iterator<char> itrA(a.end());
     itrA--;
-    ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), 6);
+    ASSERT_EQ(*itrA, 6);
     itrA = a.begin();
-    ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), 1);
+    ASSERT_EQ(*itrA, 1);
     a.merge(c);
     itrA = a.end();
     itrA--;
-    ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), 8);
+    ASSERT_EQ(*itrA, 8);
     ASSERT_EQ(a.size(), 6);
 }
 
@@ -320,7 +319,7 @@ TEST(list, sort) {
     a.sort();
     node_iterator<char> itrA(a.end());
     --itrA;
-    ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), 6);
+    ASSERT_EQ(*itrA, 6);
     ASSERT_EQ(a.size(), 3);
 }
 
@@ -329,18 +328,18 @@ TEST(list, sort2) {
     a.sort();
     node_iterator<char> itrA(a.end());
     --itrA;
-    ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), 6);
+    ASSERT_EQ(*itrA, 6);
     --itrA;
-    ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), 6);
+    ASSERT_EQ(*itrA, 6);
     --itrA;
-    ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), 6);
+    ASSERT_EQ(*itrA, 6);
     --itrA;
-    ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), 4);
+    ASSERT_EQ(*itrA, 4);
     itrA = a.begin();
     itrA = itrA + 1;
-    ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), 1);
+    ASSERT_EQ(*itrA, 1);
     itrA = itrA - 1;
-    ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), -5);
+    ASSERT_EQ(*itrA, -5);
     ASSERT_EQ(a.size(), 11);
 }
 
@@ -355,15 +354,15 @@ TEST(list, sort3_runtime) {
         a.insert(itrA, k[i]);
     }
     itrA--;
-    ASSERT_EQ(itrA.node_iterator::get_elem()->s21_Node::get_elem(), 1);
+    ASSERT_EQ(*itrA, 1);
     itrA = a.begin();
-    ASSERT_EQ((itrA).node_iterator::get_elem()->s21_Node::get_elem(), 10000);
+    ASSERT_EQ(*itrA, 10000);
     a.sort();
     itrA = a.begin();
-    ASSERT_EQ((itrA).node_iterator::get_elem()->s21_Node::get_elem(), 1);
+    ASSERT_EQ(*itrA, 1);
     itrA = a.end();
     --itrA;
     itrA = itrA - 60;
-    ASSERT_EQ((itrA).node_iterator::get_elem()->s21_Node::get_elem(), 9940);
+    ASSERT_EQ(*itrA, 9940);
     delete[] k;
 }
