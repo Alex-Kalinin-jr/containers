@@ -32,7 +32,6 @@ TEST(Element_Access, Test_02) {
   s21::vector<int> a = {1, 2, 3, 4, 5};
   ASSERT_EQ(a[3], 4);
   ASSERT_EQ(a[4], 5);
-  EXPECT_THROW(a[5], std::out_of_range);
 }
 TEST(Element_Access, Test_03) {
   s21::vector<int> a = {1, 2, 3, 4, 5};
@@ -66,6 +65,37 @@ TEST(Modifiers, Test_01) {
   a.push_back(5);
   ASSERT_TRUE(a[0] == 5);
   ASSERT_TRUE(a.size() == 1);
+  a.push_back(10);
+  ASSERT_TRUE(a[1] == 10);
+  ASSERT_TRUE(a.size() == 2);
+  a.pop_back();
+  ASSERT_TRUE(a.size() == 1);
   a.clear();
   ASSERT_TRUE(a.data() == nullptr);
+}
+TEST(Modifiers, Test_02) {
+  s21::vector<int> a = {1, 2, 3, 4, 5};
+  s21::vector<int> b = {1, 5, 2, 3, 4, 5};
+  a.insert(a.begin() + 1, 5);
+  ASSERT_TRUE(a == b);
+  s21::vector<int>::iterator it = a.begin();
+  a.insert(it + 2, 10);
+  s21::vector<int> c = {1, 5, 10, 2, 3, 4, 5};
+  ASSERT_TRUE(a == c);
+}
+TEST(Modifiers, Test_03) {
+  s21::vector<int> a = {1, 5, 10, 2, 3, 4, 5};
+  s21::vector<int> b = {1, 2, 3, 4, 5};
+  a.erase(a.begin() + 1);
+  a.erase(a.begin() + 1);
+  ASSERT_TRUE(a == b);
+}
+TEST(Modifiers, Test_04) {
+  s21::vector<int> a = {1, 5, 10, 2, 3, 4, 5};
+  s21::vector<int> b = {1, 2, 3, 4, 5};
+  a.swap(b);
+  ASSERT_EQ(a.size(), 5);
+  ASSERT_EQ(b.size(), 7);
+  ASSERT_EQ(a[2], 3);
+  ASSERT_EQ(b[2], 10);
 }
