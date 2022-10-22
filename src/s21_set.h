@@ -107,6 +107,7 @@ class set {
     using iterator = SetIterator<Key>;
     using const_iterator = SetConstIterator<Key>;
     using size_type = size_t;
+    using Sset = set<key_type>;
 
     set() {}
 
@@ -358,36 +359,42 @@ class s21_Multiset : public set<Key> {
     using size_type = size_t;
 
    public:
-    s21_Multiset() : Sset::set(){};
 
-    s21_Multiset(std::initializer_list<key_type> const& items)
-        : Sset::set(items) {};
+    s21_Multiset() : Sset::set(){};
 
     s21_Multiset(const s21_Multiset<Key> &ms) : Sset::set(ms) {};
 
+    s21_Multiset(std::initializer_list<key_type> const& items) :
+        Sset::set() {
+        for (auto it = items.begin(); it != items.end(); ++it) {
+            insert(*it);
+        }
+    };
+
+
     s21_Multiset(s21_Multiset<Key> &&ms) : Sset::set(ms) {};
 
-    ~s21_Multiset() { Sset::DeleteTree(Sset::root_); };
+    ~s21_Multiset() {};
 
-    void operator=(s21_Multiset &&s) {
-        if (this != &s) {
-            Sset::size_ = s.Sset::size_;
-            Sset::CopyTree(s.Sset::root_);
-        }
-    }
+    // void operator=(s21_Multiset &&s) {
+    //     if (this != &s) {
+    //         Sset::size_ = s.Sset::size_;
+    //         Sset::CopyTree(s.Sset::root_);
+    //     }
+    // }
 
     std::pair<iterator, bool> insert(const value_type& value) {
-        if (set<Key>::size_ >= set<Key>::max_size_) {
+        if (Sset::size_ >= Sset::max_size_) {
             return std::make_pair(iterator(nullptr), false);
         }
         Node<Key>* node = new Node<Key>(value);
         std::pair<iterator, bool> result = std::make_pair(iterator(node), true);
-        ++(set<Key>::size_);
+        ++(Sset::size_);
 
-        if (set<Key>::root_ == nullptr) {
-            set<Key>::root_ = node;
+        if (Sset::root_ == nullptr) {
+            Sset::root_ = node;
         } else {
-            Node<Key>* tmp = set<Key>::root_;
+            Node<Key>* tmp = Sset::root_;
             while (tmp != nullptr) {
                 if (value < tmp->value) {
                     if (tmp->left == nullptr) {
