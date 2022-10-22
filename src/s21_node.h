@@ -114,12 +114,12 @@ class node_iterator {
     }
     node_ptr get_elem() const { return elem_; }
     const_reference operator*() const {
-    if (elem_ != nullptr) {
-      return elem_->node::get_elem();
-    } else {
-      throw std::out_of_range("node_iterator::node is empty");
+        if (elem_ != nullptr) {
+            return elem_->node::get_elem();
+        } else {
+            throw std::out_of_range("node_iterator::node is empty");
+        }
     }
-  }
 
    protected:
     node_ptr elem_;

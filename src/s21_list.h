@@ -19,7 +19,7 @@ class s21_List {
     s21_List(size_type n, const_reference el) : s21_List() {
         ++n;
         node_iter iter = end();
-        while(--n > 0) insert(iter, el);
+        while (--n > 0) insert(iter, el);
     }
     s21_List(std::initializer_list<value_type> const &items) : s21_List() {
         auto el = items.begin();
@@ -71,7 +71,6 @@ class s21_List {
         }
         return *this;
     }
-
 
     void clear() {
         node_ptr next;
@@ -237,7 +236,7 @@ class s21_List {
         node_ptr for_del;
         while (buff->fwd != end_) {
             if (buff->fwd->node::get_elem() == buff->node::get_elem() &&
-            buff->fwd != end_) {
+                buff->fwd != end_) {
                 for_del = buff->fwd;
                 buff->fwd = for_del->fwd;
                 for_del->fwd->back = buff;
