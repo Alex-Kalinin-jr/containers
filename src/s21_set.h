@@ -76,9 +76,11 @@ class SetIterator {
 
   void decrease() {
     if (node == nullptr) return;
+    bool end = false;
 
     if (node->parent != nullptr && node->parent->right == node && node->parent->value > node->value) {
       node = node->parent;
+      end = true;
     }
 
     if (node->left != nullptr) {
@@ -86,7 +88,7 @@ class SetIterator {
       while (node->right != nullptr) {
         node = node->right;
       }
-    } else {
+    } else if (!end) {
       if (node->parent != nullptr && node->parent->left == node) {
         while (node->parent != nullptr && node->parent->right != node) {
           node = node->parent;
@@ -218,8 +220,10 @@ class set {
   }
 
   void erase(iterator pos) {
+    if (pos == end()) return;
+
     Node<Key>* node = root_;
-    while (node != nullptr && node->value != pos.value()) {
+    while (node != nullptr && node->value != pos.value() && node != end_) {
       if (pos.value() < node->value) {
         node = node->left;
       } else {
@@ -227,7 +231,7 @@ class set {
       }
     }
 
-    if (node != nullptr) {
+    if (node != nullptr && node != end_) {
       if (node->left == nullptr && node->right == nullptr) {
         if (node->parent != nullptr) {
           if (node->parent->left == node) {
@@ -275,6 +279,7 @@ class set {
         if (node->parent != nullptr) {
           if (node->parent->left == node) {
             node->parent->left = node->right;
+            node->right->parent = node->parent;
           }
           if (node->parent->right == node) {
             node->parent->right = node->right;
