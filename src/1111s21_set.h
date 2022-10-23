@@ -49,8 +49,7 @@ class SetIterator {
     void increase() {
         if (node == nullptr) return;
 
-        if (node->parent != nullptr &&
-        node->value == node->parent->value) {
+        if (node->parent != nullptr && node->value == node->parent->value) {
             node = node->parent;
             return;
         }
@@ -75,7 +74,9 @@ class SetIterator {
 
         if (node->left != nullptr) {
             node = node->left;
-            if (node->parent->value == node->value) { return; }
+            if (node->parent->value == node->value) {
+                return;
+            }
 
             while (node->right != nullptr) {
                 node = node->right;
@@ -348,10 +349,8 @@ class set {
     }
 };
 
-
 template <typename Key>
 class s21_Multiset : public set<Key> {
-
     using node = Node<Key>;
     using Sset = set<Key>;
     using key_type = Key;
@@ -363,22 +362,19 @@ class s21_Multiset : public set<Key> {
     using size_type = size_t;
 
    public:
-
     s21_Multiset() : Sset::set(){};
 
-    s21_Multiset(const s21_Multiset<Key> &ms) : Sset::set(ms) {};
+    s21_Multiset(const s21_Multiset<Key>& ms) : Sset::set(ms){};
 
-    s21_Multiset(std::initializer_list<key_type> const& items) :
-        Sset::set() {
+    s21_Multiset(std::initializer_list<key_type> const& items) : Sset::set() {
         for (auto it = items.begin(); it != items.end(); ++it) {
             insert(*it);
         }
     };
 
+    s21_Multiset(s21_Multiset<Key>&& ms) : Sset::set(ms){};
 
-    s21_Multiset(s21_Multiset<Key> &&ms) : Sset::set(ms) {};
-
-    ~s21_Multiset() {};
+    ~s21_Multiset(){};
 
     // void operator=(s21_Multiset &&s) {
     //     if (this != &s) {
@@ -407,12 +403,14 @@ class s21_Multiset : public set<Key> {
         other.size_ = 0;
     }
 
-    size_type count(const Key &val) {
+    size_type count(const Key& val) {
         size_type i = Sset::size_;
         size_type result = 0;
         iterator itr1 = Sset::begin();
         while (--i != 0) {
-            if (val == *itr1) { ++result; }
+            if (val == *itr1) {
+                ++result;
+            }
             ++itr1;
         }
         return result;
@@ -422,7 +420,9 @@ class s21_Multiset : public set<Key> {
         size_type i = Sset::size_;
         iterator itr1 = Sset::begin();
         while (itr1.get_node() != nullptr || i != 0) {
-            if (key == *itr1) { return itr1;}
+            if (key == *itr1) {
+                return itr1;
+            }
             ++itr1;
             --i;
         }
@@ -433,14 +433,16 @@ class s21_Multiset : public set<Key> {
         size_type i = Sset::size_;
         iterator itr1 = Sset::begin();
         while (itr1.get_node() != nullptr || i != 0) {
-            if (key == *itr1) { return true;}
+            if (key == *itr1) {
+                return true;
+            }
             ++itr1;
             --i;
         }
         return false;
     }
 
-    std::pair<iterator,iterator> equal_range(const Key& key) {
+    std::pair<iterator, iterator> equal_range(const Key& key) {
         iterator itr1 = Sset::begin();
         while (itr1.get_node() != nullptr || *itr1 != key) {
             ++itr1;
@@ -448,7 +450,7 @@ class s21_Multiset : public set<Key> {
         iterator itr2 = itr1;
         if (itr1.get_node() != nullptr) {
             while (itr2.get_node()->parent != nullptr &&
-            (itr2.get_node()->parent)->value == key) {
+                   (itr2.get_node()->parent)->value == key) {
                 ++itr2;
             }
         }
@@ -456,11 +458,13 @@ class s21_Multiset : public set<Key> {
         return result;
     }
 
-    private:
-
+   private:
     void insert_node(Node<Key>* node) {
-        if (node == nullptr) { return; }
+        if (node == nullptr) {
+            return;
+        }
         ++(Sset::size_);
+
         if (Sset::root_ == nullptr) {
             Sset::root_ = node;
         } else {
@@ -494,9 +498,6 @@ class s21_Multiset : public set<Key> {
             }
         }
     }
-
-
-
 };
 }  // namespace s21
 
