@@ -281,7 +281,7 @@ class set {
         }
     }
 
-    void merge(set& other) {
+    virtual void merge(set& other) {
         for (iterator it = other.begin(); it != other.end();) {
             if (!contains(it.value())) {
                 insert(it.value());
@@ -392,15 +392,69 @@ class s21_Multiset : public set<Key> {
             return std::make_pair(iterator(nullptr), false);
         }
         Node<Key>* node = new Node<Key>(value);
+        insert_node(node);
         std::pair<iterator, bool> result = std::make_pair(iterator(node), true);
-        ++(Sset::size_);
+        return result;
+    }
 
+    void merge(s21_Multiset& other) {
+        iterator it = other.begin();
+        for (size_type i = 0; i < other.size_; ++i) {
+            insert_node(it.get_node());
+            ++it;
+        }
+        other.root_ = nullptr;
+        other.size_ = 0;
+    }
+
+    size_type count(const Key &val) {
+        size_type i = Sset::size_;
+        size_type result = 0;
+        iterator itr1 = Sset::begin();
+        while (--i != 0) {
+            if (val == *itr1) { ++result; }
+            ++itr1;
+        }
+        return result;
+    }
+
+    iterator find(const Key& key) {
+        size_type i = Sset::size_;
+        iterator itr1 = Sset::begin();
+        while (itr1.get_node() != nullptr || i != 0) {
+            if (key == *itr1) { return itr1;}
+            ++itr1;
+            --i;
+        }
+        return itr1;
+    }
+
+    bool contains(const Key& key) {
+        size_type i = Sset::size_;
+        iterator itr1 = Sset::begin();
+        while (itr1.get_node() != nullptr || i != 0) {
+            if (key == *itr1) { return true;}
+            ++itr1;
+            --i;
+        }
+        return false;
+    }
+
+    std::pair<iterator,iterator> equal_range(const Key& key) {
+
+    }
+
+    private:
+
+    void insert_node(Node<Key>* node) {
+        if (node == nullptr) { return; }
+        ++(Sset::size_);
         if (Sset::root_ == nullptr) {
             Sset::root_ = node;
         } else {
             Node<Key>* tmp = Sset::root_;
             while (tmp != nullptr) {
-                if (value < tmp->value) {
+                if (node->value < tmp->value) {
                     if (tmp->left == nullptr) {
                         tmp->left = node;
                         node->parent = tmp;
@@ -408,7 +462,7 @@ class s21_Multiset : public set<Key> {
                     } else {
                         tmp = tmp->left;
                     }
-                } else if (value > tmp->value) {
+                } else if (node->value > tmp->value) {
                     if (tmp->right == nullptr) {
                         tmp->right = node;
                         node->parent = tmp;
@@ -427,8 +481,9 @@ class s21_Multiset : public set<Key> {
                 }
             }
         }
-        return result;
     }
+
+
 
 };
 }  // namespace s21

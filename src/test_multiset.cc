@@ -100,3 +100,36 @@ TEST(multiset, swap) {
     ASSERT_EQ(b1.size(), 9);
     ASSERT_EQ(b2.size(), 5);
 }
+
+// TEST(multiset, merge) {
+//     s21::s21_Multiset<int> b1{6, 3, 3, 4, 5};
+//     s21::s21_Multiset<int> b2{1, 1, 3, 4, 5, 1, 3, 4, 5};
+//     b1.merge(b2);
+//     // ASSERT_EQ(b1.size(), 14);
+//     // s21::SetIterator<int> itr1 = b1.begin();
+//     // ASSERT_EQ(*itr1, 1);
+// }
+
+TEST(multiset, count) {
+    s21::s21_Multiset<int> b1{1, 1, 3, 4, 5};
+    ASSERT_EQ(b1.count(1), 2);
+}
+
+TEST(multiset, count_2) {
+    s21::s21_Multiset<int> b1{1, 1, 3, 1, 1, 1, 4, 5};
+    ASSERT_EQ(b1.count(1), 5);
+    ASSERT_EQ(b1.count(3), 1);
+    ASSERT_EQ(b1.count(7), 0);
+}
+
+TEST(multiset, find) {
+    s21::s21_Multiset<int> b1{1, 1, 3, 1, 1, 1, 4, 5};
+    s21::SetIterator<int> itr1 = b1.find(3);
+    ASSERT_EQ(*itr1, 3);
+}
+
+TEST(multiset, contains) {
+    s21::s21_Multiset<int> b1{1, 1, 3, 1, 1, 1, 4, 5};
+    ASSERT_TRUE(b1.contains(3));
+    ASSERT_FALSE(b1.contains(7));
+}
