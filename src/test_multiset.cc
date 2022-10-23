@@ -133,3 +133,9 @@ TEST(multiset, contains) {
     ASSERT_TRUE(b1.contains(3));
     ASSERT_FALSE(b1.contains(7));
 }
+
+TEST(multiset, equal_range) {
+    s21::s21_Multiset<int> b1{1, 1, 3, 1, 1, 1, 4, 5};
+    std::pair<s21::SetIterator<int>, s21::SetIterator<int>> result = b1.equal_range(1);
+        ASSERT_EQ(*(result.first), 1);
+}

@@ -441,7 +441,19 @@ class s21_Multiset : public set<Key> {
     }
 
     std::pair<iterator,iterator> equal_range(const Key& key) {
-
+        iterator itr1 = Sset::begin();
+        while (itr1.get_node() != nullptr || *itr1 != key) {
+            ++itr1;
+        }
+        iterator itr2 = itr1;
+        if (itr1.get_node() != nullptr) {
+            while (itr2.get_node()->parent != nullptr &&
+            (itr2.get_node()->parent)->value == key) {
+                ++itr2;
+            }
+        }
+        std::pair<iterator, iterator> result = std::make_pair(itr1, itr2);
+        return result;
     }
 
     private:
