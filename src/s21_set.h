@@ -44,9 +44,14 @@ class SetIterator {
    protected:
     Node<T>* node;
 
-   private:
     void increase() {
         if (node == nullptr) return;
+
+        if (node->parent != nullptr &&
+        node->value == node->parent->value) {
+            node = node->parent;
+            return;
+        }
 
         if (node->right != nullptr) {
             node = node->right;
@@ -68,6 +73,8 @@ class SetIterator {
 
         if (node->left != nullptr) {
             node = node->left;
+            if (node->parent->value == node->value) { return; }
+
             while (node->right != nullptr) {
                 node = node->right;
             }
@@ -418,6 +425,7 @@ class s21_Multiset : public set<Key> {
                         node->left = tmp->left;
                     }
                     tmp->left = node;
+                    node->parent = tmp;
                     break;
                 }
             }
