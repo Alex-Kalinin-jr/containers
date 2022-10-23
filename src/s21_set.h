@@ -272,10 +272,12 @@ class set {
 
     void swap(set& other) {
         if (this != &other) {
-            root_ = other.root_;
-            size_ = other.size_;
-            other.size_ = 0;
-            other.root_ = nullptr;
+            Node<Key>* buff = other.root_;
+            size_type buff_size = other.size_;
+            other.size_ = size_;
+            other.root_ = root_;
+            root_ = buff;
+            size_ = buff_size;
         }
     }
 

@@ -91,3 +91,12 @@ TEST(multiset, erase) {
     ASSERT_EQ(*itr1, 3);
     ASSERT_EQ(b1.size(), 3);
 }
+
+TEST(multiset, swap) {
+    s21::s21_Multiset<int> b1{1, 1, 3, 4, 5};
+    s21::s21_Multiset<int> b2{1, 1, 3, 4, 5, 1, 3, 4, 5};
+    ASSERT_EQ(b2.size(), 9);
+    b1.swap(b2);
+    ASSERT_EQ(b1.size(), 9);
+    ASSERT_EQ(b2.size(), 5);
+}
