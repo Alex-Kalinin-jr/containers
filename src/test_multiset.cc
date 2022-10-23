@@ -76,3 +76,18 @@ TEST(multiset, insert2) {
     ASSERT_EQ(*itr1, 1);
     ASSERT_EQ(b1.size(), 1);
 }
+
+TEST(multiset, erase) {
+    s21::s21_Multiset<int> b1{1, 1, 3, 4, 5};
+    s21::SetIterator<int> itr1 = b1.begin();
+    ASSERT_EQ(*itr1, 1);
+    ASSERT_EQ(b1.size(), 5);
+    b1.erase(itr1);
+    itr1 = b1.begin();
+    ASSERT_EQ(*itr1, 1);
+    ASSERT_EQ(b1.size(), 4);
+    b1.erase(itr1);
+    itr1 = b1.begin();
+    ASSERT_EQ(*itr1, 3);
+    ASSERT_EQ(b1.size(), 3);
+}
