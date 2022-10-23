@@ -41,6 +41,8 @@ class SetIterator {
         }
     }
 
+    Node<T>* get_node() const { return node; }
+
    protected:
     Node<T>* node;
 
@@ -202,7 +204,7 @@ class set {
         return result;
     }
 
-    void erase(iterator pos) {
+    virtual void erase(iterator pos) {
         Node<Key>* node = root_;
         while (node != nullptr && node->value != pos.value()) {
             if (pos.value() < node->value) {
@@ -433,6 +435,79 @@ class s21_Multiset : public set<Key> {
         return result;
     }
 };
+
+void erase(iterator pos) {
+        Node<Key>* node = root_;
+        while (node != nullptr && node->value != pos.value()) {
+            if (pos.value() < node->value) {
+                node = node->left;
+            } else {
+                node = node->right;
+            }
+        }
+
+        if (node != nullptr) {
+            if (node->left == nullptr && node->right == nullptr) {
+                if (node->parent != nullptr) {
+                    if (node->parent->left == node) {
+                        node->parent->left = nullptr;
+                    }
+                    if (node->parent->right == node) {
+                        node->parent->right = nullptr;
+                    }
+                } else {
+                    root_ = nullptr;
+                }
+            } else if (node->left == nullptr) {
+                if (node->parent != nullptr) {
+                    if (node->parent->left == node) {
+                        node->parent->left = node->right;
+                    }
+                    if (node->parent->right == node) {
+                        node->parent->right = node->right;
+                    }
+                    node->right->parent = node->parent;
+                } else {
+                    node->right->parent = nullptr;
+                    root_ = node->right;
+                }
+            } else if (node->right == nullptr) {
+                if (node->parent != nullptr) {
+                    if (node->parent->left == node) {
+                        node->parent->left = node->left;
+                    }
+                    if (node->parent->right == node) {
+                        node->parent->right = node->left;
+                    }
+                    node->left->parent = node->parent;
+                } else {
+                    node->left->parent = nullptr;
+                    root_ = node->left;
+                }
+            } else {
+                Node<Key>* tmp = node->right;
+                while (tmp->left != nullptr) {
+                    tmp = tmp->left;
+                }
+                tmp->left = node->left;
+                tmp->left->parent = tmp;
+                if (node->parent != nullptr) {
+                    if (node->parent->left == node) {
+                        node->parent->left = node->right;
+                    }
+                    if (node->parent->right == node) {
+                        node->parent->right = node->right;
+                        node->right->parent = node->parent;
+                    }
+                } else {
+                    node->right->parent = nullptr;
+                    root_ = node->right;
+                }
+            }
+            --size_;
+            delete node;
+        }
+    }
 
 }  // namespace s21
 
