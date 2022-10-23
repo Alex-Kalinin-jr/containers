@@ -18,6 +18,7 @@ class Node {
   T value;
 
   explicit Node(const T &value) : value(value) {}
+  Node() {}
 };
 
 template <class T>
@@ -34,11 +35,15 @@ class SetIterator {
   void operator--(int) { decrease(); }
   bool operator==(const SetIterator& other) { return node == other.node; }
   bool operator!=(const SetIterator& other) { return node != other.node; }
-  T &operator*() const { 
+  T &operator*() const {
+    // Проверка на end, чтобы итератор указывающий на end возвращал значение последней ноды;
+    if (node != nullptr && node->parent != nullptr && node->parent->right == node && node->parent->value > node->value) {
+      return node->parent->value;
+    }
     if (node != nullptr) {
       return node->value;
     } else {
-      throw std::out_of_range("aaaa");
+      throw std::out_of_range("out of range");
     }
   }
 
@@ -49,6 +54,10 @@ class SetIterator {
  private:
   void increase() {
     if (node == nullptr) return;
+
+    // Проверка на end, чтобы итератор не уходил в nullptr
+    if (node->parent != nullptr && node->parent->right == node && node->parent->value > node->value) return;
+
 
     if (node->right != nullptr) {
       node = node->right;
@@ -67,6 +76,10 @@ class SetIterator {
 
   void decrease() {
     if (node == nullptr) return;
+
+    if (node->parent != nullptr && node->parent->right == node && node->parent->value > node->value) {
+      node = node->parent;
+    }
 
     if (node->left != nullptr) {
       node = node->left;
@@ -143,7 +156,7 @@ class set {
     return iterator(node);
   }
 
-  iterator end() { return iterator(nullptr); }
+  iterator end() { return iterator(end_); }
   const_iterator cbegin() { return begin(); }
   const_iterator cend() { return end(); }
 
@@ -166,10 +179,11 @@ class set {
     ++size_;
 
     if(root_ == nullptr) {
+      node->right = end_;
       root_ = node;
     } else {
       Node<Key>* tmp = root_;
-      while(tmp != nullptr) {
+      while(tmp != end_ || nullptr) {
         if (value < tmp->value) {
           if (tmp->left == nullptr) {
             tmp->left = node;
@@ -179,7 +193,13 @@ class set {
             tmp = tmp->left;
           }
         } else if (value > tmp->value) {
-          if (tmp->right == nullptr) {
+          if (tmp->right == end_) {
+            tmp->right = node;
+            node->parent = tmp;
+            end_->parent = node;
+            node->right = end_;
+            break;
+          } else if (tmp->right == nullptr) {
             tmp->right = node;
             node->parent = tmp;
             break;
@@ -314,7 +334,8 @@ class set {
     }
     return iterator(node);
   }
-
+ protected:
+  Node<Key>* end_ = new Node<Key>;
  private:
 
   size_type size_ = 0;
