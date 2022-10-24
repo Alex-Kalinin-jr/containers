@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "../s21_set_kalinin.h"
+#include "s21_set.h"
 
 TEST(multiset, init_1) {
     s21::s21_Multiset<int> a;

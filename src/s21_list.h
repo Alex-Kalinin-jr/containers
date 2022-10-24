@@ -16,53 +16,29 @@ class s21_List {
         node_ptr endNode = new node(zero);
         end_ = endNode;
     };
-    s21_List(size_type n, const_reference el) : sizeOf(n) {
-        node_ptr prev = new node(el);
-        begin_ = prev;
-        while (--n > 0) {
-            node_ptr buff = new node(el);
-            buff->back = prev;
-            prev->fwd = buff;
-            prev = buff;
-        }
-        node_ptr endNode = new node(el);
-        endNode->back = prev;
-        prev->fwd = endNode;
-        end_ = endNode;
+    s21_List(size_type n, const_reference el) : s21_List() {
+        ++n;
+        node_iter iter = end();
+        while (--n > 0) insert(iter, el);
     }
-
     s21_List(std::initializer_list<value_type> const &items) : s21_List() {
         auto el = items.begin();
-        node_ptr prev = new node(*el);
-        begin_ = prev;
-        ++sizeOf;
-        while ((++el) != items.end()) {
-            node_ptr buff = new node(*el);
-            buff->back = prev;
-            prev->fwd = buff;
-            prev = buff;
-            ++sizeOf;
+        node_iter iter = end();
+        while (el != items.end()) {
+            insert(iter, *el);
+            ++el;
         }
-        end_->back = prev;
-        prev->fwd = end_;
     }
-
     s21_List(const s21_List &other) : s21_List() {
-        sizeOf = other.sizeOf;
-        node_ptr iter = other.begin_;
-        node_ptr prev = new node(*iter);
-        begin_ = prev;
-        while (iter != other.end_->back) {
-            iter = iter->fwd;
-            node_ptr buff = new node(*iter);
-            buff->back = prev;
-            prev->fwd = buff;
-            prev = buff;
+        if (other.begin_ != nullptr) {
+            node_iter iter = end();
+            node_iter iter_2 = other.begin();
+            while (iter_2.node_iter::get_elem() != other.end()) {
+                insert(iter, *iter_2);
+                ++iter_2;
+            }
         }
-        end_->back = prev;
-        prev->fwd = end_;
     }
-
     s21_List(s21_List &&other) {
         begin_ = other.begin_;
         end_ = other.end_;
@@ -96,10 +72,6 @@ class s21_List {
         return *this;
     }
 
-    size_type size() const { return sizeOf; }
-
-    bool empty() { return ((sizeOf == 0) && (begin_ == nullptr)); }
-
     void clear() {
         node_ptr next;
         if (begin_ != nullptr) {
@@ -125,11 +97,14 @@ class s21_List {
         return end_->back->node::get_elem();
     }
 
+    bool empty() const { return begin_ == nullptr; }
+
     node_ptr begin() const { return begin_; }
+
     node_ptr end() const { return end_; }
 
-    bool empty() const { return begin_ == nullptr || sizeOf != 0; }
-    size_type size() { return sizeOf; }
+    size_type size() const { return sizeOf; }
+
     size_type max_size() const { return size_type(-1); }
 
     node_iter insert(node_iter iter, const_reference value) {
@@ -145,16 +120,11 @@ class s21_List {
             begin_ = chunck;
         } else {
             chunck->fwd = pos;
-            if (begin_ == nullptr) {
-                begin_ = chunck;
-                pos->back = chunck;
-            } else {
-                chunck->back = pos->back;
-                pos->back->fwd = chunck;
-                pos->back = chunck;
-            }
+            chunck->back = pos->back;
+            pos->back->fwd = chunck;
+            pos->back = chunck;
         }
-        sizeOf++;
+        ++sizeOf;
         iter = chunck;
         return iter;
     }
@@ -169,7 +139,7 @@ class s21_List {
             pos->back->fwd = pos->fwd;
             pos->fwd->back = pos->back;
         }
-        sizeOf--;
+        --sizeOf;
         delete pos;
     }
 
@@ -265,7 +235,8 @@ class s21_List {
         node_ptr buff = begin_;
         node_ptr for_del;
         while (buff->fwd != end_) {
-            if (buff->fwd->node::get_elem() == buff->node::get_elem()) {
+            if (buff->fwd->node::get_elem() == buff->node::get_elem() &&
+                buff->fwd != end_) {
                 for_del = buff->fwd;
                 buff->fwd = for_del->fwd;
                 for_del->fwd->back = buff;
