@@ -55,6 +55,13 @@ class SetIterator {
     //  private: DELETED BY
     void increase() {
         if (node == nullptr) return;
+// DELETED BY
+        // bool end = false;
+//END OF DELETION
+        if (node->parent == nullptr && node->right->value < node->value) {
+            return;
+
+        }
 
         // Проверка на end, чтобы итератор не уходил в nullptr
         if (node->parent != nullptr && node->parent->right == node &&
@@ -194,10 +201,11 @@ class set {
 
         if (root_ == nullptr) {
             node->right = end_;
+            node->right->parent = node;
             root_ = node;
         } else {
             Node<Key>* tmp = root_;
-            while (tmp != end_ || nullptr) {
+            while (tmp != end_ || tmp != nullptr) {
                 if (value < tmp->value) {
                     if (tmp->left == nullptr) {
                         tmp->left = node;
@@ -233,18 +241,20 @@ class set {
 
     void erase(iterator pos) {
         if (pos == end()) {
-            pos--;
+            throw std::out_of_range("invalid pointer");
         }
-
-        Node<Key>* node = root_;
-        while (node != nullptr && node->value != pos.value() && node != end_) {
-            if (pos.value() < node->value) {
-                node = node->left;
-            } else {
-                node = node->right;
-            }
-        }
-
+/*DELETED BY*/
+        // Node<Key>* node = root_;
+        // while (node != nullptr && node->value != pos.value() && node != end_) {
+        //     if (pos.value() < node->value) {
+        //         node = node->left;
+        //     } else {
+        //         node = node->right;
+        //     }
+        // }
+/*INSERTED BY*/
+        Node<Key>* node = pos.get_node();
+/*END OF INSERTION*/
         if (node != nullptr && node != end_) {
             if (node->left == nullptr && node->right == nullptr) {
                 if (node->parent != nullptr) {
@@ -281,6 +291,7 @@ class set {
                     node->left->parent = node->parent;
                     node->left->right = end_;
                     node->left->right->parent = node->left;
+                    node->parent = nullptr;
                 } else {
                     node->left->parent = nullptr;
                     root_ = node->left;
@@ -439,12 +450,11 @@ class s21_Multiset : public set<Key> {
 
     void merge(s21_Multiset& other) {
         iterator it = other.begin();
-        for (size_type i = 0; i < other.size_; ++i) {
-            insert_node(it.get_node());
+        while (it != other.end()) {
+            insert(*it);
             ++it;
         }
-        other.root_ = nullptr;  // TO BE CHECKED ONTO LEAKS
-        other.size_ = 0;
+        other.clear();
     }
 
     size_type count(const Key& val) {
@@ -473,34 +483,29 @@ class s21_Multiset : public set<Key> {
         return itr1;
     }
 
-    // MISTAKES (INFINITE LOOP SOMEWHERE)
+    bool contains(const Key& key) {
+        iterator itr1 = Sset::begin();
+        while (itr1 != Sset::end()) {
+            if (key == *itr1) { return true;}
+            ++itr1;
+        }
+        return false;
+    }
 
-    // bool contains(const Key& key) {
-    //     size_type i = Sset::size_;
-    //     iterator itr1 = Sset::begin();
-    //     while (itr1.get_node() != nullptr || i != 0) {
-    //         if (key == *itr1) { return true;}
-    //         ++itr1;
-    //         --i;
-    //     }
-    //     return false;
-    // }
-
-    // std::pair<iterator,iterator> equal_range(const Key& key) {
-    //     iterator itr1 = Sset::begin();
-    //     while (itr1.get_node() != nullptr || *itr1 != key) {
-    //         ++itr1;
-    //     }
-    //     iterator itr2 = itr1;
-    //     if (itr1.get_node() != nullptr) {
-    //         while (itr2.get_node()->parent != nullptr &&
-    //         (itr2.get_node()->parent)->value == key) {
-    //             ++itr2;
-    //         }
-    //     }
-    //     std::pair<iterator, iterator> result = std::make_pair(itr1, itr2);
-    //     return result;
-    // }
+    std::pair<iterator,iterator> equal_range(const Key& key) {
+        iterator itr1 = Sset::begin();
+        while (itr1 != Sset::end() && *itr1 != key) {
+            ++itr1;
+        }
+        iterator itr2 = itr1;
+        if (itr1 != Sset::end()) {
+            while (itr2.get_node()->left != nullptr &&
+            *itr2 == *itr1) { ++itr2; }
+            if (*itr2 != *itr1) { --itr2; }
+        }
+        std::pair<iterator, iterator> result = std::make_pair(itr1, itr2);
+        return result;
+    }
 
    private:
     void insert_node(Node<Key>* node) {
@@ -512,9 +517,10 @@ class s21_Multiset : public set<Key> {
         if (Sset::root_ == nullptr) {
             node->right = Sset::end_;
             Sset::root_ = node;
+            Sset::end_->parent = node;
         } else {
             Node<Key>* tmp = Sset::root_;
-            while (tmp != Sset::end_ || tmp != nullptr) {
+            while (tmp != Sset::end_ && tmp != nullptr) {
                 if (node->value < tmp->value) {
                     if (tmp->left == nullptr) {
                         tmp->left = node;
