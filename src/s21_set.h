@@ -182,10 +182,11 @@ class set {
 
     if(root_ == nullptr) {
       node->right = end_;
+      node->right->parent = node;
       root_ = node;
     } else {
       Node<Key>* tmp = root_;
-      while(tmp != end_ || nullptr) {
+      while(tmp != end_ || tmp != nullptr) {
         if (value < tmp->value) {
           if (tmp->left == nullptr) {
             tmp->left = node;
@@ -221,7 +222,7 @@ class set {
 
   void erase(iterator pos) {
     if (pos == end()) {
-      pos--;
+      throw std::out_of_range("invalid pointer");
     }
 
     Node<Key>* node = root_;
@@ -296,6 +297,7 @@ class set {
       }
       --size_;
       delete node;
+      
     }
   }
 

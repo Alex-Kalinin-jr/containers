@@ -1,4 +1,5 @@
 #include "s21_vector_test.cc"
+#include "test_multiset.cc"
 #include <gtest/gtest.h>
 
 int main(int argc, char* argv[]) {
