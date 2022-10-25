@@ -2,6 +2,7 @@
 #define _CONTAINERS_SRC_S21_LIST_
 
 #include "s21_node.h"
+#include "s21_iterator.h"
 
 namespace s21 {
 

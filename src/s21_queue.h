@@ -3,6 +3,8 @@
 #include <iostream>
 
 #include "s21_node.h"
+#include "s21_iterator.h"
+
 namespace s21 {
 
 /* remember that queue is an method to organize data ordering,
