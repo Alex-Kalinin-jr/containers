@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "s21_set.h"
+#include "s21_multiset.h"
 
 TEST(multiset, init_1) {
     s21::s21_Multiset<int> a;
