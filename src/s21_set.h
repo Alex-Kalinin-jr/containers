@@ -5,21 +5,9 @@
 #include <cstddef>
 #include <initializer_list>
 #include <utility>
+#include "s21_node.h"
 
 namespace s21 {
-
-template <class T>
-class Node {
-   public:
-    Node* parent = nullptr;
-    Node* left = nullptr;
-    Node* right = nullptr;
-
-    T value;
-
-    explicit Node(const T& value) : value(value) {}
-    Node() {}
-};
 
 template <class T>
 class SetIterator {

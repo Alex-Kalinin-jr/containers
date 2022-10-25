@@ -1,6 +1,19 @@
 #ifndef _CONTAINERS_SRC_S21_NODE_
 #define _CONTAINERS_SRC_S21_NODE_
 
+template <class T>
+class Node {
+   public:
+    Node* parent = nullptr;
+    Node* left = nullptr;
+    Node* right = nullptr;
+
+    T value;
+
+    explicit Node(const T& value) : value(value) {}
+    Node() {}
+};
+
 template <typename T>
 class s21_Node {
     using value_type = T;
