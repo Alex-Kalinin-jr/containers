@@ -5,6 +5,7 @@
 #include <cstddef>
 #include <initializer_list>
 #include <utility>
+
 #include "s21_node.h"
 
 namespace s21 {
@@ -36,31 +37,24 @@ class SetIterator {
         }
     }
 
-    Node<T>* get_node() const { return node; }  // INSERTED BY
+    Node<T>* get_node() const { return node; }
    protected:
     Node<T>* node;
 
-    //  private: DELETED BY
     void increase() {
         if (node == nullptr) return;
-// DELETED BY
-        // bool end = false;
-//END OF DELETION
         if (node->parent == nullptr && node->right->value < node->value) {
             return;
-
         }
 
         // Проверка на end, чтобы итератор не уходил в nullptr
         if (node->parent != nullptr && node->parent->right == node &&
             node->parent->value > node->value)
             return;
-        /* INSERTED BY */
         if (node->parent != nullptr && node->value == node->parent->value) {
             node = node->parent;
             return;
         }
-        /*END OF INSERTION */
         if (node->right != nullptr) {
             node = node->right;
             while (node->left != nullptr) {
@@ -88,11 +82,9 @@ class SetIterator {
 
         if (node->left != nullptr && (!end)) {
             node = node->left;
-            /*INSERTED BY*/
             if (node->parent->value == node->value) {
                 return;
             }
-            /*INSERTED BY*/
             while (node->right != nullptr) {
                 node = node->right;
             }
@@ -188,7 +180,7 @@ class set {
         ++size_;
 
         if (root_ == nullptr) {
-            // end_ = new Node<Key>; //insert
+            end_ = new Node<Key>;
             node->right = end_;
             node->right->parent = node;
             root_ = node;
@@ -232,19 +224,9 @@ class set {
         if (pos == end()) {
             throw std::out_of_range("invalid pointer");
         }
-/*DELETED BY*/
-        // Node<Key>* node = root_;
-        // while (node != nullptr && node->value != pos.value() && node != end_) {
-        //     if (pos.value() < node->value) {
-        //         node = node->left;
-        //     } else {
-        //         node = node->right;
-        //     }
-        // }
-/*INSERTED BY*/
         Node<Key>* node = pos.get_node();
-/*END OF INSERTION*/
-        if (node != nullptr && node != end_) {
+        if ((node != nullptr && node != end_) ||
+            (node->left == nullptr && node->right == nullptr)) {
             if (node->left == nullptr && node->right == nullptr) {
                 if (node->parent != nullptr) {
                     if (node->parent->left == node) {
@@ -255,6 +237,8 @@ class set {
                     }
                 } else {
                     root_ = nullptr;
+                    delete end_;
+                    end_ = nullptr;
                 }
             } else if (node->left == nullptr) {
                 if (node->parent != nullptr) {
@@ -310,7 +294,7 @@ class set {
             delete node;
         }
     }
-    /*RESOLVED BY*/
+
     void swap(set& other) {
         if (this != &other) {
             Node<Key>* buff = other.root_;
@@ -321,7 +305,6 @@ class set {
             size_ = buff_size;
         }
     }
-    /*END OF RESOLVING*/
 
     void merge(set& other) {
         for (iterator it = other.begin(); it != other.end();) {
@@ -360,8 +343,7 @@ class set {
     }
 
    protected:
-    Node<Key>* end_ = new Node<Key>; // to be checked
-    //  private: DELETED BY
+    Node<Key>* end_ = nullptr;
 
     size_type size_ = 0;
     size_type max_size_ = LLONG_MAX / sizeof(value_type);

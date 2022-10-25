@@ -1,16 +1,18 @@
 #ifndef _CONTAINERS_SRC_S21_NODE_
 #define _CONTAINERS_SRC_S21_NODE_
 
+namespace s21 {
+
 template <class T>
 class Node {
    public:
-    Node* parent = nullptr;
-    Node* left = nullptr;
-    Node* right = nullptr;
+    Node *parent = nullptr;
+    Node *left = nullptr;
+    Node *right = nullptr;
 
     T value;
 
-    explicit Node(const T& value) : value(value) {}
+    explicit Node(const T &value) : value(value) {}
     Node() {}
 };
 
@@ -138,4 +140,5 @@ class node_iterator {
     node_ptr elem_;
 };
 
+}  // namespace s21
 #endif  // _CONTAINERS_SRC_S21_NODE_

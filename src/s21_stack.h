@@ -10,8 +10,11 @@ themselves/ If you put a VAR into stack and then change this VAR somwhere else,
 it is changed in stack too. For exmpl, when you try int d = 0; while (++d <
 1000) stack.push(d) the last 1000 elements are all the "d" and are all equal to
 1000*/
+
+namespace s21 {
+
 template <typename T>
-class s21_Stack {
+class Stack {
     using value_type = T;
     using reference = T &;
     using const_reference = const T &;
@@ -24,28 +27,28 @@ class s21_Stack {
     size_type sizeOf;
 
    public:
-    s21_Stack() : head(nullptr), sizeOf(0){};
-    s21_Stack(const s21_Stack &s) : s21_Stack() { *this = s; };
-    s21_Stack(s21_Stack &&s) : head(s.head), sizeOf(s.sizeOf){};
-    s21_Stack(std::initializer_list<value_type> buff) : s21_Stack() {
+    Stack() : head(nullptr), sizeOf(0){};
+    Stack(const Stack &s) : Stack() { *this = s; };
+    Stack(Stack &&s) : head(s.head), sizeOf(s.sizeOf){};
+    Stack(std::initializer_list<value_type> buff) : Stack() {
         for (const value_type *start = buff.begin(); start < buff.end();
              ++start) {
             push(*start);
         }
     }
-    ~s21_Stack() {
+    ~Stack() {
         while (sizeOf > 0) {
             pop();
         }
     };
 
-    s21_Stack &operator=(s21_Stack &&s) {
+    Stack &operator=(Stack &&s) {
         head = s.head;
         sizeOf = s.sizeOf;
         return *this;
     }
 
-    s21_Stack &operator=(const s21_Stack &s) {
+    Stack &operator=(const Stack &s) {
         while (!empty()) {
             pop();
         }
@@ -66,8 +69,7 @@ class s21_Stack {
 
     const_reference top() {
         if (empty())
-            throw std::out_of_range(
-                "s21_Stack::top() - the s21_Stack is empty");
+            throw std::out_of_range("Stack::top() - the Stack is empty");
         return head->get_elem();
     }
 
@@ -91,7 +93,7 @@ class s21_Stack {
         }
     }
 
-    void swap(s21_Stack &other) {
+    void swap(Stack &other) {
         if (this != &other) {
             size_type buff_size = sizeOf;
             node_ptr buff_head = head;
@@ -103,4 +105,5 @@ class s21_Stack {
     }
 };
 
+}  // namespace s21
 #endif  // _CONTAINERS_SRC_S21_STACK_

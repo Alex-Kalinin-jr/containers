@@ -6,17 +6,17 @@
 
 #ifndef without_leaks
 TEST(queue, throw1) {
-    s21_Queue<int> a;
+    s21::Queue<int> a;
     ASSERT_THROW(a.front(), std::out_of_range);
 }
 
 TEST(queue, throw2) {
-    s21_Queue<int> a;
+    s21::Queue<int> a;
     ASSERT_THROW(a.back(), std::out_of_range);
 }
 
 TEST(stack, top3) {
-    s21_Stack<int> a;
+    s21::Stack<int> a;
     ASSERT_THROW(a.top(), std::out_of_range);
 }
 #endif

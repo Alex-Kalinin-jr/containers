@@ -1,9 +1,12 @@
+#ifndef _CONTAINERS_SRC_S21_MULTISET_
+#define _CONTAINERS_SRC_S21_MULTISET_
+
 #include "s21_set.h"
 
 namespace s21 {
 
 template <typename Key>
-class s21_Multiset : public set<Key> {
+class Multiset : public set<Key> {
     using node = Node<Key>;
     using Sset = set<Key>;
     using key_type = Key;
@@ -15,26 +18,19 @@ class s21_Multiset : public set<Key> {
     using size_type = size_t;
 
    public:
-    s21_Multiset() : Sset::set(){};
+    Multiset() : Sset::set(){};
 
-    s21_Multiset(const s21_Multiset<Key>& ms) : Sset::set(ms){};
+    Multiset(const Multiset<Key>& ms) : Sset::set(ms){};
 
-    s21_Multiset(std::initializer_list<key_type> const& items) : Sset::set() {
+    Multiset(std::initializer_list<key_type> const& items) : Sset::set() {
         for (auto it = items.begin(); it != items.end(); ++it) {
             insert(*it);
         }
     };
 
-    s21_Multiset(s21_Multiset<Key>&& ms) : Sset::set(ms){};
+    Multiset(Multiset<Key>&& ms) : Sset::set(ms){};
 
-    ~s21_Multiset(){};
-
-    // void operator=(s21_Multiset &&s) {
-    //     if (this != &s) {
-    //         Sset::size_ = s.Sset::size_;
-    //         Sset::CopyTree(s.Sset::root_);
-    //     }
-    // }
+    ~Multiset(){};
 
     std::pair<iterator, bool> insert(const value_type& value) {
         if (Sset::size_ >= Sset::max_size_) {
@@ -46,7 +42,7 @@ class s21_Multiset : public set<Key> {
         return result;
     }
 
-    void merge(s21_Multiset& other) {
+    void merge(Multiset& other) {
         iterator it = other.begin();
         while (it != other.end()) {
             insert(*it);
@@ -67,11 +63,13 @@ class s21_Multiset : public set<Key> {
         }
         return result;
     }
-// if not found - returns and iterator to the end_
+    /* if not found - returns and iterator to the end_ */
     iterator find(const Key& key) {
         iterator itr1 = Sset::begin();
         while (itr1 != Sset::end()) {
-            if (key == *itr1) { return itr1; }
+            if (key == *itr1) {
+                return itr1;
+            }
             ++itr1;
         }
         return itr1;
@@ -80,41 +78,50 @@ class s21_Multiset : public set<Key> {
     bool contains(const Key& key) {
         iterator itr1 = Sset::begin();
         while (itr1 != Sset::end()) {
-            if (key == *itr1) { return true;}
+            if (key == *itr1) {
+                return true;
+            }
             ++itr1;
         }
         return false;
     }
 
-    std::pair<iterator,iterator> equal_range(const Key& key) {
+    std::pair<iterator, iterator> equal_range(const Key& key) {
         iterator itr1 = Sset::begin();
         while (itr1 != Sset::end() && *itr1 != key) {
             ++itr1;
         }
         iterator itr2 = itr1;
         if (itr1 != Sset::end()) {
-            while (itr2.get_node()->left != nullptr &&
-            *itr2 == *itr1) { ++itr2; }
-            if (*itr2 != *itr1) { --itr2; }
+            while (itr2.get_node()->left != nullptr && *itr2 == *itr1) {
+                ++itr2;
+            }
+            if (*itr2 != *itr1) {
+                --itr2;
+            }
         }
         std::pair<iterator, iterator> result = std::make_pair(itr1, itr2);
         return result;
     }
-
+    /* if not found - returns last element */
     iterator lower_bound(const Key& key) {
         iterator itr1 = Sset::begin();
         while (itr1 != Sset::end()) {
-            if (key <= *itr1) { return itr1; }
+            if (key <= *itr1) {
+                return itr1;
+            }
             ++itr1;
         }
         --itr1;
         return itr1;
     }
-
+    /* if not found - returns last element */
     iterator upper_bound(const Key& key) {
         iterator itr1 = Sset::begin();
         while (itr1 != Sset::end()) {
-            if (key < *itr1) { return itr1; }
+            if (key < *itr1) {
+                return itr1;
+            }
             ++itr1;
         }
         --itr1;
@@ -129,7 +136,7 @@ class s21_Multiset : public set<Key> {
         ++(Sset::size_);
 
         if (Sset::root_ == nullptr) {
-            Sset::end_ = new Node<Key>; // here
+            Sset::end_ = new Node<Key>;
             node->right = Sset::end_;
             Sset::root_ = node;
             Sset::end_->parent = node;
@@ -173,3 +180,5 @@ class s21_Multiset : public set<Key> {
 };
 
 }  // namespace s21
+
+#endif  // _CONTAINERS_SRC_S21_MULTISET_

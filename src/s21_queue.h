@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "s21_node.h"
+namespace s21 {
 
 /* remember that queue is an method to organize data ordering,
 therefore it stores and handles the order of elements, not the elements
@@ -11,7 +12,7 @@ it is changed in queue too. For exmpl, when you try int d = 0; while (++d <
 1000) queue.push(d) the last 1000 elements are all the "d" and are all equal to
 1000*/
 template <typename T>
-class s21_Queue {
+class Queue {
     using value_type = T;
     using reference = T &;
     using const_reference = const T &;
@@ -20,29 +21,29 @@ class s21_Queue {
     using node_ptr = s21_Node<value_type> *;
 
    public:
-    s21_Queue() : head(nullptr), tail(nullptr), sizeOf(0){};
-    s21_Queue(const s21_Queue &s) : s21_Queue() { *this = s; };
-    s21_Queue(s21_Queue &&s) : head(s.head), tail(s.tail), sizeOf(s.sizeOf){};
-    s21_Queue(std::initializer_list<value_type> buff) : s21_Queue() {
+    Queue() : head(nullptr), tail(nullptr), sizeOf(0){};
+    Queue(const Queue &s) : Queue() { *this = s; };
+    Queue(Queue &&s) : head(s.head), tail(s.tail), sizeOf(s.sizeOf){};
+    Queue(std::initializer_list<value_type> buff) : Queue() {
         for (const value_type *start = buff.begin(); start < buff.end();
              ++start) {
             push(*start);
         }
     }
-    ~s21_Queue() {
+    ~Queue() {
         while (sizeOf > 0) {
             pop();
         }
     };
 
-    s21_Queue &operator=(s21_Queue &&s) {
+    Queue &operator=(Queue &&s) {
         head = s.head;
         tail = s.tail;
         sizeOf = s.sizeOf;
         return *this;
     }
 
-    s21_Queue &operator=(const s21_Queue &s) {
+    Queue &operator=(const Queue &s) {
         while (!empty()) {
             pop();
         }
@@ -67,15 +68,13 @@ class s21_Queue {
 
     const_reference front() {
         if (empty())
-            throw std::out_of_range(
-                "s21_Queue::front() - the s21_Queue is empty");
+            throw std::out_of_range("Queue::front() - the Queue is empty");
         return head->get_elem();
     }
 
     const_reference back() {
         if (empty())
-            throw std::out_of_range(
-                "s21_Queue::back() - the s21_Queue is empty");
+            throw std::out_of_range("Queue::back() - the Queue is empty");
         return tail->get_elem();
     }
 
@@ -106,7 +105,7 @@ class s21_Queue {
         }
     }
 
-    void swap(s21_Queue &other) {
+    void swap(Queue &other) {
         if (this != &other) {
             size_type buff_size = sizeOf;
             node_ptr buff_head = head;
@@ -126,4 +125,5 @@ class s21_Queue {
     size_type sizeOf;
 };
 
+}  // namespace s21
 #endif  // _CONTAINERS_SRC_S21_QUEUE_

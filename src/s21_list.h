@@ -1,7 +1,12 @@
+#ifndef _CONTAINERS_SRC_S21_LIST_
+#define _CONTAINERS_SRC_S21_LIST_
+
 #include "s21_node.h"
 
+namespace s21 {
+
 template <typename T>
-class s21_List {
+class List {
     using value_type = T;
     using reference = T &;
     using const_reference = const T &;
@@ -11,17 +16,17 @@ class s21_List {
     using node_iter = node_iterator<value_type>;
 
    public:
-    s21_List() : begin_(nullptr), end_(nullptr), sizeOf(0) {
+    List() : begin_(nullptr), end_(nullptr), sizeOf(0) {
         value_type zero;
         node_ptr endNode = new node(zero);
         end_ = endNode;
     };
-    s21_List(size_type n, const_reference el) : s21_List() {
+    List(size_type n, const_reference el) : List() {
         ++n;
         node_iter iter = end();
         while (--n > 0) insert(iter, el);
     }
-    s21_List(std::initializer_list<value_type> const &items) : s21_List() {
+    List(std::initializer_list<value_type> const &items) : List() {
         auto el = items.begin();
         node_iter iter = end();
         while (el != items.end()) {
@@ -29,7 +34,7 @@ class s21_List {
             ++el;
         }
     }
-    s21_List(const s21_List &other) : s21_List() {
+    List(const List &other) : List() {
         if (other.begin_ != nullptr) {
             node_iter iter = end();
             node_iter iter_2 = other.begin();
@@ -39,7 +44,7 @@ class s21_List {
             }
         }
     }
-    s21_List(s21_List &&other) {
+    List(List &&other) {
         begin_ = other.begin_;
         end_ = other.end_;
         sizeOf = other.sizeOf;
@@ -47,12 +52,12 @@ class s21_List {
         other.end_ = nullptr;
         other.sizeOf = 0;
     }
-    ~s21_List() {
+    ~List() {
         clear();
         delete end_;
     }
 
-    s21_List &operator=(s21_List &&other) {
+    List &operator=(List &&other) {
         clear();
         delete end_;
         begin_ = other.begin_;
@@ -64,10 +69,10 @@ class s21_List {
         return *this;
     }
 
-    s21_List &operator=(const s21_List &other) {
+    List &operator=(const List &other) {
         if (this != &other) {
             clear();
-            *this = s21_List(other);
+            *this = List(other);
         }
         return *this;
     }
@@ -87,13 +92,13 @@ class s21_List {
 
     const_reference front() const {
         if (begin_ == nullptr)
-            throw std::out_of_range("s21_list is empty: can not get an elem");
+            throw std::out_of_range("List is empty: can not get an elem");
         return begin_->node::get_elem();
     }
 
     const_reference back() const {
         if (begin_ == nullptr)
-            throw std::out_of_range("s21_list is empty: can not get an elem");
+            throw std::out_of_range("List is empty: can not get an elem");
         return end_->back->node::get_elem();
     }
 
@@ -151,18 +156,18 @@ class s21_List {
 
     void pop_front() { erase(begin_); }
 
-    void swap(s21_List &other) {
+    void swap(List &other) {
         if (this != &other) {
-            s21_List b(other);
+            List b(other);
             other = *this;
             *this = b;
         }
     }
 
-    void merge(s21_List &other) {
+    void merge(List &other) {
         if (other.begin_ == nullptr) return;
         if (begin_ == nullptr) {
-            *this = s21_List(other);
+            *this = List(other);
             return;
         }
         sizeOf += other.sizeOf;
@@ -202,7 +207,7 @@ class s21_List {
         other.sizeOf = 0;
     }
 
-    void splice(const node_iter poshn, s21_List &other) {
+    void splice(const node_iter poshn, List &other) {
         if (other.begin_ == nullptr) return;
         node_ptr pos = poshn.get_elem();
         pos->back = other.end_->back;
@@ -280,3 +285,7 @@ class s21_List {
     node_ptr end_;
     size_type sizeOf;
 };
+
+}  // namespace s21
+
+#endif  // _CONTAINERS_SRC_S21_LIST_
