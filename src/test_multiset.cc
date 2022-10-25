@@ -182,3 +182,33 @@ TEST(multiset, equal_range) {
     b1.equal_range(1);
         ASSERT_EQ(*(result.first), 1);
 }
+
+TEST(multiset, lower_bound) {
+    s21::s21_Multiset<int> b1{1, 1, 3, 1, 1, 1, 4, 5};
+    s21::SetIterator<int> itr1 = b1.lower_bound(1);
+    ASSERT_EQ(*itr1, 1);
+}
+
+TEST(multiset, lower_bound_2) {
+    s21::s21_Multiset<int> b1{1, 1, 3, 1, 1, 1, 4, 5};
+    s21::SetIterator<int> itr1 = b1.lower_bound(2);
+    ASSERT_EQ(*itr1, 3);
+}
+
+TEST(multiset, lower_bound_4) {
+    s21::s21_Multiset<int> b1{1, 1, 3, 1, 1, 1, 4, 5};
+    s21::SetIterator<int> itr1 = b1.lower_bound(6);
+    ASSERT_EQ(*itr1, 5);
+}
+
+TEST(multiset, upper_bound) {
+    s21::s21_Multiset<int> b1{1, 1, 3, 1, 1, 1, 4, 5};
+    s21::SetIterator<int> itr1 = b1.upper_bound(1);
+    ASSERT_EQ(*itr1, 3);
+}
+
+TEST(multiset, upper_bound_2) {
+    s21::s21_Multiset<int> b1{1, 1, 3, 1, 1, 1, 4, 5};
+    s21::SetIterator<int> itr1 = b1.upper_bound(6);
+    ASSERT_EQ(*itr1, 5);
+}

@@ -200,6 +200,7 @@ class set {
         ++size_;
 
         if (root_ == nullptr) {
+            // end_ = new Node<Key>; //insert
             node->right = end_;
             node->right->parent = node;
             root_ = node;
@@ -371,7 +372,7 @@ class set {
     }
 
    protected:
-    Node<Key>* end_ = new Node<Key>;
+    Node<Key>* end_ = new Node<Key>; // to be checked
     //  private: DELETED BY
 
     size_type size_ = 0;
@@ -469,16 +470,12 @@ class s21_Multiset : public set<Key> {
         }
         return result;
     }
-
+// if not found - returns and iterator to the end_
     iterator find(const Key& key) {
-        size_type i = Sset::size_;
         iterator itr1 = Sset::begin();
-        while (itr1.get_node() != nullptr || i != 0) {
-            if (key == *itr1) {
-                return itr1;
-            }
+        while (itr1 != Sset::end()) {
+            if (key == *itr1) { return itr1; }
             ++itr1;
-            --i;
         }
         return itr1;
     }
@@ -507,6 +504,26 @@ class s21_Multiset : public set<Key> {
         return result;
     }
 
+    iterator lower_bound(const Key& key) {
+        iterator itr1 = Sset::begin();
+        while (itr1 != Sset::end()) {
+            if (key <= *itr1) { return itr1; }
+            ++itr1;
+        }
+        --itr1;
+        return itr1;
+    }
+
+    iterator upper_bound(const Key& key) {
+        iterator itr1 = Sset::begin();
+        while (itr1 != Sset::end()) {
+            if (key < *itr1) { return itr1; }
+            ++itr1;
+        }
+        --itr1;
+        return itr1;
+    }
+
    private:
     void insert_node(Node<Key>* node) {
         if (node == nullptr) {
@@ -515,6 +532,7 @@ class s21_Multiset : public set<Key> {
         ++(Sset::size_);
 
         if (Sset::root_ == nullptr) {
+            Sset::end_ = new Node<Key>; // here
             node->right = Sset::end_;
             Sset::root_ = node;
             Sset::end_->parent = node;
