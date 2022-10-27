@@ -268,8 +268,6 @@ class set {
         chunck->balance = height(chunck->right) - height(chunck->left);
     }
 
-
-
    protected:
     Node<Key>* end_ = nullptr;
 
