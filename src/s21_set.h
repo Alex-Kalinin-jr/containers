@@ -268,7 +268,7 @@ class set {
         chunck->balance = height(chunck->right) - height(chunck->left);
     }
 
-    void l_rotate(Node<Key> * chunck) {
+    void l_rotate(Node<Key> * chunck) { // if balance < 0 && rootbalance < 0
         chunck->parent->left = chunck->left;
         chunck->left->parent = chunck->parent;
         chunck->parent = chunck->left;
@@ -277,7 +277,7 @@ class set {
         chunck->left = chunck->left->right;
     }
 
-    void r_rotate(Node<Key> * chunck) {
+    void r_rotate(Node<Key> * chunck) { // if balance > 0 && rootbalance > 0
         chunck->parent->right = chunck->right;
         chunck->right->parent = chunck->parent;
         chunck->parent = chunck->right;
