@@ -32,6 +32,7 @@ class SetIterator {
     }
 
     Node<T>* get_node() const { return node; }
+    int show_balance() const { return node->balance;}
    protected:
     Node<T>* node;
 

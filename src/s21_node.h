@@ -9,6 +9,7 @@ class Node {
     Node *parent = nullptr;
     Node *left = nullptr;
     Node *right = nullptr;
+    int balance = 0;
 
     T value;
 

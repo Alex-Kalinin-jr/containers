@@ -40,6 +40,12 @@ class Multiset : public set<Key> {
         Node<Key>* node = new Node<Key>(value);
         insert_node(node);
         std::pair<iterator, bool> result = std::make_pair(iterator(node), true);
+        Node<Key> * buff = result.first.get_node();
+        while (buff != Sset::root_) {
+            Sset::balance(buff);
+            buff = buff->parent;
+        }
+        Sset::balance(Sset::root_);
         return result;
     }
 
@@ -134,6 +140,7 @@ class Multiset : public set<Key> {
         if (node == nullptr) {
             return;
         }
+        node->balance = 0;
         ++(Sset::size_);
 
         if (Sset::root_ == nullptr) {

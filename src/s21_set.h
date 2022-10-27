@@ -114,6 +114,12 @@ class set {
                 }
             }
         }
+        Node<Key> * buff = result.first.get_node();
+        while (buff != root_) {
+            balance(buff);
+            buff = buff->parent;
+        }
+        balance(root_);
         return result;
     }
 
@@ -122,8 +128,9 @@ class set {
             throw std::out_of_range("invalid pointer");
         }
         Node<Key>* node = pos.get_node();
+        Node<Key>* buff = (node != root_) ? node->parent : nullptr;
         if ((node != nullptr && node != end_) ||
-            (node->left == nullptr && node->right == nullptr)) {
+            (node->left == nullptr && node->right == nullptr)) {  // что делает вот это?
             if (node->left == nullptr && node->right == nullptr) {
                 if (node->parent != nullptr) {
                     if (node->parent->left == node) {
@@ -189,6 +196,13 @@ class set {
             }
             --size_;
             delete node;
+            if (buff != nullptr) {
+                while (buff != root_) {
+                    balance(buff);
+                    buff = buff->parent;
+                }
+            }
+            balance(root_);
         }
     }
 
@@ -238,6 +252,23 @@ class set {
         }
         return iterator(node);
     }
+
+    int height(Node<Key> * chunck) {
+        if (chunck == nullptr || chunck == end_) return 0;
+        int h_left = height(chunck->left);
+        int h_right = height(chunck->right);
+        if (h_left > h_right) {
+            return h_left + 1;
+        } else {
+            return h_right + 1;
+        }
+    }
+
+    void balance(Node<Key> * chunck) {
+        chunck->balance = height(chunck->right) - height(chunck->left);
+    }
+
+
 
    protected:
     Node<Key>* end_ = nullptr;
