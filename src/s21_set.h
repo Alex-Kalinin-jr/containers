@@ -268,6 +268,24 @@ class set {
         chunck->balance = height(chunck->right) - height(chunck->left);
     }
 
+    void l_rotate(Node<Key> * chunck) {
+        chunck->parent->left = chunck->left;
+        chunck->left->parent = chunck->parent;
+        chunck->parent = chunck->left;
+        chunck->left->right->parent = chunck;
+        chunck->left->right = chunck;
+        chunck->left = chunck->left->right;
+    }
+
+    void r_rotate(Node<Key> * chunck) {
+        chunck->parent->right = chunck->right;
+        chunck->right->parent = chunck->parent;
+        chunck->parent = chunck->right;
+        chunck->right->left->parent = chunck;
+        chunck->right->left = chunck;
+        chunck->right = chunck->right->left;
+    }
+
    protected:
     Node<Key>* end_ = nullptr;
 
