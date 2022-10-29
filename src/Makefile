@@ -25,7 +25,9 @@ FILE3=./tests/test_list
 FILE4=./tests/test_multiset
 FILE5=./tests/test_set
 FILE6=./tests/test_vector
-ALLFILES=$(FILE5).o $(FILE4).o $(FILE3).o $(FILE2).o $(FILE1).o $(FILE6).o
+FILE7=./tests/test_map
+FILE8=./tests/test_array
+ALLFILES=$(FILE5).o $(FILE4).o $(FILE3).o $(FILE2).o $(FILE1).o $(FILE6).o $(FILE7).o
 
 
 all: test test_without_leaks leaks clean gcov_report clean
@@ -63,6 +65,12 @@ $(FILE5).o: $(FILE5).cc
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 $(FILE6).o: $(FILE6).cc
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(FILE7).o: $(FILE7).cc
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(FILE8).o: $(FILE8).cc
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 run:

@@ -18,8 +18,6 @@ class SetIterator {
     bool operator==(const SetIterator &other) { return node == other.node; }
     bool operator!=(const SetIterator &other) { return node != other.node; }
     T &operator*() const {
-        // Проверка на end, чтобы итератор указывающий на end возвращал значение
-        // последней ноды;
         if (node != nullptr && node->parent != nullptr &&
             node->parent->right == node && node->parent->value > node->value) {
             return node->parent->value;
@@ -31,10 +29,9 @@ class SetIterator {
         }
     }
 
-    Node<T> *get_node() const { return node; }
-    int show_balance() const {
-        return node->balance;
-    }  // to be deleted after tests
+    int show_balance() const { return node->balance; }
+    Node<T> *get_node() const { return node; }  // service func for tests
+
    protected:
     Node<T> *node;
 
@@ -197,6 +194,78 @@ class node_iterator {
 
    protected:
     node_ptr elem_;
+};
+
+template <class Key, class T>
+class MapIterator {
+   public:
+    explicit MapIterator(map_Node<Key, T>* node) : node(node) {}
+
+    T& value() { return node->value; }
+    const Key key() const { return node->key; }
+
+    void operator++() { increase(); }
+    void operator++(int) { increase(); }
+    void operator--() { decrease(); }
+    void operator--(int) { decrease(); }
+    bool operator==(const MapIterator& other) { return node == other.node; }
+    bool operator!=(const MapIterator& other) { return node != other.node; }
+
+   protected:
+    map_Node<Key, T>* node;
+
+   private:
+    void increase() {
+        if (node == nullptr) return;
+
+        if (node->right != nullptr) {
+            node = node->right;
+            while (node->left != nullptr) {
+                node = node->left;
+            }
+        } else {
+            if (node->parent != nullptr && node->parent->right == node) {
+                while (node->parent != nullptr && node->parent->left != node) {
+                    node = node->parent;
+                }
+            }
+            node = node->parent;
+        }
+    }
+
+    void decrease() {
+        if (node == nullptr) return;
+
+        if (node->left != nullptr) {
+            node = node->left;
+            while (node->right != nullptr) {
+                node = node->right;
+            }
+        } else {
+            if (node->parent != nullptr && node->parent->left == node) {
+                while (node->parent != nullptr && node->parent->right != node) {
+                    node = node->parent;
+                }
+            }
+            node = node->parent;
+        }
+    }
+};
+
+template <class Key, class T>
+class MapConstIterator : public MapIterator<Key, T> {
+   public:
+    explicit MapConstIterator(map_Node<Key, T>* node) : MapIterator<Key, T>(node) {}
+
+    const Key key() const { return MapIterator<Key, T>::node->key; }
+    const T value() const { return MapIterator<Key, T>::node->key; }
+
+    bool operator==(const MapConstIterator& other) {
+        return MapIterator<Key, T>::node == other.node;
+    }
+    bool operator!=(const MapConstIterator& other) {
+        return MapIterator<Key, T>::node != other.node;
+    }
 };
 
 }  // namespace s21

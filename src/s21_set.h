@@ -17,8 +17,8 @@ class set {
     using iterator = SetIterator<Key>;
     using const_iterator = SetConstIterator<Key>;
     using size_type = size_t;
-   public:
 
+   public:
     set() {}
 
     set(std::initializer_list<value_type> const& items) {
@@ -248,7 +248,6 @@ class set {
         return iterator(node);
     }
 
-
    protected:
     Node<Key>* end_ = nullptr;
     Node<Key>* root_ = nullptr;
@@ -285,7 +284,7 @@ class set {
         delete node;
     }
 
-        void r_rotate(Node<Key>* chunck) {
+    void r_rotate(Node<Key>* chunck) {
         if (chunck == root_) root_ = chunck->left;
         if (chunck != root_) {
             if (chunck->parent->left == chunck)
@@ -345,7 +344,7 @@ class set {
 
     Node<Key>* get_root() { return root_; }
 
-        void balancing(Node<Key> * buff) {
+    void balancing(Node<Key>* buff) {
         set_balance_for_all();
         while (buff != root_) {
             Node<Key>* new_buff = buff->parent;
@@ -362,7 +361,6 @@ class set {
             set_balance_for_all();
         }
     }
-
 };
 
 }  // namespace s21
