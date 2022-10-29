@@ -24,7 +24,7 @@ FILE2=test_stack
 FILE3=test_list
 FILE4=test_multiset
 FILE5=test_set
-ALLFILES=$(FILE5).o
+ALLFILES=$(FILE5).o $(FILE4).o
 
 
 all: test test_without_leaks leaks clean gcov_report clean

@@ -290,7 +290,7 @@ class set {
         chunck->balance = height(chunck->right) - height(chunck->left);
     }
 
-    void balance_for_all() {
+    void set_balance_for_all() {
         iterator itr1 = begin();
         while (itr1.get_node() != end_) {
             set_balance(itr1.get_node());

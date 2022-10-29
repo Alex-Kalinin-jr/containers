@@ -90,7 +90,7 @@ TEST(balancing, Test_01) {
   s21::set<int> a = {11, 9, 5, 6, 7, 10, 4, 3, 8, 16, 15};
   s21::SetIterator<int> itr1 = a.begin();
   s21::SetIterator<int> itr2 = a.end();
-  a.balance_for_all();
+  a.set_balance_for_all();
   while (itr1.get_node() != itr2.get_node()) {
     if (itr1.get_node() != a.get_root()) {
       ASSERT_LT(abs(itr1.get_node()->balance), 2);
