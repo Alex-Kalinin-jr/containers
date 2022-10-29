@@ -32,13 +32,15 @@ class SetIterator {
     }
 
     Node<T>* get_node() const { return node; }
-    int show_balance() const { return node->balance;}
+    int show_balance() const { return node->balance;} // to be deleted after tests
    protected:
     Node<T>* node;
 
     void increase() {
         if (node == nullptr) return;
+
         if (node->parent == nullptr && node->right->value < node->value) {
+            node = node->right;
             return;
         }
 

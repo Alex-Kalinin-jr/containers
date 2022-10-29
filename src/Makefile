@@ -23,7 +23,8 @@ FILE1=test_queue
 FILE2=test_stack
 FILE3=test_list
 FILE4=test_multiset
-ALLFILES=$(FILE4).o
+FILE5=test_set
+ALLFILES=$(FILE4).o $(FILE5).o
 
 
 all: test test_without_leaks leaks clean gcov_report clean
@@ -55,6 +56,9 @@ $(FILE3).o: $(FILE3).cc
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 $(FILE4).o: $(FILE4).cc
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(FILE5).o: $(FILE5).cc
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 run:

@@ -3,6 +3,7 @@
 
 #include <climits>
 #include <cstddef>
+#include <stdexcept>
 #include <initializer_list>
 #include <utility>
 
@@ -30,11 +31,15 @@ class set {
         }
     }
 
-    set(const set& s) : size_(s.size_) { CopyTree(s.root_); }
+    set(const set& s) { CopyTree(s.root_); }
 
-    set(set&& s) : size_(s.size_), root_(s.root_) {
+    set(set&& s) {
+        size_= s.size_;
+        root_ = s.root_;
+        end_ = s.end_;
         s.size_ = 0;
         s.root_ = nullptr;
+        s.end_ = nullptr;
     }
 
     ~set() { DeleteTree(root_); }
@@ -116,10 +121,10 @@ class set {
         }
         Node<Key> * buff = result.first.get_node();
         while (buff != root_) {
-            balance(buff);
+            set_balance(buff);
             buff = buff->parent;
         }
-        balance(root_);
+        set_balance(root_);
         return result;
     }
 
@@ -130,7 +135,7 @@ class set {
         Node<Key>* node = pos.get_node();
         Node<Key>* buff = (node != root_) ? node->parent : nullptr;
         if ((node != nullptr && node != end_) ||
-            (node->left == nullptr && node->right == nullptr)) {  // что делает вот это?
+            (node->left == nullptr && node->right == nullptr)) {
             if (node->left == nullptr && node->right == nullptr) {
                 if (node->parent != nullptr) {
                     if (node->parent->left == node) {
@@ -171,6 +176,8 @@ class set {
                     node->parent = nullptr;
                 } else {
                     node->left->parent = nullptr;
+                    node->left->right = node->right;
+                    node->left->right->parent = node->left;
                     root_ = node->left;
                 }
             } else {
@@ -198,11 +205,11 @@ class set {
             delete node;
             if (buff != nullptr) {
                 while (buff != root_) {
-                    balance(buff);
+                    set_balance(buff);
                     buff = buff->parent;
                 }
             }
-            balance(root_);
+            set_balance(root_);
         }
     }
 
@@ -210,9 +217,12 @@ class set {
         if (this != &other) {
             Node<Key>* buff = other.root_;
             size_type buff_size = other.size_;
+            Node<Key>* buff_end = other.end_;
             other.size_ = size_;
             other.root_ = root_;
+            other.end_ = end_;
             root_ = buff;
+            end_ = buff_end;
             size_ = buff_size;
         }
     }
@@ -253,7 +263,7 @@ class set {
         return iterator(node);
     }
 
-    int height(Node<Key> * chunck) {
+                int height(Node<Key> * chunck) {
         if (chunck == nullptr || chunck == end_) return 0;
         int h_left = height(chunck->left);
         int h_right = height(chunck->right);
@@ -264,45 +274,53 @@ class set {
         }
     }
 
-    void balance(Node<Key> * chunck) {
+    void set_balance(Node<Key> * chunck) {
         chunck->balance = height(chunck->right) - height(chunck->left);
     }
 
-    void l_rotate(Node<Key> * chunck) { // if balance < 0 && rootbalance < 0
-        chunck->parent->left = chunck->left;
-        chunck->left->parent = chunck->parent;
+    void l_rotate(Node<Key> * chunck) { // if balance < 0
+        if (chunck == root_) root_ = chunck->left;
+        if (chunck != root_) chunck->parent->left = chunck->left;
+        chunck->left->parent = (chunck == root_) ? nullptr: chunck->parent;
         chunck->parent = chunck->left;
         chunck->left->right->parent = chunck;
+        Node<Key> * buff = chunck->left->right;
         chunck->left->right = chunck;
-        chunck->left = chunck->left->right;
+        chunck->left = buff;
     }
 
-    void r_rotate(Node<Key> * chunck) { // if balance > 0 && rootbalance > 0
-        chunck->parent->right = chunck->right;
-        chunck->right->parent = chunck->parent;
+    void r_rotate(Node<Key> * chunck) { // if balance > 0
+        if (chunck == root_) root_ = chunck->right;
+        if (chunck != root_) chunck->parent->right = chunck->right;
+        chunck->right->parent = (chunck == root_) ? nullptr : chunck->parent;
         chunck->parent = chunck->right;
         chunck->right->left->parent = chunck;
+        Node<Key> * buff = chunck->right->left;
         chunck->right->left = chunck;
-        chunck->right = chunck->right->left;
+        chunck->right = buff;
     }
 
    protected:
     Node<Key>* end_ = nullptr;
-
+    Node<Key>* root_ = nullptr;
     size_type size_ = 0;
     size_type max_size_ = LLONG_MAX / sizeof(value_type);
-    Node<Key>* root_ = nullptr;
 
     void CopyTree(Node<Key>* node) {
-        if (node == nullptr) return;
-
-        insert(node->value);
-
-        if (node->left != nullptr) {
-            CopyTree(node->left);
+        if (node == nullptr || node == end_) return;
+        bool end = false;
+        if (node->parent != nullptr && node->parent->right == node &&
+        node->value < node->parent->value) {
+            end = true;
         }
-        if (node->right != nullptr) {
-            CopyTree(node->right);
+        if (!end) {
+            insert(node->value);
+            if (node->left != nullptr) {
+                CopyTree(node->left);
+            }
+            if (node->right != nullptr && node->right != end_) {
+                CopyTree(node->right);
+            }
         }
     }
 

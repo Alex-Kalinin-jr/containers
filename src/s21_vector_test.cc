@@ -1,4 +1,4 @@
-#include "../s21_vector.h"
+#include "s21_vector.h"
 #include <vector>
 
 #include <gtest/gtest.h>
@@ -46,7 +46,7 @@ TEST(Element_Access, Test_04) {
 }
 TEST(Capacity, Test_01) {
   s21::vector<int> a;
-  std::vector<int> b; 
+  std::vector<int> b;
   ASSERT_TRUE(a.empty());
   ASSERT_EQ(a.size(), 0);
   ASSERT_EQ(a.max_size(), b.max_size());
