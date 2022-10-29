@@ -98,3 +98,29 @@ TEST(balancing, Test_01) {
     ++itr1;
   }
 }
+
+TEST(balancing, Test_02) {
+  s21::set<int> a = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+  s21::SetIterator<int> itr1 = a.begin();
+  s21::SetIterator<int> itr2 = a.end();
+  a.set_balance_for_all();
+  while (itr1.get_node() != itr2.get_node()) {
+    if (itr1.get_node() != a.get_root()) {
+      ASSERT_LT(abs(itr1.get_node()->balance), 2);
+    }
+    ++itr1;
+  }
+}
+
+TEST(balancing, Test_03) {
+  s21::set<int> a = {12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+  s21::SetIterator<int> itr1 = a.begin();
+  s21::SetIterator<int> itr2 = a.end();
+  a.set_balance_for_all();
+  while (itr1.get_node() != itr2.get_node()) {
+    if (itr1.get_node() != a.get_root()) {
+      ASSERT_LT(abs(itr1.get_node()->balance), 2);
+    }
+    ++itr1;
+  }
+}
