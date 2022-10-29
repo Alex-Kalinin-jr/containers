@@ -212,43 +212,43 @@ TEST(multiset, upper_bound_2) {
     ASSERT_EQ(*itr1, 5);
 }
 
-TEST(multiset, node_balance) {
-    s21::Multiset<int> b1{1, 2, 3, 4, 5};
-    s21::SetIterator<int> itr1 = b1.end();
-    --itr1;
-    ASSERT_EQ(itr1.show_balance(), 0);
-    ASSERT_EQ(*itr1, 5);
-    --itr1;
-    ASSERT_EQ(itr1.show_balance(), 1);
-    ASSERT_EQ(*itr1, 4);
-    --itr1;
-    ASSERT_EQ(itr1.show_balance(), 2);
-    ASSERT_EQ(*itr1, 3);
-}
+// TEST(multiset, node_balance) {
+//     s21::Multiset<int> b1{1, 2, 3, 4, 5};
+//     s21::SetIterator<int> itr1 = b1.end();
+//     --itr1;
+//     ASSERT_EQ(itr1.show_balance(), 0);
+//     ASSERT_EQ(*itr1, 5);
+//     --itr1;
+//     ASSERT_EQ(itr1.show_balance(), 1);
+//     ASSERT_EQ(*itr1, 4);
+//     --itr1;
+//     ASSERT_EQ(itr1.show_balance(), 2);
+//     ASSERT_EQ(*itr1, 3);
+// }
 
-TEST(multiset, node_balance_2) {
-    s21::Multiset<int> b1{1, 2, 3, 4, 5};
-    s21::SetIterator<int> itr1 = b1.end();
-    --itr1;
-    b1.erase(itr1);
-    itr1 = b1.begin();
-    ASSERT_EQ(itr1.show_balance(), 3);
-}
+// TEST(multiset, node_balance_2) {
+//     s21::Multiset<int> b1{1, 2, 3, 4, 5};
+//     s21::SetIterator<int> itr1 = b1.end();
+//     --itr1;
+//     b1.erase(itr1);
+//     itr1 = b1.begin();
+//     ASSERT_EQ(itr1.show_balance(), 3);
+// }
 
-TEST(multiset, node_balance_3) {
-    s21::Multiset<int> b1{1, 1, 1, 1, 2, 3, 4, 5};
-    s21::SetIterator<int> itr1 = b1.begin();
-    ASSERT_EQ(itr1.show_balance(), 0);
-    ++itr1;
-    ASSERT_EQ(itr1.show_balance(), -1);
-    ++itr1;
-    ASSERT_EQ(itr1.show_balance(), -2);
-    ++itr1;
-    ASSERT_EQ(itr1.show_balance(), 1);
-    ++itr1;
-    ASSERT_EQ(itr1.show_balance(), 3);
-    ++itr1;
-    ASSERT_EQ(itr1.show_balance(), 2);
-    ++itr1;
-    ASSERT_EQ(itr1.show_balance(), 1);
-}
+// TEST(multiset, node_balance_3) {
+//     s21::Multiset<int> b1{1, 1, 1, 1, 2, 3, 4, 5};
+//     s21::SetIterator<int> itr1 = b1.begin();
+//     ASSERT_EQ(itr1.show_balance(), 0);
+//     ++itr1;
+//     ASSERT_EQ(itr1.show_balance(), -1);
+//     ++itr1;
+//     ASSERT_EQ(itr1.show_balance(), -2);
+//     ++itr1;
+//     ASSERT_EQ(itr1.show_balance(), 1);
+//     ++itr1;
+//     ASSERT_EQ(itr1.show_balance(), 3);
+//     ++itr1;
+//     ASSERT_EQ(itr1.show_balance(), 2);
+//     ++itr1;
+//     ASSERT_EQ(itr1.show_balance(), 1);
+// }

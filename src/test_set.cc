@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <cmath>
 
 #include "s21_set.h"
 
@@ -50,9 +51,6 @@ TEST(Capacity, Test_01) {
 
 TEST(Modifiers, Test_01) {
   s21::set<int> a = {1, 2, 3, 4, 5};
-  s21::set<int> b = {5, 4, 3, 2, 1};
-  a.swap(b);
-  ASSERT_EQ(*(b.begin()), 1);
   a.erase(a.begin());
   ASSERT_EQ(*(a.begin()), 2);
   auto it = a.end();
@@ -63,6 +61,7 @@ TEST(Modifiers, Test_01) {
   it--;
   ASSERT_EQ(*it, 4);
 }
+
 TEST(Modifiers, Test_02) {
   s21::set<int> a = {1, 2, 3, 4, 5};
   s21::set<int> b = {5, 4, 30, 3, 2, 1, 20};
@@ -84,4 +83,18 @@ TEST(Lookup, Test_01) {
 
   bool res = a.contains(3);
   ASSERT_TRUE(res);
+}
+
+
+TEST(balancing, Test_01) {
+  s21::set<int> a = {11, 9, 5, 6, 7, 10, 4, 3, 8, 16, 15};
+  s21::SetIterator<int> itr1 = a.begin();
+  s21::SetIterator<int> itr2 = a.end();
+  a.balance_for_all();
+  while (itr1.get_node() != itr2.get_node()) {
+    if (itr1.get_node() != a.get_root()) {
+      ASSERT_LT(abs(itr1.get_node()->balance), 2);
+    }
+    ++itr1;
+  }
 }

@@ -41,28 +41,21 @@ class Multiset : public set<Key> {
         insert_node(node);
         std::pair<iterator, bool> result = std::make_pair(iterator(node), true);
 
-        Node<Key> * buff = result.first.get_node();
-        while (buff != Sset::root_) {
-            Sset::set_balance(buff);
-            buff = buff->parent;
-        }
-        Sset::set_balance(Sset::root_);
-
         // Node<Key> * buff = result.first.get_node();
         // while (buff != Sset::root_) {
-        //     Sset::balancing(buff);
+        //     Sset::set_balance(buff);
         //     Node<Key> * new_buff = buff->parent;
         //     if (buff->balance > 1) {
         //         new_buff = buff->right;
-        //         if (buff->right->balance < 0) Sset::r_rotate(buff->right);
-        //         Sset::l_rotate(buff);
-        //     } else if (buff->balance < -1) {
-        //         if (buff->left->balance > 0) Sset::l_rotate(buff->left);
+        //         if (buff->right->balance < 0) Sset::l_rotate(buff->right);
         //         Sset::r_rotate(buff);
+        //     } else if (buff->balance < -1) {
+        //         if (buff->left->balance > 0) Sset::r_rotate(buff->left);
+        //         Sset::l_rotate(buff);
         //     }
         //     buff = new_buff;
         // }
-        // Sset::balancing(Sset::root_);
+        // Sset::set_balance(Sset::root_); // balancing to be added too
         return result;
     }
 

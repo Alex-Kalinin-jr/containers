@@ -122,9 +122,21 @@ class set {
         Node<Key> * buff = result.first.get_node();
         while (buff != root_) {
             set_balance(buff);
-            buff = buff->parent;
+            Node<Key> * new_buff = buff->parent;
+            if (buff->balance > 1) {
+                new_buff = buff->right;
+                set_balance(buff->right);
+                if (buff->right->balance < 0) r_rotate(buff->right);
+                l_rotate(buff);
+            } else if (buff->balance < -1) {
+                new_buff = buff->left;
+                set_balance(buff->left);
+                if (buff->left->balance > 0) l_rotate(buff->left);
+                r_rotate(buff);
+            }
+            buff = new_buff;
         }
-        set_balance(root_);
+        set_balance(root_); // balancing to be added too
         return result;
     }
 
@@ -263,7 +275,7 @@ class set {
         return iterator(node);
     }
 
-                int height(Node<Key> * chunck) {
+    int height(Node<Key> * chunck) {
         if (chunck == nullptr || chunck == end_) return 0;
         int h_left = height(chunck->left);
         int h_right = height(chunck->right);
@@ -278,27 +290,45 @@ class set {
         chunck->balance = height(chunck->right) - height(chunck->left);
     }
 
-    void l_rotate(Node<Key> * chunck) { // if balance < 0
+    void balance_for_all() {
+        iterator itr1 = begin();
+        while (itr1.get_node() != end_) {
+            set_balance(itr1.get_node());
+            ++itr1;
+        }
+    }
+
+    void r_rotate(Node<Key> * chunck) { // if balance < 0
         if (chunck == root_) root_ = chunck->left;
-        if (chunck != root_) chunck->parent->left = chunck->left;
+        if (chunck != root_)  {
+            if (chunck->parent->left == chunck) chunck->parent->left = chunck->left;
+            if (chunck->parent->right == chunck) chunck->parent->right = chunck->left;
+        }
         chunck->left->parent = (chunck == root_) ? nullptr: chunck->parent;
         chunck->parent = chunck->left;
-        chunck->left->right->parent = chunck;
+        if (chunck->left->right != nullptr) chunck->left->right->parent = chunck;
         Node<Key> * buff = chunck->left->right;
         chunck->left->right = chunck;
         chunck->left = buff;
     }
 
-    void r_rotate(Node<Key> * chunck) { // if balance > 0
+    void l_rotate(Node<Key> * chunck) { // if balance > 0
         if (chunck == root_) root_ = chunck->right;
-        if (chunck != root_) chunck->parent->right = chunck->right;
+        if (chunck != root_) {
+            if (chunck->parent->left == chunck) chunck->parent->left = chunck->right;
+            if (chunck->parent->right == chunck) chunck->parent->right = chunck->right;
+        }
         chunck->right->parent = (chunck == root_) ? nullptr : chunck->parent;
         chunck->parent = chunck->right;
-        chunck->right->left->parent = chunck;
+        if (chunck->right->left != nullptr) {
+            chunck->right->left->parent = chunck;
+        }
         Node<Key> * buff = chunck->right->left;
         chunck->right->left = chunck;
         chunck->right = buff;
     }
+
+    Node<Key>* get_root() { return root_; } // service function - TO BE DELETED
 
    protected:
     Node<Key>* end_ = nullptr;
