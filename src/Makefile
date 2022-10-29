@@ -15,16 +15,17 @@ GCOV= --coverage -O0
 
 
 ROAD=.
-TESTNAME=test_main.cc
+TESTNAME=./tests/test_main.cc
 FILENAME=containers
 
 
-FILE1=test_queue
-FILE2=test_stack
-FILE3=test_list
-FILE4=test_multiset
-FILE5=test_set
-ALLFILES=$(FILE5).o $(FILE4).o
+FILE1=./tests/test_queue
+FILE2=./tests/test_stack
+FILE3=./tests/test_list
+FILE4=./tests/test_multiset
+FILE5=./tests/test_set
+FILE6=./tests/test_vector
+ALLFILES=$(FILE5).o $(FILE4).o $(FILE3).o $(FILE2).o $(FILE1).o $(FILE6).o
 
 
 all: test test_without_leaks leaks clean gcov_report clean
@@ -61,6 +62,9 @@ $(FILE4).o: $(FILE4).cc
 $(FILE5).o: $(FILE5).cc
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+$(FILE6).o: $(FILE6).cc
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
 run:
 	$(ROAD)/$(FILENAME)
 
@@ -71,4 +75,4 @@ leaks: noleaks
 	leaks -atExit -- $(ROAD)/$(FILENAME)
 
 clean:
-	rm -rf $(ROAD)/$(FILENAME) *.o *.dSYM *.gcda *.gcdo *.gcov *.gcno *.info *dSYM *.o *.out *.a report
+	rm -rf $(ROAD)/$(FILENAME) *.o *.dSYM *.gcda *.gcdo *.gcov *.gcno *.info *dSYM *.o *.out *.a report ./tests/*.o

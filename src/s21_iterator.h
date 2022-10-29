@@ -7,17 +7,17 @@ namespace s21 {
 template <class T>
 class SetIterator {
    public:
-    explicit SetIterator(Node<T>* node) : node(node) {}
+    explicit SetIterator(Node<T> *node) : node(node) {}
 
-    T& value() const { return node->value; }
+    T &value() const { return node->value; }
 
     void operator++() { increase(); }
     void operator++(int) { increase(); }
     void operator--() { decrease(); }
     void operator--(int) { decrease(); }
-    bool operator==(const SetIterator& other) { return node == other.node; }
-    bool operator!=(const SetIterator& other) { return node != other.node; }
-    T& operator*() const {
+    bool operator==(const SetIterator &other) { return node == other.node; }
+    bool operator!=(const SetIterator &other) { return node != other.node; }
+    T &operator*() const {
         // Проверка на end, чтобы итератор указывающий на end возвращал значение
         // последней ноды;
         if (node != nullptr && node->parent != nullptr &&
@@ -31,10 +31,12 @@ class SetIterator {
         }
     }
 
-    Node<T>* get_node() const { return node; }
-    int show_balance() const { return node->balance;} // to be deleted after tests
+    Node<T> *get_node() const { return node; }
+    int show_balance() const {
+        return node->balance;
+    }  // to be deleted after tests
    protected:
-    Node<T>* node;
+    Node<T> *node;
 
     void increase() {
         if (node == nullptr) return;
@@ -99,14 +101,14 @@ class SetIterator {
 template <class T>
 class SetConstIterator : public SetIterator<T> {
    public:
-    explicit SetConstIterator(Node<T>* node) : SetIterator<T>(node) {}
+    explicit SetConstIterator(Node<T> *node) : SetIterator<T>(node) {}
 
     const T value() const { return SetIterator<T>::node->value; }
 
-    bool operator==(const SetConstIterator& other) {
+    bool operator==(const SetConstIterator &other) {
         return SetIterator<T>::node == other.node;
     }
-    bool operator!=(const SetConstIterator& other) {
+    bool operator!=(const SetConstIterator &other) {
         return SetIterator<T>::node != other.node;
     }
 };
@@ -197,5 +199,5 @@ class node_iterator {
     node_ptr elem_;
 };
 
-}
+}  // namespace s21
 #endif  // SRC_S21_ITERATOR_H_

@@ -2,8 +2,8 @@
 #define _CONTAINERS_SRC_S21_QUEUE_
 #include <iostream>
 
-#include "s21_node.h"
 #include "s21_iterator.h"
+#include "s21_node.h"
 
 namespace s21 {
 

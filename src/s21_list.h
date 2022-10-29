@@ -1,8 +1,8 @@
 #ifndef _CONTAINERS_SRC_S21_LIST_
 #define _CONTAINERS_SRC_S21_LIST_
 
-#include "s21_node.h"
 #include "s21_iterator.h"
+#include "s21_node.h"
 
 namespace s21 {
 

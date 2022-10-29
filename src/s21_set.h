@@ -2,14 +2,14 @@
 #define SRC_S21_SET_H_
 
 #include <climits>
-#include "s21_node.h"
+
 #include "s21_iterator.h"
+#include "s21_node.h"
 
 namespace s21 {
 
 template <class Key>
 class set {
-   public:
     using key_type = Key;
     using value_type = Key;
     using reference = value_type&;
@@ -17,6 +17,7 @@ class set {
     using iterator = SetIterator<Key>;
     using const_iterator = SetConstIterator<Key>;
     using size_type = size_t;
+   public:
 
     set() {}
 
@@ -29,7 +30,7 @@ class set {
     set(const set& s) { CopyTree(s.root_); }
 
     set(set&& s) {
-        size_= s.size_;
+        size_ = s.size_;
         root_ = s.root_;
         end_ = s.end_;
         s.size_ = 0;
@@ -114,22 +115,8 @@ class set {
                 }
             }
         }
-        Node<Key> * buff = result.first.get_node();
-        set_balance_for_all();
-        while (buff != root_) {
-            Node<Key> * new_buff = buff->parent;
-            if (buff->balance > 1) {
-                new_buff = buff->right;
-                if (buff->right->balance < 0) r_rotate(buff->right);
-                l_rotate(buff);
-            } else if (buff->balance < -1) {
-                new_buff = buff->left;
-                if (buff->left->balance > 0) l_rotate(buff->left);
-                r_rotate(buff);
-            }
-            buff = new_buff;
-        set_balance_for_all();
-        }
+        Node<Key>* buff = result.first.get_node();
+        balancing(buff);
         return result;
     }
 
@@ -261,60 +248,6 @@ class set {
         return iterator(node);
     }
 
-    int height(Node<Key> * chunck) {
-        if (chunck == nullptr || chunck == end_) return 0;
-        int h_left = height(chunck->left);
-        int h_right = height(chunck->right);
-        if (h_left > h_right) {
-            return h_left + 1;
-        } else {
-            return h_right + 1;
-        }
-    }
-
-    void set_balance(Node<Key> * chunck) {
-        chunck->balance = height(chunck->right) - height(chunck->left);
-    }
-
-    void set_balance_for_all() {
-        iterator itr1 = begin();
-        while (itr1.get_node() != end_) {
-            set_balance(itr1.get_node());
-            ++itr1;
-        }
-    }
-
-    void r_rotate(Node<Key> * chunck) { // if balance < 0
-        if (chunck == root_) root_ = chunck->left;
-        if (chunck != root_)  {
-            if (chunck->parent->left == chunck) chunck->parent->left = chunck->left;
-            if (chunck->parent->right == chunck) chunck->parent->right = chunck->left;
-        }
-        chunck->left->parent = (chunck == root_) ? nullptr: chunck->parent;
-        chunck->parent = chunck->left;
-        if (chunck->left->right != nullptr) chunck->left->right->parent = chunck;
-        Node<Key> * buff = chunck->left->right;
-        chunck->left->right = chunck;
-        chunck->left = buff;
-    }
-
-    void l_rotate(Node<Key> * chunck) { // if balance > 0
-        if (chunck == root_) root_ = chunck->right;
-        if (chunck != root_) {
-            if (chunck->parent->left == chunck) chunck->parent->left = chunck->right;
-            if (chunck->parent->right == chunck) chunck->parent->right = chunck->right;
-        }
-        chunck->right->parent = (chunck == root_) ? nullptr : chunck->parent;
-        chunck->parent = chunck->right;
-        if (chunck->right->left != nullptr) {
-            chunck->right->left->parent = chunck;
-        }
-        Node<Key> * buff = chunck->right->left;
-        chunck->right->left = chunck;
-        chunck->right = buff;
-    }
-
-    Node<Key>* get_root() { return root_; } // service function - TO BE DELETED
 
    protected:
     Node<Key>* end_ = nullptr;
@@ -326,7 +259,7 @@ class set {
         if (node == nullptr || node == end_) return;
         bool end = false;
         if (node->parent != nullptr && node->parent->right == node &&
-        node->value < node->parent->value) {
+            node->value < node->parent->value) {
             end = true;
         }
         if (!end) {
@@ -351,6 +284,85 @@ class set {
         }
         delete node;
     }
+
+        void r_rotate(Node<Key>* chunck) {
+        if (chunck == root_) root_ = chunck->left;
+        if (chunck != root_) {
+            if (chunck->parent->left == chunck)
+                chunck->parent->left = chunck->left;
+            if (chunck->parent->right == chunck)
+                chunck->parent->right = chunck->left;
+        }
+        chunck->left->parent = (chunck == root_) ? nullptr : chunck->parent;
+        chunck->parent = chunck->left;
+        if (chunck->left->right != nullptr)
+            chunck->left->right->parent = chunck;
+        Node<Key>* buff = chunck->left->right;
+        chunck->left->right = chunck;
+        chunck->left = buff;
+    }
+
+    void l_rotate(Node<Key>* chunck) {
+        if (chunck == root_) root_ = chunck->right;
+        if (chunck != root_) {
+            if (chunck->parent->left == chunck)
+                chunck->parent->left = chunck->right;
+            if (chunck->parent->right == chunck)
+                chunck->parent->right = chunck->right;
+        }
+        chunck->right->parent = (chunck == root_) ? nullptr : chunck->parent;
+        chunck->parent = chunck->right;
+        if (chunck->right->left != nullptr) {
+            chunck->right->left->parent = chunck;
+        }
+        Node<Key>* buff = chunck->right->left;
+        chunck->right->left = chunck;
+        chunck->right = buff;
+    }
+
+    void set_balance(Node<Key>* chunck) {
+        chunck->balance = height(chunck->right) - height(chunck->left);
+    }
+
+    void set_balance_for_all() {
+        iterator itr1 = begin();
+        while (itr1.get_node() != end_) {
+            set_balance(itr1.get_node());
+            ++itr1;
+        }
+    }
+
+    int height(Node<Key>* chunck) {
+        if (chunck == nullptr || chunck == end_) return 0;
+        int h_left = height(chunck->left);
+        int h_right = height(chunck->right);
+        if (h_left > h_right) {
+            return h_left + 1;
+        } else {
+            return h_right + 1;
+        }
+    }
+
+    Node<Key>* get_root() { return root_; }
+
+        void balancing(Node<Key> * buff) {
+        set_balance_for_all();
+        while (buff != root_) {
+            Node<Key>* new_buff = buff->parent;
+            if (buff->balance > 1) {
+                new_buff = buff->right;
+                if (buff->right->balance < 0) r_rotate(buff->right);
+                l_rotate(buff);
+            } else if (buff->balance < -1) {
+                new_buff = buff->left;
+                if (buff->left->balance > 0) l_rotate(buff->left);
+                r_rotate(buff);
+            }
+            buff = new_buff;
+            set_balance_for_all();
+        }
+    }
+
 };
 
 }  // namespace s21

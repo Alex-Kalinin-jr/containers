@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "s21_queue.h"
+#include "../s21_queue.h"
 
 TEST(queue, init_1) {
     s21::Queue<int> a;
