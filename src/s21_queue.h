@@ -49,14 +49,14 @@ class Queue {
         }
 
         if (s.head != nullptr) {
-            s21_Node<value_type> *chunk = new s21_Node<value_type>(*(s.head));
+            list_Node<value_type> *chunk = new list_Node<value_type>(*(s.head));
             head = chunk;
             tail = chunk;
             sizeOf++;
             // HERE TO BE CAREFUL
-            s21_Node<value_type> *iterator(head);
+            list_Node<value_type> *iterator(head);
             while (sizeOf < s.sizeOf) {
-                chunk = new s21_Node<value_type>(*(chunk->back));
+                chunk = new list_Node<value_type>(*(chunk->back));
                 sizeOf++;
                 chunk->fwd = iterator;
                 iterator->back = chunk;
@@ -83,7 +83,7 @@ class Queue {
     size_type size() { return sizeOf; }
 
     void push(const_reference value) {
-        s21_Node<value_type> *chunk = new s21_Node<value_type>(value);
+        list_Node<value_type> *chunk = new list_Node<value_type>(value);
         if (head == nullptr) {
             head = chunk;
             tail = chunk;
@@ -97,7 +97,7 @@ class Queue {
 
     void pop() {
         if (head != nullptr) {
-            s21_Node<value_type> *buffNode = head;
+            list_Node<value_type> *buffNode = head;
             if (tail == head) tail = nullptr;
             head = head->back;
             delete buffNode;
@@ -108,8 +108,8 @@ class Queue {
     void swap(Queue &other) {
         if (this != &other) {
             size_type buff_size = sizeOf;
-            s21_Node<value_type> *buff_head = head;
-            s21_Node<value_type> *buff_tail = tail;
+            list_Node<value_type> *buff_head = head;
+            list_Node<value_type> *buff_tail = tail;
             sizeOf = other.sizeOf;
             head = other.head;
             tail = other.tail;
@@ -120,8 +120,8 @@ class Queue {
     }
 
    private:
-    s21_Node<value_type> *head;
-    s21_Node<value_type> *tail;
+    list_Node<value_type> *head;
+    list_Node<value_type> *tail;
     size_type sizeOf;
 };
 

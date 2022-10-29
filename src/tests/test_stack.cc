@@ -35,7 +35,7 @@ TEST(stack, init_4) {
 TEST(stack, init_5) {
     s21::Stack<int> b = s21::Stack<int>{3, 4, 5, 6, 7, 8};
     s21::Stack<int> a{3, 4, 5, 6, 7, 8};
-    s21::s21_Node<int> c(5);
+    s21::list_Node<int> c(5);
     ASSERT_NE(sizeof(b), sizeof(c));
     ASSERT_EQ(sizeof(b), sizeof(a));
 }

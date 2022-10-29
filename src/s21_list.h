@@ -17,7 +17,7 @@ class List {
    public:
     List() : begin_(nullptr), end_(nullptr), sizeOf(0) {
         value_type zero;
-        s21_Node<value_type> *endNode = new s21_Node<value_type>(zero);
+        list_Node<value_type> *endNode = new list_Node<value_type>(zero);
         end_ = endNode;
     };
     List(size_type n, const_reference el) : List() {
@@ -78,7 +78,7 @@ class List {
     }
 
     void clear() {
-        s21_Node<value_type> *next;
+        list_Node<value_type> *next;
         if (begin_ != nullptr) {
             while (begin_ != end_) {
                 next = begin_->fwd;
@@ -115,8 +115,8 @@ class List {
     size_type max_size() const { return size_type(-1); }
 
     iterator insert(iterator iter, const_reference value) {
-        s21_Node<value_type> *pos = iter.iterator::get_elem();
-        s21_Node<value_type> *chunck = new s21_Node<value_type>(value);
+        list_Node<value_type> *pos = iter.iterator::get_elem();
+        list_Node<value_type> *chunck = new list_Node<value_type>(value);
         if (begin_ == nullptr) {
             begin_ = chunck;
             chunck->fwd = end_;
@@ -137,7 +137,7 @@ class List {
     }
 
     void erase(iterator itr) {
-        s21_Node<value_type> *pos = itr.get_elem();
+        list_Node<value_type> *pos = itr.get_elem();
         if (pos == nullptr || pos == end_) return;
         if (pos == begin_) {
             pos->fwd->back = nullptr;
@@ -173,10 +173,10 @@ class List {
             return;
         }
         sizeOf += other.sizeOf;
-        s21_Node<value_type> *buff = begin_;
-        s21_Node<value_type> *buff_2 = other.begin_;
-        s21_Node<value_type> *newList;
-        s21_Node<value_type> *chunck;
+        list_Node<value_type> *buff = begin_;
+        list_Node<value_type> *buff_2 = other.begin_;
+        list_Node<value_type> *newList;
+        list_Node<value_type> *chunck;
         if (buff->get_elem() < buff_2->get_elem()) {
             newList = buff;
             buff = buff->fwd;
@@ -214,7 +214,7 @@ class List {
 
     void splice(const iterator poshn, List &other) {
         if (other.begin_ == nullptr) return;
-        s21_Node<value_type> *pos = poshn.get_elem();
+        list_Node<value_type> *pos = poshn.get_elem();
         pos->back = other.end_->back;
         other.end_->back->fwd = pos;
         begin_ = other.begin_;
@@ -227,8 +227,8 @@ class List {
 
     void reverse() {
         if (begin_ == nullptr) return;
-        s21_Node<value_type> *buff;
-        s21_Node<value_type> *swapper = begin_;
+        list_Node<value_type> *buff;
+        list_Node<value_type> *swapper = begin_;
         while (begin_ != end_) {
             buff = begin_->fwd;
             begin_->fwd = begin_->back;
@@ -242,8 +242,8 @@ class List {
 
     void unique() {
         if (begin_ == nullptr) return;
-        s21_Node<value_type> *buff = begin_;
-        s21_Node<value_type> *for_del;
+        list_Node<value_type> *buff = begin_;
+        list_Node<value_type> *for_del;
         while (buff->fwd != end_) {
             if (buff->fwd->get_elem() == buff->get_elem() &&
                 buff->fwd != end_) {
@@ -260,9 +260,9 @@ class List {
 
     void sort() {
         if (begin_ == nullptr || end_->back == begin_) return;
-        s21_Node<value_type> *buff = begin_;
-        s21_Node<value_type> *chunck;
-        s21_Node<value_type> *optimizer = end_;
+        list_Node<value_type> *buff = begin_;
+        list_Node<value_type> *chunck;
+        list_Node<value_type> *optimizer = end_;
         while (optimizer->back != begin_) {
             while (buff != optimizer->back) {
                 chunck = buff->fwd;
@@ -286,8 +286,8 @@ class List {
     }
 
    private:
-    s21_Node<value_type> *begin_;
-    s21_Node<value_type> *end_;
+    list_Node<value_type> *begin_;
+    list_Node<value_type> *end_;
     size_type sizeOf;
 };
 

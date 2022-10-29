@@ -31,7 +31,7 @@ class map_Node {
 };
 
 template <typename T>
-class s21_Node {
+class list_Node {
     using value_type = T;
     using reference = T &;
     using const_reference = const T &;
@@ -41,24 +41,24 @@ class s21_Node {
     const_reference elem;
 
    public:
-    s21_Node *back;
-    s21_Node *fwd;
-    explicit s21_Node(const_reference data)
+    list_Node *back;
+    list_Node *fwd;
+    explicit list_Node(const_reference data)
         : elem(data), back(nullptr), fwd(nullptr){};
-    s21_Node(s21_Node &other)
+    list_Node(list_Node &other)
         : elem(other.elem), back(other.back), fwd(other.fwd){};
-    ~s21_Node(){};
+    ~list_Node(){};
 
-    bool operator==(s21_Node<value_type> other) { return this = &other; }
+    bool operator==(list_Node<value_type> other) { return this = &other; }
 
-    s21_Node &operator=(const s21_Node &other) {
+    list_Node &operator=(const list_Node &other) {
         elem = other.elem;
         back = other.back;
         fwd = other.fwd;
         return *this;
     }
 
-    s21_Node &operator=(s21_Node &&other) {
+    list_Node &operator=(list_Node &&other) {
         elem = other.elem;
         back = other.back;
         fwd = other.fwd;

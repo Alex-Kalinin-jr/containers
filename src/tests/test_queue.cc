@@ -35,7 +35,7 @@ TEST(queue, init_4) {
 TEST(queue, init_5) {
     s21::Queue<int> b = s21::Queue<int>{3, 4, 5, 6, 7, 8};
     s21::Queue<int> a{3, 4, 5, 6, 7, 8};
-    s21::s21_Node<int> c(5);
+    s21::list_Node<int> c(5);
     ASSERT_EQ(sizeof(b), sizeof(c));
     ASSERT_EQ(sizeof(b), sizeof(a));
 }
