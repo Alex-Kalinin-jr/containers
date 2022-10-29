@@ -2,11 +2,6 @@
 #define SRC_S21_SET_H_
 
 #include <climits>
-#include <cstddef>
-#include <stdexcept>
-#include <initializer_list>
-#include <utility>
-
 #include "s21_node.h"
 #include "s21_iterator.h"
 
