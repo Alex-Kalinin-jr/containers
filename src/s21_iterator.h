@@ -199,20 +199,20 @@ class node_iterator {
 template <class Key, class T>
 class MapIterator {
    public:
-    explicit MapIterator(map_Node<Key, T>* node) : node(node) {}
+    explicit MapIterator(map_Node<Key, T> *node) : node(node) {}
 
-    T& value() { return node->value; }
+    T &value() { return node->value; }
     const Key key() const { return node->key; }
 
     void operator++() { increase(); }
     void operator++(int) { increase(); }
     void operator--() { decrease(); }
     void operator--(int) { decrease(); }
-    bool operator==(const MapIterator& other) { return node == other.node; }
-    bool operator!=(const MapIterator& other) { return node != other.node; }
+    bool operator==(const MapIterator &other) { return node == other.node; }
+    bool operator!=(const MapIterator &other) { return node != other.node; }
 
    protected:
-    map_Node<Key, T>* node;
+    map_Node<Key, T> *node;
 
    private:
     void increase() {
@@ -255,15 +255,16 @@ class MapIterator {
 template <class Key, class T>
 class MapConstIterator : public MapIterator<Key, T> {
    public:
-    explicit MapConstIterator(map_Node<Key, T>* node) : MapIterator<Key, T>(node) {}
+    explicit MapConstIterator(map_Node<Key, T> *node)
+        : MapIterator<Key, T>(node) {}
 
     const Key key() const { return MapIterator<Key, T>::node->key; }
     const T value() const { return MapIterator<Key, T>::node->key; }
 
-    bool operator==(const MapConstIterator& other) {
+    bool operator==(const MapConstIterator &other) {
         return MapIterator<Key, T>::node == other.node;
     }
-    bool operator!=(const MapConstIterator& other) {
+    bool operator!=(const MapConstIterator &other) {
         return MapIterator<Key, T>::node != other.node;
     }
 };

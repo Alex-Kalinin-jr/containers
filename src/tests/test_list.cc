@@ -136,7 +136,7 @@ TEST(list, erase_1) {
 
 TEST(list, erase_2) {
     s21::List<char> g;
-    s21::s21_Node<char>* a1(g.begin());
+    s21::node_iterator<char> a1 = g.begin();
     g.erase(a1);
     a1 = g.begin();
     g.erase(a1);

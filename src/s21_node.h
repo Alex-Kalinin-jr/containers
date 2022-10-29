@@ -20,14 +20,14 @@ class Node {
 template <class Key, class T>
 class map_Node {
    public:
-    map_Node* parent = nullptr;
-    map_Node* left = nullptr;
-    map_Node* right = nullptr;
+    map_Node *parent = nullptr;
+    map_Node *left = nullptr;
+    map_Node *right = nullptr;
 
     T value;
     const Key key;
 
-    explicit map_Node(Key key, const T& value) : value(value), key(key) {}
+    explicit map_Node(Key key, const T &value) : value(value), key(key) {}
 };
 
 template <typename T>

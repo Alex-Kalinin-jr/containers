@@ -12,24 +12,22 @@ class List {
     using reference = T &;
     using const_reference = const T &;
     using size_type = size_t;
-    using node = s21_Node<value_type>;
-    using node_ptr = s21_Node<value_type> *;
-    using node_iter = node_iterator<value_type>;
+    using iterator = node_iterator<value_type>;
 
    public:
     List() : begin_(nullptr), end_(nullptr), sizeOf(0) {
         value_type zero;
-        node_ptr endNode = new node(zero);
+        s21_Node<value_type> *endNode = new s21_Node<value_type>(zero);
         end_ = endNode;
     };
     List(size_type n, const_reference el) : List() {
         ++n;
-        node_iter iter = end();
+        iterator iter = end();
         while (--n > 0) insert(iter, el);
     }
     List(std::initializer_list<value_type> const &items) : List() {
         auto el = items.begin();
-        node_iter iter = end();
+        iterator iter = end();
         while (el != items.end()) {
             insert(iter, *el);
             ++el;
@@ -37,9 +35,10 @@ class List {
     }
     List(const List &other) : List() {
         if (other.begin_ != nullptr) {
-            node_iter iter = end();
-            node_iter iter_2 = other.begin();
-            while (iter_2.node_iter::get_elem() != other.end()) {
+            iterator iter = end();
+            iterator iter_2 = other.begin();
+            while (iter_2.iterator::get_elem() !=
+                   other.end().iterator::get_elem()) {
                 insert(iter, *iter_2);
                 ++iter_2;
             }
@@ -79,7 +78,7 @@ class List {
     }
 
     void clear() {
-        node_ptr next;
+        s21_Node<value_type> *next;
         if (begin_ != nullptr) {
             while (begin_ != end_) {
                 next = begin_->fwd;
@@ -93,29 +92,31 @@ class List {
 
     const_reference front() const {
         if (begin_ == nullptr)
-            throw std::out_of_range("List is empty: can not get an elem");
-        return begin_->node::get_elem();
+            throw std::out_of_range(
+                "s21::List::front - List is empty: can not get an elem");
+        return begin_->get_elem();
     }
 
     const_reference back() const {
         if (begin_ == nullptr)
-            throw std::out_of_range("List is empty: can not get an elem");
-        return end_->back->node::get_elem();
+            throw std::out_of_range(
+                "s21::List::back - List is empty: can not get an elem");
+        return end_->back->get_elem();
     }
 
     bool empty() const { return begin_ == nullptr; }
 
-    node_ptr begin() const { return begin_; }
+    iterator begin() const { return iterator(begin_); }
 
-    node_ptr end() const { return end_; }
+    iterator end() const { return iterator(end_); }
 
     size_type size() const { return sizeOf; }
 
     size_type max_size() const { return size_type(-1); }
 
-    node_iter insert(node_iter iter, const_reference value) {
-        node_ptr pos = iter.node_iter::get_elem();
-        node_ptr chunck = new node(value);
+    iterator insert(iterator iter, const_reference value) {
+        s21_Node<value_type> *pos = iter.iterator::get_elem();
+        s21_Node<value_type> *chunck = new s21_Node<value_type>(value);
         if (begin_ == nullptr) {
             begin_ = chunck;
             chunck->fwd = end_;
@@ -135,8 +136,8 @@ class List {
         return iter;
     }
 
-    void erase(node_iter itr) {
-        node_ptr pos = itr.get_elem();
+    void erase(iterator itr) {
+        s21_Node<value_type> *pos = itr.get_elem();
         if (pos == nullptr || pos == end_) return;
         if (pos == begin_) {
             pos->fwd->back = nullptr;
@@ -172,8 +173,11 @@ class List {
             return;
         }
         sizeOf += other.sizeOf;
-        node_ptr buff = begin_, buff_2 = other.begin_, newList, chunck;
-        if (buff->node::get_elem() < buff_2->node::get_elem()) {
+        s21_Node<value_type> *buff = begin_;
+        s21_Node<value_type> *buff_2 = other.begin_;
+        s21_Node<value_type> *newList;
+        s21_Node<value_type> *chunck;
+        if (buff->get_elem() < buff_2->get_elem()) {
             newList = buff;
             buff = buff->fwd;
         } else {
@@ -182,7 +186,7 @@ class List {
         }
         begin_ = newList;
         while (buff != end_ && buff_2 != other.end_) {
-            if (buff->node::get_elem() < buff_2->node::get_elem()) {
+            if (buff->get_elem() < buff_2->get_elem()) {
                 chunck = buff;
                 buff = buff->fwd;
             } else {
@@ -208,9 +212,9 @@ class List {
         other.sizeOf = 0;
     }
 
-    void splice(const node_iter poshn, List &other) {
+    void splice(const iterator poshn, List &other) {
         if (other.begin_ == nullptr) return;
-        node_ptr pos = poshn.get_elem();
+        s21_Node<value_type> *pos = poshn.get_elem();
         pos->back = other.end_->back;
         other.end_->back->fwd = pos;
         begin_ = other.begin_;
@@ -223,8 +227,8 @@ class List {
 
     void reverse() {
         if (begin_ == nullptr) return;
-        node_ptr buff;
-        node_ptr swapper = begin_;
+        s21_Node<value_type> *buff;
+        s21_Node<value_type> *swapper = begin_;
         while (begin_ != end_) {
             buff = begin_->fwd;
             begin_->fwd = begin_->back;
@@ -238,10 +242,10 @@ class List {
 
     void unique() {
         if (begin_ == nullptr) return;
-        node_ptr buff = begin_;
-        node_ptr for_del;
+        s21_Node<value_type> *buff = begin_;
+        s21_Node<value_type> *for_del;
         while (buff->fwd != end_) {
-            if (buff->fwd->node::get_elem() == buff->node::get_elem() &&
+            if (buff->fwd->get_elem() == buff->get_elem() &&
                 buff->fwd != end_) {
                 for_del = buff->fwd;
                 buff->fwd = for_del->fwd;
@@ -256,13 +260,13 @@ class List {
 
     void sort() {
         if (begin_ == nullptr || end_->back == begin_) return;
-        node_ptr buff = begin_;
-        node_ptr chunck;
-        node_ptr optimizer = end_;
+        s21_Node<value_type> *buff = begin_;
+        s21_Node<value_type> *chunck;
+        s21_Node<value_type> *optimizer = end_;
         while (optimizer->back != begin_) {
             while (buff != optimizer->back) {
                 chunck = buff->fwd;
-                if (chunck->node::get_elem() < buff->node::get_elem()) {
+                if (chunck->get_elem() < buff->get_elem()) {
                     if (buff == begin_) {
                         begin_ = chunck;
                     }
@@ -282,8 +286,8 @@ class List {
     }
 
    private:
-    node_ptr begin_;
-    node_ptr end_;
+    s21_Node<value_type> *begin_;
+    s21_Node<value_type> *end_;
     size_type sizeOf;
 };
 

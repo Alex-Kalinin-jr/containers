@@ -40,7 +40,7 @@ class map {
 
     ~map() { DeleteTree(root_); }
 
-    map & operator=(map&& m) {
+    map& operator=(map&& m) {
         if (this != &m) {
             size_ = m.size_;
             root_ = m.root_;
@@ -50,7 +50,7 @@ class map {
         return *this;
     }
 
-    map & operator=(map & m) {
+    map& operator=(map& m) {
         if (this != &m) {
             size_ = m.size_;
             CopyTree(m.root_);

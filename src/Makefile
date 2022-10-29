@@ -27,7 +27,8 @@ FILE5=./tests/test_set
 FILE6=./tests/test_vector
 FILE7=./tests/test_map
 FILE8=./tests/test_array
-ALLFILES=$(FILE5).o $(FILE4).o $(FILE3).o $(FILE2).o $(FILE1).o $(FILE6).o $(FILE7).o
+# ALLFILES=$(FILE5).o $(FILE4).o $(FILE3).o $(FILE2).o $(FILE1).o $(FILE6).o $(FILE7).o
+ALLFILES=$(FILE3).o $(FILE1).o $(FILE2).o
 
 
 all: test test_without_leaks leaks clean gcov_report clean
