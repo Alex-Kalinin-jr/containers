@@ -120,23 +120,21 @@ class set {
             }
         }
         Node<Key> * buff = result.first.get_node();
+        set_balance_for_all();
         while (buff != root_) {
-            set_balance(buff);
             Node<Key> * new_buff = buff->parent;
             if (buff->balance > 1) {
                 new_buff = buff->right;
-                set_balance(buff->right);
                 if (buff->right->balance < 0) r_rotate(buff->right);
                 l_rotate(buff);
             } else if (buff->balance < -1) {
                 new_buff = buff->left;
-                set_balance(buff->left);
                 if (buff->left->balance > 0) l_rotate(buff->left);
                 r_rotate(buff);
             }
             buff = new_buff;
+        set_balance_for_all();
         }
-        set_balance(root_); // balancing to be added too
         return result;
     }
 
@@ -145,7 +143,6 @@ class set {
             throw std::out_of_range("invalid pointer");
         }
         Node<Key>* node = pos.get_node();
-        Node<Key>* buff = (node != root_) ? node->parent : nullptr;
         if ((node != nullptr && node != end_) ||
             (node->left == nullptr && node->right == nullptr)) {
             if (node->left == nullptr && node->right == nullptr) {
@@ -215,13 +212,7 @@ class set {
             }
             --size_;
             delete node;
-            if (buff != nullptr) {
-                while (buff != root_) {
-                    set_balance(buff);
-                    buff = buff->parent;
-                }
-            }
-            set_balance(root_);
+            set_balance_for_all();
         }
     }
 
