@@ -25,8 +25,7 @@ class Queue {
     Queue(const Queue &s) : Queue() { *this = s; };
     Queue(Queue &&s) : head(s.head), tail(s.tail), sizeOf(s.sizeOf){};
     Queue(std::initializer_list<value_type> buff) : Queue() {
-        for (const value_type *start = buff.begin(); start < buff.end();
-             ++start) {
+        for (std::initializer_list<value_type>  const & buff) {
             push(*start);
         }
     }
