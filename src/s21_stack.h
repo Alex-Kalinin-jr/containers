@@ -65,15 +65,15 @@ class Stack {
         return *this;
     }
 
-    const_reference top() {
+    const_reference top() const {
         if (empty())
             throw std::out_of_range("Stack::top() - the Stack is empty");
         return head->get_elem();
     }
 
-    bool empty() { return (head) ? false : true; }
+    bool empty() const { return (head) ? false : true; }
 
-    size_type size() { return sizeOf; }
+    size_type size() const { return sizeOf; }
 
     void push(const_reference value) {
         list_Node<value_type> *chunk = new list_Node<value_type>(value);
