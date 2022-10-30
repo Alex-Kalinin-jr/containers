@@ -158,7 +158,7 @@ TEST(queue, runtime1) {
     int d = 0;
     while (++d != 10000000) c.push(d);
     ASSERT_EQ(c.size(), 9999999);
-    ASSERT_EQ(c.back(), 10000000);
+    ASSERT_EQ(c.back(), 9999999);
 }
 
 TEST(queue, runtime2) {
@@ -166,7 +166,7 @@ TEST(queue, runtime2) {
     int d = 0;
     while (++d != 10000000) c.push(d);
     ASSERT_EQ(c.size(), 9999999);
-    ASSERT_EQ(c.back(), 10000000);
+    ASSERT_EQ(c.back(), 9999999);
     while (--d != 0) c.pop();
     ASSERT_EQ(c.size(), 0);
 }
