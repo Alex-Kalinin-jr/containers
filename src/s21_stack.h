@@ -3,8 +3,10 @@
 
 #include "s21_node.h"
 
-#include <iostream>
-
+#include <cstddef>
+#include <initializer_list>
+#include <stdexcept>
+#include <utility>
 
 namespace s21 {
 

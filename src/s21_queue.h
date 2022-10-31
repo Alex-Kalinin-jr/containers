@@ -5,14 +5,13 @@
 #include "s21_iterator.h"
 #include "s21_node.h"
 
+#include <cstddef>
+#include <initializer_list>
+#include <stdexcept>
+#include <utility>
+
 namespace s21 {
 
-/* remember that queue is an method to organize data ordering,
-therefore it stores and handles the order of elements, not the elements
-themselves/ If you put a VAR into queue and then change this VAR somwhere else,
-it is changed in queue too. For exmpl, when you try int d = 0; while (++d <
-1000) queue.push(d) the last 1000 elements are all the "d" and are all equal to
-1000*/
 template <typename T>
 class Queue {
     using value_type = T;

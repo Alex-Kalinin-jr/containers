@@ -1,6 +1,10 @@
 #ifndef _CONTAINERS_SRC_S21_NODE_
 #define _CONTAINERS_SRC_S21_NODE_
 
+#include <cstddef>
+#include <stdexcept>
+#include <utility>
+
 namespace s21 {
 
 template <class T>

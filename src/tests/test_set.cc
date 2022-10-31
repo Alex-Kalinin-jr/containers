@@ -1,7 +1,8 @@
+#include "../s21_set.h"
+
 #include <gtest/gtest.h>
 #include <cmath>
 
-#include "../s21_set.h"
 
 TEST(Constructors, Test_01) {
     s21::set<int> a;
@@ -86,9 +87,8 @@ TEST(Lookup, Test_01) {
 }
 
 
-/*THESE TESTS ARE FOR CHECK OF INTERNAL BEHAVIOUR
-FOR THEIR PERFOMING YOU SHOULD CHANGE THE STATUS OF SERVICE FUNCTIONS
-ONTO PUBLIC*/
+/*FOR TESTING YOU SHOULD CHANGE THE ACCESS RULE FROM 'PROTECTED'
+TO 'PUBLIC' FOR SET::SET_BALANCE_FOR_ALL() AND FOR SET::GET_ROOT()*/
 
 // TEST(balancing, Test_01) {
 //     s21::set<int> a = {11, 9, 5, 6, 7, 10, 4, 3, 8, 16, 15};
@@ -96,9 +96,7 @@ ONTO PUBLIC*/
 //     s21::SetIterator<int> itr2 = a.end();
 //     a.set_balance_for_all();
 //     while (itr1.get_node() != itr2.get_node()) {
-//         if (itr1.get_node() != a.get_root()) {
 //             ASSERT_LT(abs(itr1.get_node()->balance), 2);
-//         }
 //         ++itr1;
 //     }
 // }
@@ -109,9 +107,7 @@ ONTO PUBLIC*/
 //     s21::SetIterator<int> itr2 = a.end();
 //     a.set_balance_for_all();
 //     while (itr1.get_node() != itr2.get_node()) {
-//         if (itr1.get_node() != a.get_root()) {
 //             ASSERT_LT(abs(itr1.get_node()->balance), 2);
-//         }
 //         ++itr1;
 //     }
 // }
@@ -122,9 +118,7 @@ ONTO PUBLIC*/
 //     s21::SetIterator<int> itr2 = a.end();
 //     a.set_balance_for_all();
 //     while (itr1.get_node() != itr2.get_node()) {
-//         if (itr1.get_node() != a.get_root()) {
 //             ASSERT_LT(abs(itr1.get_node()->balance), 2);
-//         }
 //         ++itr1;
 //     }
 // }

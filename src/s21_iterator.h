@@ -3,6 +3,11 @@
 
 #include "s21_node.h"
 
+#include <cstddef>
+#include <initializer_list>
+#include <stdexcept>
+#include <utility>
+
 namespace s21 {
 template <class T>
 class SetIterator {

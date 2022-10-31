@@ -4,6 +4,11 @@
 #include "s21_iterator.h"
 #include "s21_set.h"
 
+#include <cstddef>
+#include <initializer_list>
+#include <stdexcept>
+#include <utility>
+
 namespace s21 {
 
 template <typename Key>

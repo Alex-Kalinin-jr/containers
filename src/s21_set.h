@@ -1,10 +1,14 @@
 #ifndef SRC_S21_SET_H_
 #define SRC_S21_SET_H_
 
-#include <climits>
-
 #include "s21_iterator.h"
 #include "s21_node.h"
+
+#include <climits>
+#include <initializer_list>
+#include <stdexcept>
+#include <utility>
+
 
 namespace s21 {
 
@@ -248,6 +252,34 @@ class set {
         return iterator(node);
     }
 
+    void balancing(Node<Key>* buff) {
+        set_balance_for_all();
+        while (buff != nullptr) {
+            Node<Key>* new_buff = (buff == root_) ? nullptr : buff->parent;
+            if (buff->balance > 1) {
+                new_buff = buff->right;
+                if (buff->right->balance < 0) r_rotate(buff->right);
+                l_rotate(buff);
+            } else if (buff->balance < -1) {
+                new_buff = buff->left;
+                if (buff->left->balance > 0) l_rotate(buff->left);
+                r_rotate(buff);
+            }
+            buff = new_buff;
+            set_balance_for_all();
+        }
+    }
+
+        void set_balance_for_all() {
+        iterator itr1 = begin();
+        while (itr1.get_node() != end_) {
+            set_balance(itr1.get_node());
+            ++itr1;
+        }
+    }
+
+    Node<Key>* get_root() { return root_; }
+
    protected:
     Node<Key>* end_ = nullptr;
     Node<Key>* root_ = nullptr;
@@ -285,7 +317,6 @@ class set {
     }
 
     void r_rotate(Node<Key>* chunck) {
-        if (chunck == root_) root_ = chunck->left;
         if (chunck != root_) {
             if (chunck->parent->left == chunck)
                 chunck->parent->left = chunck->left;
@@ -299,10 +330,10 @@ class set {
         Node<Key>* buff = chunck->left->right;
         chunck->left->right = chunck;
         chunck->left = buff;
+        if (chunck == root_) root_ = chunck->parent;
     }
 
     void l_rotate(Node<Key>* chunck) {
-        if (chunck == root_) root_ = chunck->right;
         if (chunck != root_) {
             if (chunck->parent->left == chunck)
                 chunck->parent->left = chunck->right;
@@ -317,18 +348,11 @@ class set {
         Node<Key>* buff = chunck->right->left;
         chunck->right->left = chunck;
         chunck->right = buff;
+        if (chunck == root_) root_ = chunck->parent;
     }
 
     void set_balance(Node<Key>* chunck) {
         chunck->balance = height(chunck->right) - height(chunck->left);
-    }
-
-    void set_balance_for_all() {
-        iterator itr1 = begin();
-        while (itr1.get_node() != end_) {
-            set_balance(itr1.get_node());
-            ++itr1;
-        }
     }
 
     int height(Node<Key>* chunck) {
@@ -342,25 +366,8 @@ class set {
         }
     }
 
-    Node<Key>* get_root() { return root_; }
 
-    void balancing(Node<Key>* buff) {
-        set_balance_for_all();
-        while (buff != root_) {
-            Node<Key>* new_buff = buff->parent;
-            if (buff->balance > 1) {
-                new_buff = buff->right;
-                if (buff->right->balance < 0) r_rotate(buff->right);
-                l_rotate(buff);
-            } else if (buff->balance < -1) {
-                new_buff = buff->left;
-                if (buff->left->balance > 0) l_rotate(buff->left);
-                r_rotate(buff);
-            }
-            buff = new_buff;
-            set_balance_for_all();
-        }
-    }
+
 };
 
 }  // namespace s21

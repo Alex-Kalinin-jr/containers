@@ -1,13 +1,14 @@
 #ifndef SRC_S21_MAP_H_
 #define SRC_S21_MAP_H_
 
+#include "s21_iterator.h"
+#include "s21_node.h"
+
 #include <climits>
 #include <initializer_list>
 #include <stdexcept>
 #include <utility>
 
-#include "s21_iterator.h"
-#include "s21_node.h"
 
 namespace s21 {
 
