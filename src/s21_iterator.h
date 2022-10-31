@@ -1,12 +1,12 @@
 #ifndef SRC_S21_ITERATOR_H_
 #define SRC_S21_ITERATOR_H_
 
-#include "s21_node.h"
-
 #include <cstddef>
 #include <initializer_list>
 #include <stdexcept>
 #include <utility>
+
+#include "s21_node.h"
 
 namespace s21 {
 template <class T>

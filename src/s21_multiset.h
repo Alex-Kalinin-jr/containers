@@ -1,13 +1,13 @@
 #ifndef _CONTAINERS_SRC_S21_MULTISET_
 #define _CONTAINERS_SRC_S21_MULTISET_
 
-#include "s21_iterator.h"
-#include "s21_set.h"
-
 #include <cstddef>
 #include <initializer_list>
 #include <stdexcept>
 #include <utility>
+
+#include "s21_iterator.h"
+#include "s21_set.h"
 
 namespace s21 {
 

@@ -1,12 +1,12 @@
 #ifndef _CONTAINERS_SRC_S21_STACK_
 #define _CONTAINERS_SRC_S21_STACK_
 
-#include "s21_node.h"
-
 #include <cstddef>
 #include <initializer_list>
 #include <stdexcept>
 #include <utility>
+
+#include "s21_node.h"
 
 namespace s21 {
 
