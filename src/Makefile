@@ -20,6 +20,10 @@ all: clean check test
 
 test: clean $(SOURCE)
 	$(CC) $(LDFLAGS) -o $@ $(SOURCE) $(ADD_LIBS)
+	-./$@
+
+leaks_test: clean $(SOURCE)
+	$(CC) $(LDFLAGS) -o $@ $(SOURCE) $(ADD_LIBS)
 	-$(LEAK_CHECK) $(LEAK_ARGS) ./$@
 
 gcov_report: clean $(SOURCE)
@@ -40,4 +44,4 @@ check: $(SOURCE) $(HEADER)
 	cppcheck --std=c++17 -x c++ --enable=all --suppress=missingIncludeSystem $(SOURCE) $(HEADER)
 
 clean:
-	rm -f ./test *.o && rm -rf report/
+	rm -f ./test ./leaks_test *.o && rm -rf report/
