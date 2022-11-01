@@ -5,7 +5,7 @@ using namespace s21;
 
 TEST(Constructors, Test_01) {
     set<int> a;
-    set<int> b = {1, 2, 3, 4, 5};
+    set<int> b = {1, 2, 3, 8, 4, 6, 5, 9, 13, 11, 12, 18, 15, 14, 16, 17};
     set<int> g{1, 2, 3, 4, 5};
     set<int> c(b);
     auto it1 = b.begin();

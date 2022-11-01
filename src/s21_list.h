@@ -77,8 +77,8 @@ class List {
     }
 
     void clear() {
-        list_Node<value_type> *next;
         if (begin_ != nullptr) {
+            list_Node<value_type> *next;
             while (begin_ != end_) {
                 next = begin_->fwd;
                 delete begin_;

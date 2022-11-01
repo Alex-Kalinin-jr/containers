@@ -38,7 +38,7 @@ class list_Node {
     using size_type = size_t;
 
    private:
-    const_reference elem;
+    value_type elem;
 
    public:
     list_Node *back;

@@ -6,12 +6,6 @@
 
 namespace s21 {
 
-/* remember that queue is an method to organize data ordering,
-therefore it stores and handles the order of elements, not the elements
-themselves/ If you put a VAR into queue and then change this VAR somwhere else,
-it is changed in queue too. For exmpl, when you try int d = 0; while (++d <
-1000) queue.push(d) the last 1000 elements are all the "d" and are all equal to
-1000*/
 template <typename T>
 class Queue {
     using value_type = T;
@@ -24,9 +18,8 @@ class Queue {
     Queue(const Queue &s) : Queue() { *this = s; };
     Queue(Queue &&s) : head(s.head), tail(s.tail), sizeOf(s.sizeOf){};
     Queue(std::initializer_list<value_type> buff) : Queue() {
-        for (const value_type *start = buff.begin(); start < buff.end();
-             ++start) {
-            push(*start);
+        for (auto it : buff) {
+            push(it);
         }
     }
     ~Queue() {
@@ -46,7 +39,6 @@ class Queue {
         while (!empty()) {
             pop();
         }
-
         if (s.head != nullptr) {
             list_Node<value_type> *chunk = new list_Node<value_type>(*(s.head));
             head = chunk;
@@ -65,21 +57,21 @@ class Queue {
         return *this;
     }
 
-    const_reference front() {
+    const_reference front() const {
         if (empty())
             throw std::out_of_range("Queue::front() - the Queue is empty");
         return head->get_elem();
     }
 
-    const_reference back() {
+    const_reference back() const {
         if (empty())
             throw std::out_of_range("Queue::back() - the Queue is empty");
         return tail->get_elem();
     }
 
-    bool empty() { return (head) ? false : true; }
+    bool empty() const { return (head) ? false : true; }
 
-    size_type size() { return sizeOf; }
+    size_type size() const { return sizeOf; }
 
     void push(const_reference value) {
         list_Node<value_type> *chunk = new list_Node<value_type>(value);

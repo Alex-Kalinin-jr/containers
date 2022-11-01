@@ -4,13 +4,6 @@
 
 #include "s21_node.h"
 
-/* remember that stack is an method to organize data ordering,
-therefore it stores and handles the order of elements, not the elements
-themselves/ If you put a VAR into stack and then change this VAR somwhere else,
-it is changed in stack too. For exmpl, when you try int d = 0; while (++d <
-1000) stack.push(d) the last 1000 elements are all the "d" and are all equal to
-1000*/
-
 namespace s21 {
 
 template <typename T>
@@ -28,16 +21,12 @@ class Stack {
     Stack() : head(nullptr), sizeOf(0){};
     Stack(const Stack &s) : Stack() { *this = s; };
     Stack(Stack &&s) : head(s.head), sizeOf(s.sizeOf){};
-    Stack(std::initializer_list<value_type> buff) : Stack() {
-        for (const value_type *start = buff.begin(); start < buff.end();
-             ++start) {
-            push(*start);
-        }
+    Stack(std::initializer_list<value_type>  const & buff)
+        : Stack() {
+        for (auto it : buff) { push(it); }
     }
     ~Stack() {
-        while (sizeOf > 0) {
-            pop();
-        }
+        while (sizeOf > 0) { pop(); }
     };
 
     Stack &operator=(Stack &&s) {
@@ -65,15 +54,15 @@ class Stack {
         return *this;
     }
 
-    const_reference top() {
+    const_reference top() const {
         if (empty())
             throw std::out_of_range("Stack::top() - the Stack is empty");
         return head->get_elem();
     }
 
-    bool empty() { return (head) ? false : true; }
+    bool empty() const { return (head) ? false : true; }
 
-    size_type size() { return sizeOf; }
+    size_type size() const { return sizeOf; }
 
     void push(const_reference value) {
         list_Node<value_type> *chunk = new list_Node<value_type>(value);
