@@ -1,5 +1,5 @@
-#ifndef SRC_S21_MAP_H_
-#define SRC_S21_MAP_H_
+#ifndef S21_MAP_H_
+#define S21_MAP_H_
 
 #include <climits>
 #include <initializer_list>
@@ -7,7 +7,6 @@
 #include <utility>
 
 #include "s21_iterator.h"
-#include "s21_node.h"
 
 namespace s21 {
 
@@ -334,4 +333,4 @@ class map {
 
 };  // namespace s21
 
-#endif  // SRC_S21_MAP_H_
+#endif  // S21_MAP_H_

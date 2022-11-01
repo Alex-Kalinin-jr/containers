@@ -1,5 +1,5 @@
-#ifndef SRC_S21_ITERATOR_H_
-#define SRC_S21_ITERATOR_H_
+#ifndef S21_ITERATOR_H_
+#define S21_ITERATOR_H_
 
 #include "s21_node.h"
 
@@ -267,4 +267,4 @@ class MapConstIterator : public MapIterator<Key, T> {
 };
 
 }  // namespace s21
-#endif  // SRC_S21_ITERATOR_H_
+#endif  // S21_ITERATOR_H_

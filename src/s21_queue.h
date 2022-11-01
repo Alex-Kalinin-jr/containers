@@ -1,9 +1,8 @@
-#ifndef _CONTAINERS_SRC_S21_QUEUE_
-#define _CONTAINERS_SRC_S21_QUEUE_
+#ifndef S21_QUEUE_H_
+#define S21_QUEUE_H_
 #include <iostream>
 
 #include "s21_iterator.h"
-#include "s21_node.h"
 
 namespace s21 {
 
@@ -126,4 +125,4 @@ class Queue {
 };
 
 }  // namespace s21
-#endif  // _CONTAINERS_SRC_S21_QUEUE_
+#endif  // S21_QUEUE_H_

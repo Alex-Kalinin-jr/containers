@@ -1,8 +1,7 @@
-#ifndef _CONTAINERS_SRC_S21_LIST_
-#define _CONTAINERS_SRC_S21_LIST_
+#ifndef S21_LIST_H_
+#define S21_LIST_H_
 
 #include "s21_iterator.h"
-#include "s21_node.h"
 
 namespace s21 {
 
@@ -293,4 +292,4 @@ class List {
 
 }  // namespace s21
 
-#endif  // _CONTAINERS_SRC_S21_LIST_
+#endif  // S21_LIST_H_

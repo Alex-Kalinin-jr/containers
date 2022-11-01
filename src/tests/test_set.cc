@@ -1,13 +1,13 @@
 #include <gtest/gtest.h>
+#include "../s21_containers.h"
 #include <cmath>
-
-#include "../s21_set.h"
+using namespace s21;
 
 TEST(Constructors, Test_01) {
-    s21::set<int> a;
-    s21::set<int> b = {1, 2, 3, 4, 5};
-    s21::set<int> g{1, 2, 3, 4, 5};
-    s21::set<int> c(b);
+    set<int> a;
+    set<int> b = {1, 2, 3, 4, 5};
+    set<int> g{1, 2, 3, 4, 5};
+    set<int> c(b);
     auto it1 = b.begin();
     auto it2 = c.begin();
     bool res = (*it1 == *it2);
@@ -23,7 +23,7 @@ TEST(Constructors, Test_01) {
     res = (*it1 == *it2);
     ASSERT_TRUE(res);
 
-    s21::set<int> d(std::move(b));
+    set<int> d(std::move(b));
     auto it3 = d.begin();
 
     it2 = c.begin();
@@ -39,7 +39,7 @@ TEST(Constructors, Test_01) {
 }
 
 TEST(Capacity, Test_01) {
-    s21::set<int> a;
+    set<int> a;
     bool res = a.empty();
     ASSERT_TRUE(res);
     a.insert(1);
@@ -50,7 +50,7 @@ TEST(Capacity, Test_01) {
 }
 
 TEST(Modifiers, Test_01) {
-    s21::set<int> a = {1, 2, 3, 4, 5};
+    set<int> a = {1, 2, 3, 4, 5};
     a.erase(a.begin());
     ASSERT_EQ(*(a.begin()), 2);
     auto it = a.end();
@@ -63,8 +63,8 @@ TEST(Modifiers, Test_01) {
 }
 
 TEST(Modifiers, Test_02) {
-    s21::set<int> a = {1, 2, 3, 4, 5};
-    s21::set<int> b = {5, 4, 30, 3, 2, 1, 20};
+    set<int> a = {1, 2, 3, 4, 5};
+    set<int> b = {5, 4, 30, 3, 2, 1, 20};
     a.merge(b);
     auto it = a.end();
     it--;
@@ -76,7 +76,7 @@ TEST(Modifiers, Test_02) {
 }
 
 TEST(Lookup, Test_01) {
-    s21::set<int> a = {1, 2, 3, 8, 4, 5};
+    set<int> a = {1, 2, 3, 8, 4, 5};
     auto it = a.find(3);
     it++;
     ASSERT_TRUE(*it == 4);
@@ -91,9 +91,9 @@ FOR THEIR PERFOMING YOU SHOULD CHANGE THE STATUS OF SERVICE FUNCTIONS
 ONTO PUBLIC*/
 
 // TEST(balancing, Test_01) {
-//     s21::set<int> a = {11, 9, 5, 6, 7, 10, 4, 3, 8, 16, 15};
-//     s21::SetIterator<int> itr1 = a.begin();
-//     s21::SetIterator<int> itr2 = a.end();
+//     set<int> a = {11, 9, 5, 6, 7, 10, 4, 3, 8, 16, 15};
+//     SetIterator<int> itr1 = a.begin();
+//     SetIterator<int> itr2 = a.end();
 //     a.set_balance_for_all();
 //     while (itr1.get_node() != itr2.get_node()) {
 //         if (itr1.get_node() != a.get_root()) {
@@ -104,9 +104,9 @@ ONTO PUBLIC*/
 // }
 
 // TEST(balancing, Test_02) {
-//     s21::set<int> a = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
-//     s21::SetIterator<int> itr1 = a.begin();
-//     s21::SetIterator<int> itr2 = a.end();
+//     set<int> a = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+//     SetIterator<int> itr1 = a.begin();
+//     SetIterator<int> itr2 = a.end();
 //     a.set_balance_for_all();
 //     while (itr1.get_node() != itr2.get_node()) {
 //         if (itr1.get_node() != a.get_root()) {
@@ -117,9 +117,9 @@ ONTO PUBLIC*/
 // }
 
 // TEST(balancing, Test_03) {
-//     s21::set<int> a = {12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
-//     s21::SetIterator<int> itr1 = a.begin();
-//     s21::SetIterator<int> itr2 = a.end();
+//     set<int> a = {12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+//     SetIterator<int> itr1 = a.begin();
+//     SetIterator<int> itr2 = a.end();
 //     a.set_balance_for_all();
 //     while (itr1.get_node() != itr2.get_node()) {
 //         if (itr1.get_node() != a.get_root()) {

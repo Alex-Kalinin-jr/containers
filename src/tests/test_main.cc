@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
-
-#include "../s21_queue.h"
-#include "../s21_stack.h"
+#include "../s21_containers.h"
+using namespace s21;
 
 #ifndef without_leaks
 TEST(queue, throw1) {

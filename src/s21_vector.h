@@ -1,5 +1,5 @@
-#ifndef SRC_S21_VECTOR_H_
-#define SRC_S21_VECTOR_H_
+#ifndef S21_VECTOR_H_
+#define S21_VECTOR_H_
 
 #include <climits>
 #include <cmath>
@@ -214,4 +214,4 @@ class vector {
 
 }  // namespace s21
 
-#endif  // SRC_S21_VECTOR_H_
+#endif  // S21_VECTOR_H_

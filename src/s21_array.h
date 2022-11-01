@@ -1,5 +1,5 @@
-#ifndef SRC_S21_ARRAY_H_
-#define SRC_S21_ARRAY_H_
+#ifndef S21_ARRAY_H_
+#define S21_ARRAY_H_
 
 #include <cmath>
 #include <initializer_list>
@@ -83,4 +83,4 @@ class array {
 
 };  // namespace s21
 
-#endif  // SRC_S21_ARRAY_H_
+#endif  // S21_ARRAY_H_

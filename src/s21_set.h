@@ -1,10 +1,9 @@
-#ifndef SRC_S21_SET_H_
-#define SRC_S21_SET_H_
+#ifndef S21_SET_H_
+#define S21_SET_H_
 
 #include <climits>
 
 #include "s21_iterator.h"
-#include "s21_node.h"
 
 namespace s21 {
 
@@ -365,4 +364,4 @@ class set {
 
 }  // namespace s21
 
-#endif  // SRC_S21_SET_H_
+#endif  // S21_SET_H_

@@ -1,5 +1,5 @@
-#ifndef _CONTAINERS_SRC_S21_NODE_
-#define _CONTAINERS_SRC_S21_NODE_
+#ifndef S21_NODE_H_
+#define S21_NODE_H_
 
 namespace s21 {
 
@@ -69,4 +69,4 @@ class list_Node {
 };
 
 }  // namespace s21
-#endif  // _CONTAINERS_SRC_S21_NODE_
+#endif  // S21_NODE_H_

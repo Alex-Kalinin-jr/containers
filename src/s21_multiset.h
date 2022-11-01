@@ -1,5 +1,5 @@
-#ifndef _CONTAINERS_SRC_S21_MULTISET_
-#define _CONTAINERS_SRC_S21_MULTISET_
+#ifndef S21_MULTISET_H_
+#define S21_MULTISET_H_
 
 #include "s21_iterator.h"
 #include "s21_set.h"
@@ -184,4 +184,4 @@ class Multiset : public set<Key> {
 
 }  // namespace s21
 
-#endif  // _CONTAINERS_SRC_S21_MULTISET_
+#endif  // S21_MULTISET_H_

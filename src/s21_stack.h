@@ -1,5 +1,5 @@
-#ifndef _CONTAINERS_SRC_S21_STACK_
-#define _CONTAINERS_SRC_S21_STACK_
+#ifndef S21_STACK_H_
+#define S21_STACK_H_
 #include <iostream>
 
 #include "s21_node.h"
@@ -104,4 +104,4 @@ class Stack {
 };
 
 }  // namespace s21
-#endif  // _CONTAINERS_SRC_S21_STACK_
+#endif  // S21_STACK_H_
