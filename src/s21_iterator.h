@@ -121,7 +121,7 @@ class node_iterator {
     node_iterator() : elem_(nullptr){};
     node_iterator(const list_Node<value_type> &elem) : elem_(&elem){};
     node_iterator(const node_iterator<value_type> &elem) : elem_(elem.elem_){};
-    node_iterator(list_Node<value_type> * elem) : elem_(elem){};
+    node_iterator(list_Node<value_type> *elem) : elem_(elem){};
     ~node_iterator(){};
 
     void operator++() {
@@ -131,20 +131,20 @@ class node_iterator {
         if (elem_ != nullptr && elem_->back != nullptr) elem_ = elem_->back;
     }
 
-    node_iterator & operator++(int) {
-        node_iterator<value_type> & buff(*this);
+    node_iterator &operator++(int) {
+        node_iterator<value_type> &buff(*this);
         if (elem_ != nullptr) elem_ = elem_->fwd;
         return buff;
     }
 
-    node_iterator & operator--(int) {
-        node_iterator<value_type> & buff(*this);
+    node_iterator &operator--(int) {
+        node_iterator<value_type> &buff(*this);
         if (elem_ != nullptr) elem_ = elem_->back;
         return buff;
     }
 
-    node_iterator & operator-(const int &rv) {
-        node_iterator<value_type> & buff(*this);
+    node_iterator &operator-(const int &rv) {
+        node_iterator<value_type> &buff(*this);
         for (int i = 0; i < rv; ++i) {
             if (buff.elem_ != nullptr && buff.elem_->back != nullptr)
                 buff.elem_ = buff.elem_->back;
@@ -152,8 +152,8 @@ class node_iterator {
         return buff;
     }
 
-    node_iterator & operator+(const int &rv) {
-        node_iterator<value_type> & buff(*this);
+    node_iterator &operator+(const int &rv) {
+        node_iterator<value_type> &buff(*this);
         for (int i = 0; i < rv; ++i) {
             if (buff.elem_ != nullptr && buff.elem_->fwd != nullptr)
                 buff.elem_ = buff.elem_->fwd;
@@ -167,7 +167,7 @@ class node_iterator {
     bool operator!=(const node_iterator other) const {
         return elem_ != other.elem;
     }
-    node_iterator & operator=(const node_iterator &other) {
+    node_iterator &operator=(const node_iterator &other) {
         elem_ = other.elem_;
         return *this;
     }
@@ -176,11 +176,11 @@ class node_iterator {
         other.elem_ = nullptr;
         return *this;
     }
-    node_iterator &operator=(list_Node<value_type> * other) {
+    node_iterator &operator=(list_Node<value_type> *other) {
         elem_ = other;
         return *this;
     }
-    list_Node<value_type> * get_elem() const { return elem_; }
+    list_Node<value_type> *get_elem() const { return elem_; }
     const_reference operator*() const {
         if (elem_ != nullptr) {
             return elem_->list_Node<value_type>::get_elem();
@@ -190,7 +190,7 @@ class node_iterator {
     }
 
    protected:
-    list_Node<value_type> * elem_;
+    list_Node<value_type> *elem_;
 };
 
 template <class Key, class T>

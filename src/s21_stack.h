@@ -21,12 +21,15 @@ class Stack {
     Stack() : head(nullptr), sizeOf(0){};
     Stack(const Stack &s) : Stack() { *this = s; };
     Stack(Stack &&s) : head(s.head), sizeOf(s.sizeOf){};
-    Stack(std::initializer_list<value_type>  const & buff)
-        : Stack() {
-        for (auto it : buff) { push(it); }
+    Stack(std::initializer_list<value_type> const &buff) : Stack() {
+        for (auto it : buff) {
+            push(it);
+        }
     }
     ~Stack() {
-        while (sizeOf > 0) { pop(); }
+        while (sizeOf > 0) {
+            pop();
+        }
     };
 
     Stack &operator=(Stack &&s) {

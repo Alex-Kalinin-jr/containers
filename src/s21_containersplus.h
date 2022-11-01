@@ -4,4 +4,4 @@
 #include "s21_array.h"
 #include "s21_multiset.h"
 
-#endif // S21_CONTAINERSPLUS_H_
+#endif  // S21_CONTAINERSPLUS_H_

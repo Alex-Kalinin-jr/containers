@@ -8,4 +8,4 @@
 #include "s21_stack.h"
 #include "s21_vector.h"
 
-#endif // S21_CONTAINERS_H_
+#endif  // S21_CONTAINERS_H_

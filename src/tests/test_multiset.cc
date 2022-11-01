@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+
 #include "../s21_containersplus.h"
 using namespace s21;
 
@@ -177,8 +178,7 @@ TEST(multiset, contains) {
 
 TEST(multiset, equal_range) {
     Multiset<int> b1{1, 1, 3, 1, 1, 1, 4, 5};
-    std::pair<SetIterator<int>, SetIterator<int>> result =
-        b1.equal_range(1);
+    std::pair<SetIterator<int>, SetIterator<int>> result = b1.equal_range(1);
     ASSERT_EQ(*(result.first), 1);
 }
 

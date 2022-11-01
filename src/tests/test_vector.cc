@@ -1,8 +1,9 @@
 #include <gtest/gtest.h>
-#include "../s21_containers.h"
-#include <vector>
-using namespace s21;
 
+#include <vector>
+
+#include "../s21_containers.h"
+using namespace s21;
 
 TEST(Constructors, vector_Test_01) {
     vector<int> a;

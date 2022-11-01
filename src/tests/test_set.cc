@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
-#include "../s21_containers.h"
+
 #include <cmath>
+
+#include "../s21_containers.h"
 using namespace s21;
 
 TEST(Constructors, Test_01) {
@@ -84,7 +86,6 @@ TEST(Lookup, Test_01) {
     bool res = a.contains(3);
     ASSERT_TRUE(res);
 }
-
 
 /*THESE TESTS ARE FOR CHECK OF INTERNAL BEHAVIOUR
 FOR THEIR PERFOMING YOU SHOULD CHANGE THE STATUS OF SERVICE FUNCTIONS

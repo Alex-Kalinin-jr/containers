@@ -36,12 +36,8 @@ gcov_report: clean $(SOURCE)
 	rm -f $@ *.gcda *.gcno *.info
 	$(OPEN_CMD) ./report/index.html
 
-style:
-	clang-format -style="{BasedOnStyle: Google, IndentWidth: 4}" -i -n *.cc *.h
-
-check: $(SOURCE) $(HEADER)
+style: $(SOURCE) $(HEADER)
 	clang-format -style="{BasedOnStyle: Google, IndentWidth: 4}" -i -n $(SOURCE) $(HEADER)
-	cppcheck --std=c++17 -x c++ --enable=all --suppress=missingIncludeSystem $(SOURCE) $(HEADER)
 
 clean:
 	rm -f ./test ./leaks_test *.o && rm -rf report/
