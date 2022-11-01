@@ -1,5 +1,5 @@
 CC = g++
-LDFLAGS = -O2 -Wall -Wextra -std=c++17
+LDFLAGS = -Wall -Wextra -Werror -std=c++17
 SOURCE = $(wildcard tests/test_*.cc)
 HEADER = $(wildcard s21_*.h)
 OS := $(shell uname -s)
