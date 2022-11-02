@@ -169,6 +169,37 @@ bool operator==(const vector<T>& v) {
     return result;
   }
 
+template <class... Args>
+iterator emplace(const_iterator pos, Args&&... args) {
+  if (pos >= end() || pos < begin()) {
+    throw std::out_of_range("position is out of range");
+  }
+
+  int newpos = (pos - begin());
+
+  if (size_ == capacity_ || size_ < capacity_) {
+    reallocate();
+  }
+    iterator it = data_ + newpos;
+    const size_t size = sizeof...(Args);
+    value_type data[size] = {args...};
+    for (size_t i = 0; i < size; i++) {
+      insert(it++, data[i]);
+    }
+    return it;
+  }
+
+  template <class... Args>
+  void emplace_back(Args&&... args) {
+    const size_t size = sizeof...(Args);
+    std::initializer_list<T> arguments = {args...};
+
+    for (size_t it : arguments) {
+      push_back(it); 
+    }
+      
+  }
+
 private: 
 
   size_type size_ = 0;
@@ -182,7 +213,7 @@ private:
         capacity_ = 1;
       }
     capacity_ *= 2;
-    T* tmp_data = new T[capacity_];
+    T* tmp_data = new T[capacity_]{};
     for (size_type i = 0; i < size_; ++i) {
       tmp_data[i] = data_[i];
     }
