@@ -366,3 +366,9 @@ TEST(list, sort3_runtime) {
     ASSERT_EQ(*itrA, 9940);
     delete[] k;
 }
+
+TEST(list, emplace_front) {
+    s21::List<char> a{1, 6, 3};
+    a.emplace_front(16, 17, 18, 19);
+    ASSERT_EQ(a.front(), 19);
+}

@@ -24,14 +24,10 @@ class Queue {
     Queue(const Queue &s) : Queue() { *this = s; };
     Queue(Queue &&s) : head(s.head), tail(s.tail), sizeOf(s.sizeOf){};
     Queue(std::initializer_list<value_type> buff) : Queue() {
-        for (auto it : buff) {
-            push(it);
-        }
+        for (auto it : buff) { push(it); }
     }
     ~Queue() {
-        while (sizeOf > 0) {
-            pop();
-        }
+        while (sizeOf > 0) { pop(); }
     };
 
     Queue &operator=(Queue &&s) {
@@ -50,7 +46,6 @@ class Queue {
             head = chunk;
             tail = chunk;
             sizeOf++;
-            // HERE TO BE CAREFUL
             list_Node<value_type> *iterator(head);
             while (sizeOf < s.sizeOf) {
                 chunk = new list_Node<value_type>(*(chunk->back));

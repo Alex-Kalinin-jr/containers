@@ -173,3 +173,19 @@ TEST(stack, swap2) {
     ASSERT_EQ(e.size(), 6);
     ASSERT_EQ(e.top(), 14);
 }
+
+TEST(stack, emplace_front) {
+    s21::Stack<int> b = s21::Stack<int>{3, 4, 6, 7, 8, 14};
+    b.emplace_front(11, 14, 18, 10);
+    ASSERT_EQ(b.top(), 10);
+    b.pop();
+    ASSERT_EQ(b.top(), 18);
+    b.pop();
+    ASSERT_EQ(b.top(), 14);
+    b.pop();
+    ASSERT_EQ(b.top(), 11);
+    b.pop();
+    ASSERT_EQ(b.top(), 14);
+}
+
+

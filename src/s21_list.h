@@ -290,6 +290,17 @@ class List {
         }
     }
 
+    template <typename Ty>
+    void emplace_front(Ty &&first) {
+        push_front(first);
+    }
+
+    template <typename Ty, typename... Typ>
+    void emplace_front(Ty &&first, Typ&&... args) {
+        push_front(first);
+        emplace_front(args...);
+    }
+
    private:
     list_Node<value_type> *begin_;
     list_Node<value_type> *end_;

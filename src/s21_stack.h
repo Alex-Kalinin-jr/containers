@@ -40,9 +40,7 @@ class Stack {
     }
 
     Stack &operator=(const Stack &s) {
-        while (!empty()) {
-            pop();
-        }
+        while (!empty()) { pop(); }
         if (s.head != nullptr) {
             list_Node<value_type> *chunk = new list_Node(*(s.head));
             head = chunk;
@@ -93,6 +91,17 @@ class Stack {
             other.sizeOf = buff_size;
             other.head = buff_head;
         }
+    }
+
+    template <typename Ty>
+    void emplace_front(Ty &&first) {
+        push(first);
+    }
+
+    template <typename Ty, typename... Typ>
+    void emplace_front(Ty &&first, Typ&&... args) {
+        push(first);
+        emplace_front(args...);
     }
 };
 
