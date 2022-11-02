@@ -133,7 +133,7 @@ void erase(iterator pos) {
     throw std::out_of_range("Position out of array range!");
   }
   const size_t number_of_items = end() - data_ - 1;
-  for (int i = pos - data_; i < number_of_items; ++i) {
+  for (size_t i = pos - data_; i < number_of_items; ++i) {
     data_[i] = data_[i + 1];
   }
   --size_;

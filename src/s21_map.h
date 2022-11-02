@@ -7,7 +7,6 @@
 #include <utility>
 #include <climits>
 #include <vector>
-#include "old_files/s21_vector.h"
 
 namespace s21 {
 

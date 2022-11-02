@@ -2,7 +2,7 @@
 
 #include "../s21_map.h"
 
-TEST(Constructors, Test_01) {
+TEST(Constructors_Map2, Test_01) {
   s21::map<int, int> a;
   s21::map<int, int> b = {std::pair<int, int>(1, 10), std::pair<int, int>(2, 20), std::pair<int, int>(3, 30)};
   s21::map<int, int> g{std::pair<int, int>(1, 10), std::pair<int, int>(2, 20), std::pair<int, int>(3, 30)};
@@ -37,7 +37,7 @@ TEST(Constructors, Test_01) {
   ASSERT_TRUE(*it2 == *it3);
 }
 
-TEST(Capacity, Test_01) {
+TEST(Capacity_Map2, Test_01) {
   s21::map<int, int> a;
   bool res = a.empty();
   ASSERT_TRUE(res);
@@ -48,7 +48,7 @@ TEST(Capacity, Test_01) {
   ASSERT_EQ((LLONG_MAX / sizeof(std::pair<int, int>)), a.max_size());
 }
 
-TEST(Modifiers, Test_01) {
+TEST(Modifiers_Map2, Test_01) {
   s21::map<int, int> a = {std::pair<int, int>(1, 10), std::pair<int, int>(2, 20), std::pair<int, int>(3, 30),
   std::pair<int, int>(4, 40), std::pair<int, int>(5, 50)};
   
@@ -68,7 +68,7 @@ TEST(Modifiers, Test_01) {
   ASSERT_EQ(*it, 40);
 }
 
-TEST(Modifiers, Test_02) {
+TEST(Modifiers_Map2, Test_02) {
   s21::map<int, int> a = {std::pair<int, int>(1, 10), std::pair<int, int>(2, 20), std::pair<int, int>(3, 30),
   std::pair<int, int>(4, 40), std::pair<int, int>(5, 50)};
 
@@ -85,7 +85,7 @@ TEST(Modifiers, Test_02) {
   ASSERT_TRUE(*itb == 40);
 }
 
-TEST(Lookup, Test_01) {
+TEST(Lookup_Map2, Test_01) {
   s21::map<int, int> a = {std::pair<int, int>(1, 10), std::pair<int, int>(2, 20), std::pair<int, int>(3, 30),
   std::pair<int, int>(4, 40), std::pair<int, int>(5, 50)};
 

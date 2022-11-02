@@ -2,7 +2,7 @@
 
 #include "../s21_array.h"
 
-TEST(Constructors, Test_01) {
+TEST(Constructors_Array, Test_01) {
   s21::array<int, 5> a;
   s21::array<int, 5> b = {1, 2, 3, 4, 5};
   s21::array<int, 5> c{1, 2, 3, 4, 5};
@@ -20,7 +20,7 @@ TEST(Constructors, Test_01) {
   ASSERT_EQ(*(d.begin()), 1);
 }
 
-TEST(Element_access, Test_01) {
+TEST(Element_access_Array, Test_01) {
   s21::array<int, 5> a = {1, 2, 3, 4, 5};
   ASSERT_EQ(*(a.data()), 1);
   ASSERT_EQ(a.at(0), 1);
@@ -29,20 +29,20 @@ TEST(Element_access, Test_01) {
   ASSERT_EQ(a.back(), 5);
 }
 
-TEST(Iterators, Test_01) {
+TEST(Iterators_Array, Test_01) {
   s21::array<int, 5> a = {1, 2, 3, 4, 5};
   ASSERT_EQ(*(a.begin()), 1);
   ASSERT_EQ(*(a.end() - 1), 5);
 }
 
-TEST(Capacity, Test_01) {
+TEST(Capacity_Array, Test_01) {
   s21::array<int, 5> a = {1, 2, 3, 4, 5};
   ASSERT_FALSE(a.empty());
   ASSERT_EQ(a.size(), 5);
   ASSERT_EQ(a.max_size(), 5);
 }
 
-TEST(Modifiers, Test_01) {
+TEST(Modifiers_Array, Test_01) {
   s21::array<int, 5> a = {1, 2, 3, 4, 5};
   s21::array<int, 5> b = {5, 4, 3, 2, 1};
   s21::array<int, 5> b2 = {1, 2, 3, 4, 5};
