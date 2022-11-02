@@ -186,7 +186,7 @@ class node_iterator {
         return *this;
     }
     list_Node<value_type> * get_elem() const { return elem_; }
-    const_reference operator*() const {
+    reference operator*() const {
         if (elem_ != nullptr) {
             return elem_->list_Node<value_type>::get_elem();
         } else {
@@ -196,6 +196,29 @@ class node_iterator {
 
    protected:
     list_Node<value_type> * elem_;
+};
+
+template <class T>
+class node_const_iterator : public node_iterator<T> {
+   public:
+    explicit node_const_iterator(Node<T> *node) : node_iterator<T>(node) {}
+    explicit node_const_iterator(node_iterator<T> iter)
+    : node_iterator<T>(iter.node_iterator<T>::get_elem()) {}
+
+    bool operator==(const node_const_iterator &other) {
+        return node_iterator<T>::node == other.node;
+    }
+    bool operator!=(const node_const_iterator &other) {
+        return node_iterator<T>::node != other.node;
+    }
+
+    const T operator*() const {
+        if (node_iterator<T>::elem_ != nullptr) {
+            return node_iterator<T>::elem_->list_Node<T>::get_const_elem();
+        } else {
+            throw std::out_of_range("node_iterator::node is empty");
+        }
+    }
 };
 
 template <class Key, class T>

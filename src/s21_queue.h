@@ -111,6 +111,17 @@ class Queue {
         }
     }
 
+    template <typename TT>
+    void emplace_back(TT &&first) {
+        push(first);
+    }
+
+    template <typename TT, typename... Args>
+    void emplace_back(TT &&first, Args... args) {
+        push(first);
+        emplace_back(args...);
+    }
+
    private:
     list_Node<value_type> *head;
     list_Node<value_type> *tail;

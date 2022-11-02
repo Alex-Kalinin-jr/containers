@@ -188,3 +188,10 @@ TEST(queue, swap2) {
     ASSERT_EQ(e.size(), 6);
     ASSERT_EQ(e.back(), 14);
 }
+
+TEST(queue, emplace_back) {
+    s21::Queue<int> b = s21::Queue<int>{3, 4, 6, 7, 8, 14};
+    b.emplace_back(3, 6, 12);
+    ASSERT_EQ(b.back(), 12);
+    ASSERT_EQ(b.size(), 9);
+}

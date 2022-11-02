@@ -18,6 +18,7 @@ class List {
     using const_reference = const T &;
     using size_type = size_t;
     using iterator = node_iterator<value_type>;
+    using const_iterator = node_const_iterator<value_type>;
 
    public:
     List() : begin_(nullptr), end_(nullptr), sizeOf(0) {
@@ -290,15 +291,37 @@ class List {
         }
     }
 
-    template <typename Ty>
-    void emplace_front(Ty &&first) {
+    template <typename TT>
+    void emplace(const_iterator pos, TT &&first) {
+        insert(pos, first);
+    }
+
+    template <typename TT>
+    void emplace_front(TT &&first) {
         push_front(first);
     }
 
-    template <typename Ty, typename... Typ>
-    void emplace_front(Ty &&first, Typ&&... args) {
+    template <typename TT>
+    void emplace_back(TT &&first) {
+        push_back(first);
+    }
+
+    template <typename TT, typename... Args>
+    void emplace_front(TT &&first, Args... args) {
         push_front(first);
         emplace_front(args...);
+    }
+
+    template <typename TT, typename... Args>
+    void emplace(const_iterator pos, TT &&first, Args... args) {
+        const_iterator buff(insert(pos, first));
+        emplace(buff, args...);
+    }
+
+    template <typename TT, typename... Args>
+    void emplace_back(TT &&first, Args... args) {
+        push_back(first);
+        emplace_back(args...);
     }
 
    private:

@@ -176,7 +176,7 @@ TEST(stack, swap2) {
 
 TEST(stack, emplace_front) {
     s21::Stack<int> b = s21::Stack<int>{3, 4, 6, 7, 8, 14};
-    b.emplace_front(11, 14, 18, 10);
+    b.s21::Stack<int>::emplace_front(11, 14, 18, 10);
     ASSERT_EQ(b.top(), 10);
     b.pop();
     ASSERT_EQ(b.top(), 18);

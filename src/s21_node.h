@@ -69,7 +69,8 @@ class list_Node {
         return *this;
     }
 
-    const_reference get_elem() { return elem; }
+    reference get_elem() { return elem; }
+    const value_type get_const_elem() { return elem; }
 };
 
 }  // namespace s21

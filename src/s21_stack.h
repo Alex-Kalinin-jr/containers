@@ -93,13 +93,13 @@ class Stack {
         }
     }
 
-    template <typename Ty>
-    void emplace_front(Ty &&first) {
+    template <typename TT>
+    void emplace_front(TT &&first) {
         push(first);
     }
 
-    template <typename Ty, typename... Typ>
-    void emplace_front(Ty &&first, Typ&&... args) {
+    template <typename TT, typename... Args>
+    void emplace_front(TT &&first, Args... args) {
         push(first);
         emplace_front(args...);
     }
