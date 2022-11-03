@@ -206,15 +206,18 @@ class set {
 
     void swap(set& other) {
         if (this != &other) {
-            Node<Key>* buff = other.root_;
-            size_type buff_size = other.size_;
-            Node<Key>* buff_end = other.end_;
-            other.size_ = size_;
-            other.root_ = root_;
-            other.end_ = end_;
-            root_ = buff;
-            end_ = buff_end;
-            size_ = buff_size;
+            std::swap(root_, other.root_);
+            std::swap(end_, other.end_);
+            std::swap(size_, other.size_);
+            // Node<Key>* buff = other.root_;
+            // size_type buff_size = other.size_;
+            // Node<Key>* buff_end = other.end_;
+            // other.size_ = size_;
+            // other.root_ = root_;
+            // other.end_ = end_;
+            // root_ = buff;
+            // end_ = buff_end;
+            // size_ = buff_size;
         }
     }
 
@@ -277,16 +280,10 @@ class set {
     template <class... Args>
     std::vector<std::pair<iterator, bool>> emplace(Args&&... args) {
         std::vector<std::pair<iterator, bool>> result{};
-        std::vector<value_type> itemVector = {args...};
+        s21::vector<value_type> itemVector = {args...};
         for (auto& items : itemVector) {
             result.push_back(insert(items));
         }
-        return result;
-    }
-
-    std::vector<std::pair<iterator, bool>> emplace() {
-        std::vector<std::pair<iterator, bool>> result{};
-        result.push_back(std::make_pair(end(), false));
         return result;
     }
 

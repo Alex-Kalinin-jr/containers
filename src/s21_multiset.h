@@ -83,14 +83,7 @@ class Multiset : public set<Key> {
     }
 
     bool contains(const Key& key) {
-        iterator itr1 = Sset::begin();
-        while (itr1 != Sset::end()) {
-            if (key == *itr1) {
-                return true;
-            }
-            ++itr1;
-        }
-        return false;
+        return find(key) != Sset::end() ? true : false;
     }
 
     std::pair<iterator, iterator> equal_range(const Key& key) {

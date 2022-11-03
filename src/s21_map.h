@@ -6,8 +6,7 @@
 #include <initializer_list>
 #include <utility>
 #include <climits>
-#include <vector>
-
+#include "s21_vector.h"
 
 namespace s21 {
 
@@ -459,8 +458,8 @@ public:
         return node != nullptr;
     }
     template <class... Args>
-    std::vector<std::pair<iterator, bool>> emplace(Args&&... args) {
-    std::vector<std::pair<iterator, bool>> result{};
+    s21::vector<std::pair<iterator, bool>> emplace(Args&&... args) {
+    s21::vector<std::pair<iterator, bool>> result{};
     std::initializer_list<std::pair<Key, T>> arguments = {{args...}};
     for (auto item : arguments) {
       result.push_back(insert(value_type(item)));
