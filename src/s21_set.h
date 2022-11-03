@@ -231,15 +231,7 @@ class set {
     }
 
     bool contains(const Key& key) {
-        Node<Key>* node = root_;
-        while (node != nullptr && node->value != key) {
-            if (key < node->value) {
-                node = node->left;
-            } else {
-                node = node->right;
-            }
-        }
-        return node != nullptr;
+        return find(key) != end() ? true : false;
     }
 
     iterator find(const Key& key) {
@@ -284,16 +276,22 @@ class set {
 
     template <class... Args>
     std::vector<std::pair<iterator, bool>> emplace(Args &&...args) {
-    std::vector<std::pair<iterator, bool>> result{};
-    const size_t size = sizeof...(Args);
-    value_type data[size] = {args...};
+        std::vector<std::pair<iterator, bool>> result{};
+        // const size_t size = sizeof...(Args);
+        // value_type data[size] = {args...};
 
-    for (size_t i = 0; i < size; i++) {
-      result.push_back(insert(data[i]));
+        // for (size_t i = 0; i < size; i++) {
+        //     result.push_back(insert(data[i]));
+        // }
+        // return result;
+
+        std::vector<value_type> itemVector = {args...};
+        for (auto& items : itemVector) {
+            auto insertResult = insert(items);
+            result.push_back(insertResult);
+        }
+        return result;
     }
-
-    return result;
-  }
 
    protected:
     Node<Key>* end_ = nullptr;
