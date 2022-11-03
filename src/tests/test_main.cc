@@ -3,7 +3,7 @@
 #include "../s21_queue.h"
 #include "../s21_stack.h"
 
-#ifndef without_leaks
+#ifndef __APPLE__
 TEST(queue, throw1) {
     s21::Queue<int> a;
     ASSERT_THROW(a.front(), std::out_of_range);
