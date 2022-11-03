@@ -11,7 +11,7 @@ ifeq ($(OS), Darwin)
 endif
 ifeq ($(OS),Linux)
 	OPEN_CMD = xdg-open
-	ADD_LIBS = -lgtest -lpthread
+	ADD_LIBS = -lgtest -lrt -lm -lsubunit -lpthread
 	LEAK_CHECK = valgrind
 	LEAK_ARGS = --tool=memcheck --leak-check=full --show-leak-kinds=all --track-origins=yes --show-reachable=yes
 endif
