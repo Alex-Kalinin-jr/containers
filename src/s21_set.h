@@ -275,21 +275,18 @@ class set {
     Node<Key>* get_root() { return root_; }
 
     template <class... Args>
-    std::vector<std::pair<iterator, bool>> emplace(Args &&...args) {
+    std::vector<std::pair<iterator, bool>> emplace(Args&&... args) {
         std::vector<std::pair<iterator, bool>> result{};
-        // const size_t size = sizeof...(Args);
-        // value_type data[size] = {args...};
-
-        // for (size_t i = 0; i < size; i++) {
-        //     result.push_back(insert(data[i]));
-        // }
-        // return result;
-
         std::vector<value_type> itemVector = {args...};
         for (auto& items : itemVector) {
-            auto insertResult = insert(items);
-            result.push_back(insertResult);
+            result.push_back(insert(items));
         }
+        return result;
+    }
+
+    std::vector<std::pair<iterator, bool>> emplace() {
+        std::vector<std::pair<iterator, bool>> result{};
+        result.push_back(std::make_pair(end(), false));
         return result;
     }
 

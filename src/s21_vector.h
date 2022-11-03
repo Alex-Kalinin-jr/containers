@@ -150,9 +150,9 @@ void pop_back() { size_--; }
 
 void swap(vector& other) {
   if (&other != this) {
-  std::swap(size_, other.size_);
-  std::swap(capacity_, other.capacity_);
-  std::swap(data_, other.data_);
+    std::swap(size_, other.size_);
+    std::swap(capacity_, other.capacity_);
+    std::swap(data_, other.data_);
   }
 }
 
@@ -171,15 +171,15 @@ bool operator==(const vector<T>& v) {
 
 template <class... Args>
 iterator emplace(const_iterator pos, Args&&... args) {
-  if (pos >= end() || pos < begin()) {
-    throw std::out_of_range("position is out of range");
-  }
+    if (pos >= end() || pos < begin()) {
+      throw std::out_of_range("position is out of range");
+    }
 
-  int newpos = (pos - begin());
+    int newpos = (pos - begin());
 
-  if (size_ == capacity_ || size_ < capacity_) {
-    reallocate();
-  }
+    if (size_ == capacity_ || size_ < capacity_) {
+      reallocate();
+    }
     iterator it = data_ + newpos;
     const size_t size = sizeof...(Args);
     value_type data[size] = {args...};
@@ -209,16 +209,13 @@ private:
 
   void reallocate() {
     if (size_ >= capacity_) {
-      if (capacity_ == 0) {
-        capacity_ = 1;
+      capacity_ = (capacity_ == 0) ? 1 : capacity_ * 2;
+      T* tmp_data = new T[capacity_]{};
+      for (size_type i = 0; i < size_; ++i) {
+        tmp_data[i] = data_[i];
       }
-    capacity_ *= 2;
-    T* tmp_data = new T[capacity_]{};
-    for (size_type i = 0; i < size_; ++i) {
-      tmp_data[i] = data_[i];
-    }
-    delete[] data_;
-    data_ = tmp_data;
+      delete[] data_;
+      data_ = tmp_data;
     }
   }
 

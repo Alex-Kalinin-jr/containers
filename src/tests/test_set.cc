@@ -111,6 +111,23 @@ TEST(Set_Emplace, Test_01) {
   }
 }
 
+// TEST(Set_Emplace_Empty, Test_01) {
+//   std::initializer_list<int> list = {1, 3, 3, 8, 17};
+//   s21::set<int> set1(list);
+//   std::set<int> set2(list);
+//   auto v1 = set1.emplace();
+//   auto it1 = v1.begin();
+//   ASSERT_EQ(*(*it1).first, 0);
+//   ASSERT_FALSE((*it1).second);
+//   auto iter1 = set1.begin();
+//   auto iter2 = set2.begin();
+//   while (iter1 != set1.end() || iter2 != set2.end()) {
+//     ASSERT_EQ(*iter1, *iter2);
+//     ++iter1;
+//     ++iter2;
+//   }
+// }
+
 
 /*FOR TESTING YOU SHOULD CHANGE THE ACCESS RULE FROM 'PROTECTED'
 TO 'PUBLIC' FOR SET::SET_BALANCE_FOR_ALL() AND FOR SET::GET_ROOT()*/
