@@ -48,11 +48,11 @@ vector(vector &&v) : size_(v.size_), capacity_(v.capacity_), data_(v.data_) {
   v.capacity_ = 0;
 }
 
-~vector() {delete data_;}
+~vector() {delete[] data_;}
 
 void operator=(vector&& v) {
   if (&v != this) {
-    delete data_;
+    delete[] data_;
     size_ = v.size_;
     capacity_ = v.capacity_;
     data_ = v.data_;
@@ -87,7 +87,7 @@ void reserve(size_type size) {
       tmp_data[i] = std::move(data_[i]);
     }
     capacity_ = size;
-    delete data_;
+    delete[] data_;
     data_ = tmp_data;
   }
 }
@@ -100,14 +100,14 @@ void shrink_to_fit() {
     for (size_type i = 0; i < size_; ++i) {
       tmp_data[i] = data_[i];
     }
-    delete data_;
+    delete[] data_;
     capacity_ = size_;
     data_ = tmp_data;
   }
 }
 
 void clear() {
-  delete data_;
+  delete[] data_;
   size_ = capacity_ = 0;
   data_ = nullptr;
 }
@@ -217,7 +217,7 @@ private:
     for (size_type i = 0; i < size_; ++i) {
       tmp_data[i] = data_[i];
     }
-    delete data_;
+    delete[] data_;
     data_ = tmp_data;
     }
   }
