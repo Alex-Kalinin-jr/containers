@@ -3,7 +3,7 @@
 
 #include "../s21_map.h"
 
-TEST(Constructors, map_Test_01) {
+TEST(Constructors_Map, map_Test_01) {
     s21::map<int, char> a;
     int c = 1;
     char b = 'a';

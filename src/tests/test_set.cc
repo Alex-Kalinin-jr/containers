@@ -4,7 +4,7 @@
 #include <cmath>
 
 
-TEST(Constructors, Test_01) {
+TEST(Constructors_Set, Test_01) {
     s21::set<int> a;
     s21::set<int> b = {1, 2, 3, 8, 4, 6, 5, 9, 13, 11, 12, 18, 15, 14, 16, 17};
     s21::set<int> g{1, 2, 3, 4, 5};
@@ -39,7 +39,7 @@ TEST(Constructors, Test_01) {
     ASSERT_TRUE(*it2 == *it3);
 }
 
-TEST(Capacity, Test_01) {
+TEST(Capacity_Set, Test_01) {
     s21::set<int> a;
     bool res = a.empty();
     ASSERT_TRUE(res);
@@ -50,7 +50,7 @@ TEST(Capacity, Test_01) {
     ASSERT_EQ((LLONG_MAX / sizeof(int)), a.max_size());
 }
 
-TEST(Modifiers, Test_01) {
+TEST(Modifiers_Set, Test_01) {
     s21::set<int> a = {1, 2, 3, 4, 5};
     a.erase(a.begin());
     ASSERT_EQ(*(a.begin()), 2);
@@ -63,7 +63,7 @@ TEST(Modifiers, Test_01) {
     ASSERT_EQ(*it, 4);
 }
 
-TEST(Modifiers, Test_02) {
+TEST(Modifiers_Set, Test_02) {
     s21::set<int> a = {1, 2, 3, 4, 5};
     s21::set<int> b = {5, 4, 30, 3, 2, 1, 20};
     a.merge(b);
@@ -76,7 +76,7 @@ TEST(Modifiers, Test_02) {
     ASSERT_TRUE(*itb == 3);
 }
 
-TEST(Lookup, Test_01) {
+TEST(Lookup_Set, Test_01) {
     s21::set<int> a = {1, 2, 3, 8, 4, 5};
     auto it = a.find(3);
     it++;

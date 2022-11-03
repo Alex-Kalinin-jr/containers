@@ -27,7 +27,9 @@ FILE5=./tests/test_set
 FILE6=./tests/test_vector
 FILE7=./tests/test_map
 FILE8=./tests/test_array
-ALLFILES=$(FILE5).o $(FILE4).o $(FILE3).o $(FILE2).o $(FILE1).o $(FILE6).o $(FILE7).o
+FILE9=./tests/test_set2
+FILE10=./tests/test_map2
+ALLFILES=$(FILE5).o $(FILE4).o $(FILE3).o $(FILE2).o $(FILE1).o $(FILE6).o $(FILE7).o $(FILE8).o $(FILE9).o $(FILE10).o
 
 
 
