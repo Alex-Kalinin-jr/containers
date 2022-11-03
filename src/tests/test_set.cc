@@ -86,6 +86,31 @@ TEST(Lookup_Set, Test_01) {
     ASSERT_TRUE(res);
 }
 
+TEST(Set_Emplace, Test_01) {
+  std::initializer_list<double> list = {1.2, 3.7, 3.14, 8.9};
+  std::set<double> set1(list);
+  s21::set<double> set2(list);
+  set1.emplace(1.2);
+  set1.emplace(3.7);
+  set1.emplace(9.9);
+  auto v2 = set2.emplace(1.2, 3.7, 9.9);
+  auto it2 = v2.begin();
+  for (int i = 0; i < 3; i++, ++it2) {
+    if (i == 2) {
+      ASSERT_TRUE((*it2).second);
+    } else {
+      ASSERT_FALSE((*it2).second);
+    }
+  }
+  auto iter1 = set1.begin();
+  auto iter2 = set2.begin();
+  while (iter1 != set1.end() || iter2 != set2.end()) {
+    ASSERT_DOUBLE_EQ(*iter1, *iter2);
+    ++iter1;
+    ++iter2;
+  }
+}
+
 
 /*FOR TESTING YOU SHOULD CHANGE THE ACCESS RULE FROM 'PROTECTED'
 TO 'PUBLIC' FOR SET::SET_BALANCE_FOR_ALL() AND FOR SET::GET_ROOT()*/
