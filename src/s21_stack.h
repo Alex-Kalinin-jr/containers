@@ -12,97 +12,101 @@ namespace s21 {
 
 template <typename T>
 class Stack {
-    using value_type = T;
-    using reference = T &;
-    using const_reference = const T &;
-    using size_type = size_t;
+  using value_type = T;
+  using reference = T &;
+  using const_reference = const T &;
+  using size_type = size_t;
 
-   private:
-    list_Node<value_type> *head;
-    size_type sizeOf;
+ private:
+  list_Node<value_type> *head;
+  size_type sizeOf;
 
-   public:
-    Stack() : head(nullptr), sizeOf(0){};
-    Stack(const Stack &s) : Stack() { *this = s; };
-    Stack(Stack &&s) : head(s.head), sizeOf(s.sizeOf){};
-    Stack(std::initializer_list<value_type>  const & buff)
-        : Stack() {
-        for (auto it : buff) { push(it); }
+ public:
+  Stack() : head(nullptr), sizeOf(0){};
+  Stack(const Stack &s) : Stack() { *this = s; };
+  Stack(Stack &&s) : head(s.head), sizeOf(s.sizeOf){};
+  Stack(std::initializer_list<value_type> const &buff) : Stack() {
+    for (auto it : buff) {
+      push(it);
     }
-    ~Stack() {
-        while (sizeOf > 0) { pop(); }
-    };
-
-    Stack &operator=(Stack &&s) {
-        head = s.head;
-        sizeOf = s.sizeOf;
-        return *this;
+  }
+  ~Stack() {
+    while (sizeOf > 0) {
+      pop();
     }
+  };
 
-    Stack &operator=(const Stack &s) {
-        while (!empty()) { pop(); }
-        if (s.head != nullptr) {
-            list_Node<value_type> *chunk = new list_Node(*(s.head));
-            head = chunk;
-            sizeOf++;
-            list_Node<value_type> *iterator(head);
-            while (sizeOf < s.sizeOf) {
-                chunk = new list_Node(*(chunk->back));
-                sizeOf++;
-                iterator->back = chunk;
-                iterator = iterator->back;
-            }
-        }
-        return *this;
+  Stack &operator=(Stack &&s) {
+    head = s.head;
+    sizeOf = s.sizeOf;
+    return *this;
+  }
+
+  Stack &operator=(const Stack &s) {
+    while (!empty()) {
+      pop();
     }
-
-    const_reference top() const {
-        if (empty())
-            throw std::out_of_range("Stack::top() - the Stack is empty");
-        return head->get_elem();
+    if (s.head != nullptr) {
+      list_Node<value_type> *chunk = new list_Node(*(s.head));
+      head = chunk;
+      sizeOf++;
+      list_Node<value_type> *iterator(head);
+      while (sizeOf < s.sizeOf) {
+        chunk = new list_Node(*(chunk->back));
+        sizeOf++;
+        iterator->back = chunk;
+        iterator = iterator->back;
+      }
     }
+    return *this;
+  }
 
-    bool empty() const { return (head) ? false : true; }
+  const_reference top() const {
+    if (empty()) throw std::out_of_range("Stack::top() - the Stack is empty");
+    return head->get_elem();
+  }
 
-    size_type size() const { return sizeOf; }
+  bool empty() const { return (head) ? false : true; }
 
-    void push(const_reference value) {
-        list_Node<value_type> *chunk = new list_Node<value_type>(value);
-        chunk->back = head;
-        head = chunk;
-        ++sizeOf;
+  size_type size() const { return sizeOf; }
+
+  void push(const_reference value) {
+    list_Node<value_type> *chunk = new list_Node<value_type>(value);
+    chunk->back = head;
+    head = chunk;
+    ++sizeOf;
+  }
+
+  void pop() {
+    if (head != nullptr) {
+      list_Node<value_type> *buffNode = head;
+      head = head->back;
+      delete buffNode;
+      --sizeOf;
     }
+  }
 
-    void pop() {
-        if (head != nullptr) {
-            list_Node<value_type> *buffNode = head;
-            head = head->back;
-            delete buffNode;
-            --sizeOf;
-        }
+  void swap(Stack &other) {
+    if (this != &other) {
+      size_type buff_size = sizeOf;
+      list_Node<value_type> *buff_head = head;
+      sizeOf = other.sizeOf;
+      head = other.head;
+      other.sizeOf = buff_size;
+      other.head = buff_head;
     }
+  }
 
-    void swap(Stack &other) {
-        if (this != &other) {
-            size_type buff_size = sizeOf;
-            list_Node<value_type> *buff_head = head;
-            sizeOf = other.sizeOf;
-            head = other.head;
-            other.sizeOf = buff_size;
-            other.head = buff_head;
-        }
-    }
+  template <typename TT>
+  void emplace_front(TT &&first) {
+    push(first);
+  }
 
-    template <typename TT>
-    void emplace_front(TT &&first) {
-        push(first);
-    }
-
-    template <typename TT, typename... Args>
-    void emplace_front(TT &&first, Args... args) {
-        push(first);
-        emplace_front(args...);
-    }
+  template <typename TT, typename... Args>
+  void emplace_front(TT &&first, Args... args) {
+    push(first);
+    emplace_front(args...);
+  }
 };
 
 }  // namespace s21
