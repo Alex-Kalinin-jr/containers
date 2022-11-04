@@ -186,9 +186,7 @@ class vector {
 
   template <class... Args>
   void emplace_back(Args&&... args) {
-    const size_t size = sizeof...(Args);
     std::initializer_list<T> arguments = {args...};
-
     for (size_t it : arguments) {
       push_back(it);
     }

@@ -100,3 +100,10 @@ TEST(Modifiers_Vector, vector_Test_04) {
   ASSERT_EQ(a[2], 3);
   ASSERT_EQ(b[2], 10);
 }
+TEST(Emplace_vector, vector_test_01) {
+  s21::vector<int> a = {1};
+  a.emplace(a.begin(), 2);
+  ASSERT_EQ(*(a.begin()), 2);
+  a.emplace_back(6);
+  ASSERT_EQ(*(a.begin() + 2), 6);
+}
