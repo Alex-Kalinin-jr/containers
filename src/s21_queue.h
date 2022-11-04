@@ -8,6 +8,7 @@
 
 #include "s21_iterator.h"
 #include "s21_node.h"
+#include "s21_vector.h"
 
 namespace s21 {
 
@@ -112,15 +113,12 @@ class Queue {
     }
   }
 
-  template <typename TT>
-  void emplace_back(TT &&first) {
-    push(first);
-  }
-
-  template <typename TT, typename... Args>
-  void emplace_back(TT &&first, Args... args) {
-    push(first);
-    emplace_back(args...);
+  template <typename... Args>
+  void emplace_back(Args... args) {
+    s21::vector<value_type> itemVector = {args...};
+    for (auto &it:itemVector) {
+      push(it);
+    }
   }
 
  private:

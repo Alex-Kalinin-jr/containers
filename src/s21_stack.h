@@ -7,6 +7,7 @@
 #include <utility>
 
 #include "s21_node.h"
+#include "s21_vector.h"
 
 namespace s21 {
 
@@ -97,15 +98,12 @@ class Stack {
     }
   }
 
-  template <typename TT>
-  void emplace_front(TT &&first) {
-    push(first);
-  }
-
-  template <typename TT, typename... Args>
-  void emplace_front(TT &&first, Args... args) {
-    push(first);
-    emplace_front(args...);
+  template <typename... Args>
+  void emplace_front(Args... args) {
+    s21::vector<value_type> itemVector = {args...};
+    for (auto &it:itemVector) {
+      push(it);
+    }
   }
 };
 
