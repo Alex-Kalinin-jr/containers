@@ -20,7 +20,7 @@ ifeq ($(OS),Linux)
 	LEAK_ARGS = --tool=memcheck --leak-check=full --track-origins=yes
 endif
 
-all: clean check test
+all: clean test
 
 test: clean $(SOURCE)
 	$(CC) $(LDFLAGS) -o $@ $(SOURCE) $(ADD_LIBS)
