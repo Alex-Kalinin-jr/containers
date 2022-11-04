@@ -1,90 +1,48 @@
-SHELL = /bin/sh
-OS=$(shell uname)
-ifeq ($(OS), Linux)
-  LIBS=-lgtest -lrt -lm -lsubunit -lpthread
-  OPEN=xdg-open
-else
-  LIBS=-lgtest
-  OPEN=open
+YELLOWBOLD='\033[1;33m'
+GREEN= '\033[0;32m'
+YELLOW='\033[0;33m'
+NC='\033[0m'
+CC = g++
+LDFLAGS = -Wall -Wextra -Werror -std=c++17
+SOURCE = $(wildcard tests/test_*.cc)
+HEADER = $(wildcard s21_*.h)
+OS := $(shell uname -s)
+ifeq ($(OS), Darwin)
+	OPEN_CMD = open
+	ADD_LIBS = -lgtest
+	LEAK_CHECK = leaks
+	LEAK_ARGS = -atExit --
+endif
+ifeq ($(OS),Linux)
+	OPEN_CMD = xdg-open
+	ADD_LIBS = -lgtest -lrt -lm -lsubunit -lpthread
+	LEAK_CHECK = valgrind
+	LEAK_ARGS = --tool=memcheck --leak-check=full --track-origins=yes
 endif
 
+all: clean test
 
-CXX=g++
-CXXFLAGS=-Wall -Wextra -Werror -std=c++17 -g
-GCOV= --coverage
+test: clean $(SOURCE)
+	$(CC) $(LDFLAGS) -o $@ $(SOURCE) $(ADD_LIBS)
+	-./$@
 
+leaks_test: clean $(SOURCE)
+	$(CC) $(LDFLAGS) -o $@ $(SOURCE) $(ADD_LIBS)
+	-$(LEAK_CHECK) $(LEAK_ARGS) ./$@
 
-ROAD=.
-TESTNAME=./tests/test_main.cc
-FILENAME=containers
-
-
-FILE1=./tests/test_queue
-FILE2=./tests/test_stack
-FILE3=./tests/test_list
-
-FILE4=./tests/test_multiset
-FILE5=./tests/test_set
-
-FILE6=./tests/test_vector
-FILE7=./tests/test_map
-FILE8=./tests/test_array
-FILE9=./tests/test_set2
-FILE10=./tests/test_map2
-
-ALLFILES=$(FILE5).o $(FILE4).o $(FILE3).o $(FILE2).o $(FILE1).o $(FILE6).o $(FILE7).o $(FILE8).o $(FILE9).o $(FILE10).o
-
-all: test test_without_leaks leaks clean gcov_report clean
-
-test: $(ALLFILES)
-	$(CXX) $(CXXFLAGS) $(TESTNAME) -L . $(LIBS) $(ALLFILES) -o $(ROAD)/$(FILENAME)
-	make run
-
-noleaks: $(ALLFILES)
-	$(CXX) $(CXXFLAGS) $(TESTNAME) -L . -D without_leaks $(LIBS) $(ALLFILES) -o $(ROAD)/$(FILENAME)
-
-gcov_report: $(ALLFILES)
-	$(CXX) $(GCOV) $(CXXFLAGS) $(TESTNAME) -L . $(LIBS) $(ALLFILES) -o $(ROAD)/$(FILENAME)
-	$(ROAD)/$(FILENAME)
-	lcov -t "$(FILENAME)" -o $(FILENAME).info --include */src/*.cc -c -d .
-	genhtml -o report $(FILENAME).info
-	gcov $(FILENAME).info -f
-	rm -rf *.gcda *.gcdo *.gcov *.gcno *.info *dSYM
-	$(OPEN) report/index.html
-
-
-$(FILE1).o: $(FILE1).cc
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-$(FILE2).o: $(FILE2).cc
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-$(FILE3).o: $(FILE3).cc
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-$(FILE4).o: $(FILE4).cc
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-$(FILE5).o: $(FILE5).cc
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-$(FILE6).o: $(FILE6).cc
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-$(FILE7).o: $(FILE7).cc
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-$(FILE8).o: $(FILE8).cc
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-run:
-	$(ROAD)/$(FILENAME)
-
-style:
-	clang-format -style="{BasedOnStyle: Google, IndentWidth: 4}" -i -n *.cc *.h
-
-leaks: noleaks
-	leaks -atExit -- $(ROAD)/$(FILENAME)
+style: $(SOURCE) $(HEADER)
+	@echo ${YELLOWBOLD}"Linter start:..."
+	@sleep 1
+	@cp ../materials/linters/.clang-format .clang-format
+	@clang-format -n $(SOURCE) $(HEADER)
+	@echo $(YELLOW)"1..."
+	@sleep 0.5
+	@echo 2...
+	@sleep 0.5
+	@echo 3...
+	@sleep 0.5
+	@rm -f .clang-format
+	@echo ${YELLOWBOLD}"Linter finished:" ${GREEN}"All passed!"${NC}
 
 clean:
-	rm -rf $(ROAD)/$(FILENAME) *.o *.dSYM *.gcda *.gcdo *.gcov *.gcno *.info *dSYM *.o *.out *.a report ./tests/*.o
+	rm -f ./test ./leaks_test *.o && rm -rf report/

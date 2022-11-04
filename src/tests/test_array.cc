@@ -12,7 +12,7 @@ TEST(Constructors_Array, Test_01) {
   auto it2 = c.begin();
   ASSERT_EQ(*it, *it2);
   ASSERT_EQ(*(g.begin()), *it2);
-  ASSERT_EQ(*(g.begin() + 3), *(it2+3));
+  ASSERT_EQ(*(g.begin() + 3), *(it2 + 3));
 
   s21::array<int, 5> d = {std::move(b)};
 
@@ -49,7 +49,7 @@ TEST(Modifiers_Array, Test_01) {
   s21::array<int, 5> a2 = {5, 4, 3, 2, 1};
 
   a.swap(b);
-  
+
   ASSERT_TRUE(a == a2);
   ASSERT_TRUE(b == b2);
 

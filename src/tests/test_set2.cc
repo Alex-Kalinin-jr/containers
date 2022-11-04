@@ -22,7 +22,7 @@ TEST(Constructors_Set2, Test_01) {
   res = (*it1 == *it2);
   ASSERT_TRUE(res);
 
-  s21::set<int>  d(std::move(b));
+  s21::set<int> d(std::move(b));
   auto it3 = d.begin();
 
   it2 = c.begin();

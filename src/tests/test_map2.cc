@@ -4,8 +4,11 @@
 
 TEST(Constructors_Map2, Test_01) {
   s21::map<int, int> a;
-  s21::map<int, int> b = {std::pair<int, int>(1, 10), std::pair<int, int>(2, 20), std::pair<int, int>(3, 30)};
-  s21::map<int, int> g{std::pair<int, int>(1, 10), std::pair<int, int>(2, 20), std::pair<int, int>(3, 30)};
+  s21::map<int, int> b = {std::pair<int, int>(1, 10),
+                          std::pair<int, int>(2, 20),
+                          std::pair<int, int>(3, 30)};
+  s21::map<int, int> g{std::pair<int, int>(1, 10), std::pair<int, int>(2, 20),
+                       std::pair<int, int>(3, 30)};
   s21::map<int, int> c(b);
   auto it1 = b.begin();
   auto it2 = c.begin();
@@ -22,7 +25,7 @@ TEST(Constructors_Map2, Test_01) {
   res = (*it1 == *it2);
   ASSERT_TRUE(res);
 
-  s21::map<int, int>  d(std::move(b));
+  s21::map<int, int> d(std::move(b));
   auto it3 = d.begin();
 
   it2 = c.begin();
@@ -49,11 +52,15 @@ TEST(Capacity_Map2, Test_01) {
 }
 
 TEST(Modifiers_Map2, Test_01) {
-  s21::map<int, int> a = {std::pair<int, int>(1, 10), std::pair<int, int>(2, 20), std::pair<int, int>(3, 30),
-  std::pair<int, int>(4, 40), std::pair<int, int>(5, 50)};
-  
-  s21::map<int, int> b = {std::pair<int, int>(5, 50), std::pair<int, int>(4, 40), std::pair<int, int>(3, 30),
-  std::pair<int, int>(2, 20), std::pair<int, int>(1, 10)};
+  s21::map<int, int> a = {
+      std::pair<int, int>(1, 10), std::pair<int, int>(2, 20),
+      std::pair<int, int>(3, 30), std::pair<int, int>(4, 40),
+      std::pair<int, int>(5, 50)};
+
+  s21::map<int, int> b = {
+      std::pair<int, int>(5, 50), std::pair<int, int>(4, 40),
+      std::pair<int, int>(3, 30), std::pair<int, int>(2, 20),
+      std::pair<int, int>(1, 10)};
 
   a.swap(b);
   ASSERT_EQ(*(b.begin()), 10);
@@ -69,11 +76,16 @@ TEST(Modifiers_Map2, Test_01) {
 }
 
 TEST(Modifiers_Map2, Test_02) {
-  s21::map<int, int> a = {std::pair<int, int>(1, 10), std::pair<int, int>(2, 20), std::pair<int, int>(3, 30),
-  std::pair<int, int>(4, 40), std::pair<int, int>(5, 50)};
+  s21::map<int, int> a = {
+      std::pair<int, int>(1, 10), std::pair<int, int>(2, 20),
+      std::pair<int, int>(3, 30), std::pair<int, int>(4, 40),
+      std::pair<int, int>(5, 50)};
 
-  s21::map<int, int> b = {std::pair<int, int>(5, 10), std::pair<int, int>(4, 20), std::pair<int, int>(30, 30),
-  std::pair<int, int>(3, 40), std::pair<int, int>(2, 50), std::pair<int, int>(1, 50), std::pair<int, int>(20, 50)};
+  s21::map<int, int> b = {
+      std::pair<int, int>(5, 10),  std::pair<int, int>(4, 20),
+      std::pair<int, int>(30, 30), std::pair<int, int>(3, 40),
+      std::pair<int, int>(2, 50),  std::pair<int, int>(1, 50),
+      std::pair<int, int>(20, 50)};
 
   a.merge(b);
   auto it = a.end();
@@ -86,8 +98,10 @@ TEST(Modifiers_Map2, Test_02) {
 }
 
 TEST(Lookup_Map2, Test_01) {
-  s21::map<int, int> a = {std::pair<int, int>(1, 10), std::pair<int, int>(2, 20), std::pair<int, int>(3, 30),
-  std::pair<int, int>(4, 40), std::pair<int, int>(5, 50)};
+  s21::map<int, int> a = {
+      std::pair<int, int>(1, 10), std::pair<int, int>(2, 20),
+      std::pair<int, int>(3, 30), std::pair<int, int>(4, 40),
+      std::pair<int, int>(5, 50)};
 
   bool res = a.contains(3);
   ASSERT_TRUE(res);
