@@ -26,16 +26,6 @@ leaks_test: clean $(SOURCE)
 	$(CC) $(LDFLAGS) -o $@ $(SOURCE) $(ADD_LIBS)
 	-$(LEAK_CHECK) $(LEAK_ARGS) ./$@
 
-gcov_report: clean $(SOURCE)
-	-mkdir report
-	$(CC) $(LDFLAGS) -o $@ $(SOURCE) $(ADD_LIBS) --coverage
-	-./$@
-	gcov -n $(SOURCE)
-	lcov -t s21_containers -o s21_containers.info -c -d . --no-external
-	genhtml -o report s21_containers.info
-	rm -f $@ *.gcda *.gcno *.info
-	$(OPEN_CMD) ./report/index.html
-
 style: $(SOURCE) $(HEADER)
 	clang-format -style="{BasedOnStyle: Google, IndentWidth: 4}" -i -n $(SOURCE) $(HEADER)
 
