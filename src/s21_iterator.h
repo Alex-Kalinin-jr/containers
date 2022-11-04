@@ -235,14 +235,39 @@ class MapIterator {
   void operator--(int) { decrease(); }
   bool operator==(const MapIterator &other) { return node == other.node; }
   bool operator!=(const MapIterator &other) { return node != other.node; }
+  T &operator*() const {
+    if (node != nullptr && node->parent != nullptr &&
+        node->parent->right == node && node->parent->key > node->key) {
+      return node->parent->value;
+    }
+    if (node != nullptr) {
+      return node->value;
+    } else {
+      throw std::out_of_range("out of range");
+    }
+  }
+  int show_balance() const { return node->balance; }
+  map_Node<Key, T> *get_node() const { return node; }
 
  protected:
   map_Node<Key, T> *node;
 
- private:
   void increase() {
     if (node == nullptr) return;
 
+    if (node->parent == nullptr && node->right->key < node->key) {
+      node = node->right;
+      return;
+    }
+
+    // Проверка на end, чтобы итератор не уходил в nullptr
+    if (node->parent != nullptr && node->parent->right == node &&
+        node->parent->key > node->key)
+      return;
+    if (node->parent != nullptr && node->key == node->parent->key) {
+      node = node->parent;
+      return;
+    }
     if (node->right != nullptr) {
       node = node->right;
       while (node->left != nullptr) {
@@ -260,13 +285,23 @@ class MapIterator {
 
   void decrease() {
     if (node == nullptr) return;
+    bool end = false;
 
-    if (node->left != nullptr) {
+    if (node->parent != nullptr && node->parent->right == node &&
+        node->parent->key > node->key) {
+      node = node->parent;
+      end = true;
+    }
+
+    if (node->left != nullptr && (!end)) {
       node = node->left;
+      if (node->parent->key == node->key) {
+        return;
+      }
       while (node->right != nullptr) {
         node = node->right;
       }
-    } else {
+    } else if (!end) {
       if (node->parent != nullptr && node->parent->left == node) {
         while (node->parent != nullptr && node->parent->right != node) {
           node = node->parent;

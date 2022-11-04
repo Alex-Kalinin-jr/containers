@@ -140,7 +140,7 @@ TEST(queue, push3) {
   int a = 3;
   s21::Queue<int> c;
   c.push(a);
-  c.pop();  //  WTF WTF WTF WTF WTF WTF (if climb on 1 line)
+  c.pop();
   c.push(35);
   c.push(36);
   c.push(37);
@@ -153,7 +153,7 @@ TEST(queue, push3) {
   ASSERT_EQ(c.front(), 37);
 }
 
-TEST(queue, runtime1) {
+/*TEST(queue, runtime1) {
   s21::Queue<int> c;
   int d = 0;
   while (++d != 10000000) c.push(d);
@@ -170,7 +170,7 @@ TEST(queue, runtime2) {
   while (--d != 0) c.pop();
   ASSERT_EQ(c.size(), 0);
 }
-
+*/
 TEST(queue, swap1) {
   s21::Queue<int> b = s21::Queue<int>{3, 4, 6, 7, 8, 14};
   s21::Queue<int> d = s21::Queue<int>{3, 4, 6};

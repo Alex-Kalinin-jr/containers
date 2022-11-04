@@ -27,11 +27,13 @@ class map_Node {
   map_Node *parent = nullptr;
   map_Node *left = nullptr;
   map_Node *right = nullptr;
+  int balance = 0;
 
   T value;
   const Key key;
 
   explicit map_Node(Key key, const T &value) : value(value), key(key) {}
+  map_Node() : key(0) {}
 };
 
 template <typename T>

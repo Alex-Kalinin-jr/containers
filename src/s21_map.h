@@ -7,131 +7,10 @@
 #include <stdexcept>
 #include <utility>
 
-#include "s21_vector.h"
+#include "s21_iterator.h"
+#include "s21_node.h"
 
 namespace s21 {
-
-template <class Key, class T>
-class Node {
- public:
-  Node* parent = nullptr;
-  Node* left = nullptr;
-  Node* right = nullptr;
-  int balance = 0;
-
-  T value;
-  const Key key;
-
-  explicit Node(Key key, const T& value) : value(value), key(key) {}
-  Node() : key(0) {}
-};
-
-template <class Key, class T>
-class MapIterator {
- public:
-  explicit MapIterator(Node<Key, T>* node) : node(node) {}
-
-  T& value() { return node->value; }
-  const Key key() const { return node->key; }
-
-  void operator++() { increase(); }
-  void operator++(int) { increase(); }
-  void operator--() { decrease(); }
-  void operator--(int) { decrease(); }
-  bool operator==(const MapIterator& other) { return node == other.node; }
-  bool operator!=(const MapIterator& other) { return node != other.node; }
-  T& operator*() const {
-    if (node != nullptr && node->parent != nullptr &&
-        node->parent->right == node && node->parent->key > node->key) {
-      return node->parent->value;
-    }
-    if (node != nullptr) {
-      return node->value;
-    } else {
-      throw std::out_of_range("out of range");
-    }
-  }
-  int show_balance() const { return node->balance; }
-  Node<Key, T>* get_node() const { return node; }
-
- protected:
-  Node<Key, T>* node;
-
-  void increase() {
-    if (node == nullptr) return;
-
-    if (node->parent == nullptr && node->right->key < node->key) {
-      node = node->right;
-      return;
-    }
-
-    // Проверка на end, чтобы итератор не уходил в nullptr
-    if (node->parent != nullptr && node->parent->right == node &&
-        node->parent->key > node->key)
-      return;
-    if (node->parent != nullptr && node->key == node->parent->key) {
-      node = node->parent;
-      return;
-    }
-    if (node->right != nullptr) {
-      node = node->right;
-      while (node->left != nullptr) {
-        node = node->left;
-      }
-    } else {
-      if (node->parent != nullptr && node->parent->right == node) {
-        while (node->parent != nullptr && node->parent->left != node) {
-          node = node->parent;
-        }
-      }
-      node = node->parent;
-    }
-  }
-
-  void decrease() {
-    if (node == nullptr) return;
-    bool end = false;
-
-    if (node->parent != nullptr && node->parent->right == node &&
-        node->parent->key > node->key) {
-      node = node->parent;
-      end = true;
-    }
-
-    if (node->left != nullptr && (!end)) {
-      node = node->left;
-      if (node->parent->key == node->key) {
-        return;
-      }
-      while (node->right != nullptr) {
-        node = node->right;
-      }
-    } else if (!end) {
-      if (node->parent != nullptr && node->parent->left == node) {
-        while (node->parent != nullptr && node->parent->right != node) {
-          node = node->parent;
-        }
-      }
-      node = node->parent;
-    }
-  }
-};
-
-template <class Key, class T>
-class MapConstIterator : public MapIterator<Key, T> {
- public:
-  explicit MapConstIterator(Node<Key, T>* node) : MapIterator<Key, T>(node) {}
-
-  const Key key() const { return MapIterator<Key, T>::node->key; }
-  const T value() const { return MapIterator<Key, T>::node->value; }
-
-  bool operator==(const MapConstIterator& other) {
-    return MapIterator<Key, T>::node == other.node;
-  }
-  bool operator!=(const MapConstIterator& other) {
-    return MapIterator<Key, T>::node != other.node;
-  }
-};
 
 template <class Key, class T>
 class map {
@@ -175,7 +54,7 @@ class map {
   }
 
   T& at(const Key& key) {
-    Node<Key, T>* node = root_;
+    map_Node<Key, T>* node = root_;
     while (key != node->key) {
       if (key < node->key) {
         if (node->left != nullptr) {
@@ -205,7 +84,7 @@ class map {
   }
 
   iterator begin() {
-    Node<Key, T>* node = root_;
+    map_Node<Key, T>* node = root_;
     while (node != nullptr && node->left != nullptr) {
       node = node->left;
     }
@@ -235,17 +114,17 @@ class map {
     if (size_ >= max_size_) {
       return std::make_pair(iterator(nullptr), false);
     }
-    Node<Key, T>* node = new Node<Key, T>(key, obj);
+    map_Node<Key, T>* node = new map_Node<Key, T>(key, obj);
     std::pair<iterator, bool> result = std::make_pair(iterator(node), true);
     ++size_;
 
     if (root_ == nullptr) {
-      end_ = new Node<Key, T>;
+      end_ = new map_Node<Key, T>;
       node->right = end_;
       node->right->parent = node;
       root_ = node;
     } else {
-      Node<Key, T>* tmp = root_;
+      map_Node<Key, T>* tmp = root_;
       while (tmp != end_ || tmp != nullptr) {
         if (key < tmp->key) {
           if (tmp->left == nullptr) {
@@ -277,7 +156,7 @@ class map {
         }
       }
     }
-    Node<Key, T>* buff = result.first.get_node();
+    map_Node<Key, T>* buff = result.first.get_node();
     balancing(buff);
     return result;
   }
@@ -286,17 +165,17 @@ class map {
     if (size_ >= max_size_) {
       return std::make_pair(iterator(nullptr), false);
     }
-    Node<Key, T>* node = new Node<Key, T>(key, obj);
+    map_Node<Key, T>* node = new map_Node<Key, T>(key, obj);
     std::pair<iterator, bool> result = std::make_pair(iterator(node), true);
     ++size_;
 
     if (root_ == nullptr) {
-      end_ = new Node<Key, T>;
+      end_ = new map_Node<Key, T>;
       node->right = end_;
       node->right->parent = node;
       root_ = node;
     } else {
-      Node<Key, T>* tmp = root_;
+      map_Node<Key, T>* tmp = root_;
       while (tmp != end_ || tmp != nullptr) {
         if (key < tmp->key) {
           if (tmp->left == nullptr) {
@@ -329,7 +208,7 @@ class map {
         }
       }
     }
-    Node<Key, T>* buff = result.first.get_node();
+    map_Node<Key, T>* buff = result.first.get_node();
     balancing(buff);
     return result;
   }
@@ -338,7 +217,7 @@ class map {
     if (pos == end()) {
       throw std::out_of_range("invalid pointer");
     }
-    Node<Key, T>* node = pos.get_node();
+    map_Node<Key, T>* node = pos.get_node();
     if ((node != nullptr && node != end_) ||
         (node->left == nullptr && node->right == nullptr)) {
       if (node->left == nullptr && node->right == nullptr) {
@@ -382,7 +261,7 @@ class map {
         } else {
           node->left->parent = nullptr;
           if (node->left->right != nullptr) {
-            Node<Key, T>* tmp = node->left->right;
+            map_Node<Key, T>* tmp = node->left->right;
             while (tmp->right != nullptr) {
               tmp = tmp->right;
             }
@@ -396,7 +275,7 @@ class map {
           }
         }
       } else {
-        Node<Key, T>* tmp = node->right;
+        map_Node<Key, T>* tmp = node->right;
         while (tmp->left != nullptr) {
           tmp = tmp->left;
         }
@@ -424,9 +303,9 @@ class map {
 
   void swap(map& other) {
     if (this != &other) {
-      Node<Key, T>* buff = other.root_;
+      map_Node<Key, T>* buff = other.root_;
       size_type buff_size = other.size_;
-      Node<Key, T>* buff_end = other.end_;
+      map_Node<Key, T>* buff_end = other.end_;
       other.size_ = size_;
       other.root_ = root_;
       other.end_ = end_;
@@ -449,7 +328,7 @@ class map {
   }
 
   bool contains(const Key& key) {
-    Node<Key, T>* node = root_;
+    map_Node<Key, T>* node = root_;
     while (node != nullptr && node->key != key) {
       if (key < node->key) {
         node = node->left;
@@ -460,9 +339,9 @@ class map {
     return node != nullptr;
   }
   template <class... Args>
-  s21::vector<std::pair<iterator, bool>> emplace(Args&&... args) {
-    s21::vector<std::pair<iterator, bool>> result{};
-    std::initializer_list<std::pair<Key, T>> arguments = {{args...}};
+  std::vector<std::pair<iterator, bool>> emplace(Args&&... args) {
+    std::vector<std::pair<iterator, bool>> result{};
+    std::initializer_list<std::pair<Key, T>> arguments = {args...};
     for (auto item : arguments) {
       result.push_back(insert(value_type(item)));
     }
@@ -470,12 +349,12 @@ class map {
   }
 
  protected:
-  Node<Key, T>* end_ = nullptr;
-  Node<Key, T>* root_ = nullptr;
+  map_Node<Key, T>* end_ = nullptr;
+  map_Node<Key, T>* root_ = nullptr;
   size_type size_ = 0;
   size_type max_size_ = LLONG_MAX / sizeof(value_type);
 
-  void CopyTree(Node<Key, T>* node) {
+  void CopyTree(map_Node<Key, T>* node) {
     if (node == nullptr || node == end_) return;
     bool end = false;
     if (node->parent != nullptr && node->parent->right == node &&
@@ -493,7 +372,7 @@ class map {
     }
   }
 
-  void DeleteTree(Node<Key, T>* node) {
+  void DeleteTree(map_Node<Key, T>* node) {
     if (node == nullptr) return;
 
     if (node->left != nullptr) {
@@ -505,7 +384,7 @@ class map {
     delete node;
   }
 
-  void r_rotate(Node<Key, T>* chunck) {
+  void r_rotate(map_Node<Key, T>* chunck) {
     if (chunck == root_) root_ = chunck->left;
     if (chunck != root_) {
       if (chunck->parent->left == chunck) chunck->parent->left = chunck->left;
@@ -514,12 +393,12 @@ class map {
     chunck->left->parent = (chunck == root_) ? nullptr : chunck->parent;
     chunck->parent = chunck->left;
     if (chunck->left->right != nullptr) chunck->left->right->parent = chunck;
-    Node<Key, T>* buff = chunck->left->right;
+    map_Node<Key, T>* buff = chunck->left->right;
     chunck->left->right = chunck;
     chunck->left = buff;
   }
 
-  void l_rotate(Node<Key, T>* chunck) {
+  void l_rotate(map_Node<Key, T>* chunck) {
     if (chunck == root_) root_ = chunck->right;
     if (chunck != root_) {
       if (chunck->parent->left == chunck) chunck->parent->left = chunck->right;
@@ -531,12 +410,12 @@ class map {
     if (chunck->right->left != nullptr) {
       chunck->right->left->parent = chunck;
     }
-    Node<Key, T>* buff = chunck->right->left;
+    map_Node<Key, T>* buff = chunck->right->left;
     chunck->right->left = chunck;
     chunck->right = buff;
   }
 
-  void set_balance(Node<Key, T>* chunck) {
+  void set_balance(map_Node<Key, T>* chunck) {
     chunck->balance = height(chunck->right) - height(chunck->left);
   }
 
@@ -548,7 +427,7 @@ class map {
     }
   }
 
-  int height(Node<Key, T>* chunck) {
+  int height(map_Node<Key, T>* chunck) {
     if (chunck == nullptr || chunck == end_) return 0;
     int h_left = height(chunck->left);
     int h_right = height(chunck->right);
@@ -559,12 +438,12 @@ class map {
     }
   }
 
-  Node<Key, T>* get_root() { return root_; }
+  map_Node<Key, T>* get_root() { return root_; }
 
-  void balancing(Node<Key, T>* buff) {
+  void balancing(map_Node<Key, T>* buff) {
     set_balance_for_all();
     while (buff != root_) {
-      Node<Key, T>* new_buff = buff->parent;
+      map_Node<Key, T>* new_buff = buff->parent;
       if (buff->balance > 1) {
         new_buff = buff->right;
         if (buff->right->balance < 0) r_rotate(buff->right);
