@@ -41,13 +41,14 @@ class SetIterator {
     Node<T> *node;
 
     void increase() {
-        if (node == nullptr) return;
-
-        if (node->parent == nullptr && node->right->value < node->value) {
+        if (node == nullptr) {
+            return;
+        } else if (node->parent == nullptr &&
+        node->right != nullptr &&
+        node->right->value < node->value) {
             node = node->right;
             return;
         }
-
         // Проверка на end, чтобы итератор не уходил в nullptr
         if (node->parent != nullptr && node->parent->right == node &&
             node->parent->value > node->value)
@@ -75,8 +76,9 @@ class SetIterator {
         if (node == nullptr) return;
         bool end = false;
 
-        if (node->parent != nullptr && node->parent->right == node &&
-            node->parent->value > node->value) {
+        if (node->parent != nullptr &&
+        node->parent->right == node &&
+        node->parent->value > node->value) {
             node = node->parent;
             end = true;
         }

@@ -112,26 +112,32 @@ class Multiset : public set<Key> {
     }
     /* if not found - returns last element */
     iterator lower_bound(const Key& key) {
-        iterator itr1 = Sset::begin();
-        while (itr1 != Sset::end()) {
-            if (key <= *itr1) {
-                return itr1;
+        iterator itr1 = Sset::end();
+        if (Sset::begin().SetIterator<value_type>::get_node() != nullptr) {
+            itr1 = Sset::begin();
+            while (itr1 != Sset::end()) {
+                if (key <= *itr1) {
+                    return itr1;
+                }
+                ++itr1;
             }
-            ++itr1;
+            --itr1;
         }
-        --itr1;
         return itr1;
     }
     /* if not found - returns last element */
     iterator upper_bound(const Key& key) {
-        iterator itr1 = Sset::begin();
-        while (itr1 != Sset::end()) {
-            if (key < *itr1) {
-                return itr1;
+        iterator itr1 = Sset::end();
+        if (Sset::begin().SetIterator<value_type>::get_node() != nullptr) {
+            itr1 = Sset::begin();
+            while (itr1 != Sset::end()) {
+                if (key < *itr1) {
+                    return itr1;
+                }
+                ++itr1;
             }
-            ++itr1;
+            --itr1;
         }
-        --itr1;
         return itr1;
     }
 

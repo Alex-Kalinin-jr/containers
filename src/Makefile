@@ -22,14 +22,18 @@ FILENAME=containers
 FILE1=./tests/test_queue
 FILE2=./tests/test_stack
 FILE3=./tests/test_list
+
 FILE4=./tests/test_multiset
 FILE5=./tests/test_set
+
 FILE6=./tests/test_vector
 FILE7=./tests/test_map
 FILE8=./tests/test_array
 FILE9=./tests/test_set2
 FILE10=./tests/test_map2
-ALLFILES=$(FILE5).o $(FILE4).o $(FILE3).o $(FILE2).o $(FILE1).o $(FILE6).o $(FILE7).o $(FILE8).o $(FILE9).o $(FILE10).o
+
+# ALLFILES=$(FILE5).o $(FILE4).o $(FILE3).o $(FILE2).o $(FILE1).o $(FILE6).o $(FILE7).o $(FILE8).o $(FILE9).o $(FILE10).o
+ALLFILES=$(FILE4).o $(FILE5).o
 
 
 
