@@ -11,7 +11,7 @@ endif
 
 CXX=g++
 CXXFLAGS=-Wall -Wextra -Werror -std=c++17 -g
-GCOV= --coverage -O0
+GCOV= --coverage
 
 
 ROAD=.
@@ -32,10 +32,7 @@ FILE8=./tests/test_array
 FILE9=./tests/test_set2
 FILE10=./tests/test_map2
 
-# ALLFILES=$(FILE5).o $(FILE4).o $(FILE3).o $(FILE2).o $(FILE1).o $(FILE6).o $(FILE7).o $(FILE8).o $(FILE9).o $(FILE10).o
-ALLFILES=$(FILE4).o $(FILE5).o
-
-
+ALLFILES=$(FILE5).o $(FILE4).o $(FILE3).o $(FILE2).o $(FILE1).o $(FILE6).o $(FILE7).o $(FILE8).o $(FILE9).o $(FILE10).o
 
 all: test test_without_leaks leaks clean gcov_report clean
 
