@@ -368,33 +368,33 @@ TEST(list, sort3_runtime) {
 }
 
 TEST(list, emplace_front) {
-  s21::List<char> a{1, 6, 3};
-  a.s21::List<char>::emplace_front(16, 17, 18, 19);
-  ASSERT_EQ(a.front(), 19);
+  s21::List<int> a{1, 6, 3};
+  a.s21::List<int>::emplace_front(16, 17, 18, 19);
+  ASSERT_EQ(a.front(), 16);
 }
 
 TEST(list, emplace_back) {
-  s21::List<char> a{1, 6, 3};
-  a.s21::List<char>::emplace_back(16, 17, 18, 19);
+  s21::List<int> a{1, 6, 3};
+  a.s21::List<int>::emplace_back(16, 17, 18, 19);
   ASSERT_EQ(a.back(), 19);
   a.pop_back();
   ASSERT_EQ(a.back(), 18);
 }
 
 TEST(list, emplace) {
-  s21::List<char> a{1, 6, 3};
-  s21::node_const_iterator<char> itrA(a.end());
-  s21::node_iterator<char> itrB(a.end());
-  a.s21::List<char>::emplace(itrA, 16, 15, 14, 13);
-  ASSERT_EQ(a.back(), 16);
+  s21::List<int> a{1, 6, 3};
+  s21::node_const_iterator<int> itrA(a.end());
+  s21::node_iterator<int> itrB(a.end());
+  a.s21::List<int>::emplace(itrA, 16, 15, 14, 13);
+  ASSERT_EQ(a.back(), 13);
   --itrB;
-  ASSERT_EQ(*itrB, 16);
-  --itrB;
-  ASSERT_EQ(*itrB, 15);
+  ASSERT_EQ(*itrB, 13);
   --itrB;
   ASSERT_EQ(*itrB, 14);
   --itrB;
-  ASSERT_EQ(*itrB, 13);
+  ASSERT_EQ(*itrB, 15);
+  --itrB;
+  ASSERT_EQ(*itrB, 16);
   --itrB;
   ASSERT_EQ(*itrB, 3);
 }

@@ -8,6 +8,7 @@
 
 #include "s21_iterator.h"
 #include "s21_node.h"
+#include "s21_vector.h"
 
 namespace s21 {
 
@@ -289,37 +290,30 @@ class List {
     }
   }
 
-  template <typename TT>
-  void emplace(const_iterator pos, TT &&first) {
-    insert(pos, first);
+  template <typename... Args>
+  void emplace_front(Args... args) {
+    const_iterator buff(begin());
+    s21::vector<value_type> itemVector = {args...};
+    for (auto &it:itemVector) {
+      insert(buff, it);
+    }
   }
 
-  template <typename TT>
-  void emplace_front(TT &&first) {
-    push_front(first);
+  template <typename... Args>
+  void emplace(const_iterator pos, Args... args) {
+    s21::vector<value_type> itemVector = {args...};
+    for (auto &it:itemVector) {
+      insert(pos, it);
+    }
   }
 
-  template <typename TT>
-  void emplace_back(TT &&first) {
-    push_back(first);
-  }
-
-  template <typename TT, typename... Args>
-  void emplace_front(TT &&first, Args... args) {
-    push_front(first);
-    emplace_front(args...);
-  }
-
-  template <typename TT, typename... Args>
-  void emplace(const_iterator pos, TT &&first, Args... args) {
-    const_iterator buff(insert(pos, first));
-    emplace(buff, args...);
-  }
-
-  template <typename TT, typename... Args>
-  void emplace_back(TT &&first, Args... args) {
-    push_back(first);
-    emplace_back(args...);
+  template <typename... Args>
+  void emplace_back(Args... args) {
+    const_iterator buff(end());
+    s21::vector<value_type> itemVector = {args...};
+    for (auto &it:itemVector) {
+      insert(buff, it);
+    }
   }
 
  private:

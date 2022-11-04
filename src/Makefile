@@ -45,4 +45,4 @@ style: $(SOURCE) $(HEADER)
 	@echo ${YELLOWBOLD}"Linter finished:" ${GREEN}"All passed!"${NC}
 
 clean:
-	rm -f ./test ./leaks_test *.o && rm -rf report/
+	rm -f ./test ./leaks_test *.o && rm -rf report/ ./tests/*.o
