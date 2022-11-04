@@ -27,7 +27,7 @@ leaks_test: clean $(SOURCE)
 	-$(LEAK_CHECK) $(LEAK_ARGS) ./$@
 
 style: $(SOURCE) $(HEADER)
-	clang-format -i $(SOURCE) $(HEADER)
+	clang-format -n $(SOURCE) $(HEADER)
 
 clean:
 	rm -f ./test ./leaks_test *.o && rm -rf report/
