@@ -303,15 +303,9 @@ class map {
 
   void swap(map& other) {
     if (this != &other) {
-      map_Node<Key, T>* buff = other.root_;
-      size_type buff_size = other.size_;
-      map_Node<Key, T>* buff_end = other.end_;
-      other.size_ = size_;
-      other.root_ = root_;
-      other.end_ = end_;
-      root_ = buff;
-      end_ = buff_end;
-      size_ = buff_size;
+      std::swap(root_, other.root_);
+      std::swap(end_, other.end_);
+      std::swap(size_, other.size_);
     }
   }
 
