@@ -119,7 +119,7 @@ class map {
     ++size_;
 
     if (root_ == nullptr) {
-      end_ = new map_Node<Key, T>;
+      end_ = new map_Node<Key, T>(0, 0);
       node->right = end_;
       node->right->parent = node;
       root_ = node;
@@ -170,7 +170,7 @@ class map {
     ++size_;
 
     if (root_ == nullptr) {
-      end_ = new map_Node<Key, T>;
+      end_ = new map_Node<Key, T>(0, 0);
       node->right = end_;
       node->right->parent = node;
       root_ = node;

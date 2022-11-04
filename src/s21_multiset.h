@@ -137,7 +137,7 @@ class Multiset : public set<Key> {
     ++(Sset::size_);
 
     if (Sset::root_ == nullptr) {
-      Sset::end_ = new Node<Key>;
+      Sset::end_ = new Node<Key>(0);
       node->right = Sset::end_;
       Sset::root_ = node;
       Sset::end_->parent = node;

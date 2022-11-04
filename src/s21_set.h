@@ -83,7 +83,7 @@ class set {
     ++size_;
 
     if (root_ == nullptr) {
-      end_ = new Node<Key>;
+      end_ = new Node<Key>(0);
       node->right = end_;
       node->right->parent = node;
       root_ = node;
