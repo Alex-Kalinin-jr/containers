@@ -99,9 +99,9 @@ TEST(Modifiers_Map2, Test_02) {
 
 TEST(Lookup_Map2, Test_01) {
   s21::map<int, int> a = {
-    std::pair<int, int>(1, 10), std::pair<int, int>(2, 20),
-    std::pair<int, int>(3, 30), std::pair<int, int>(4, 40),
-    std::pair<int, int>(5, 50)};
+      std::pair<int, int>(1, 10), std::pair<int, int>(2, 20),
+      std::pair<int, int>(3, 30), std::pair<int, int>(4, 40),
+      std::pair<int, int>(5, 50)};
 
   bool res = a.contains(3);
   ASSERT_TRUE(res);

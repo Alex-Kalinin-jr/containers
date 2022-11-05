@@ -294,7 +294,7 @@ class List {
   void emplace_front(Args... args) {
     const_iterator buff(begin());
     s21::vector<value_type> itemVector = {args...};
-    for (auto &it:itemVector) {
+    for (auto &it : itemVector) {
       insert(buff, it);
     }
   }
@@ -302,7 +302,7 @@ class List {
   template <typename... Args>
   void emplace(const_iterator pos, Args... args) {
     s21::vector<value_type> itemVector = {args...};
-    for (auto &it:itemVector) {
+    for (auto &it : itemVector) {
       insert(pos, it);
     }
   }
@@ -311,7 +311,7 @@ class List {
   void emplace_back(Args... args) {
     const_iterator buff(end());
     s21::vector<value_type> itemVector = {args...};
-    for (auto &it:itemVector) {
+    for (auto &it : itemVector) {
       insert(buff, it);
     }
   }

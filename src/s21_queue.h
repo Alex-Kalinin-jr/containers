@@ -116,7 +116,7 @@ class Queue {
   template <typename... Args>
   void emplace_back(Args... args) {
     s21::vector<value_type> itemVector = {args...};
-    for (auto &it:itemVector) {
+    for (auto &it : itemVector) {
       push(it);
     }
   }
